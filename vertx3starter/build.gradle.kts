@@ -12,6 +12,7 @@ repositories {
 
 val vertxVersion = "3.9.4"
 val junitVersion = "5.3.2"
+val mysqlVersion = "4.3.1"
 val mainVerticleName = "io.vertx.starter.MainVerticle"
 val watchForChange = "src/**/*.java"
 val doOnChange = "${projectDir}/gradlew classes"
@@ -29,7 +30,9 @@ val name = "MainVerticle"
 dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
 
-  implementation("io.vertx:vertx-core")
+  implementation("io.vertx:vertx-web:$vertxVersion")
+  implementation("io.vertx:vertx-core:$vertxVersion")
+  implementation("io.vertx:vertx-mysql-client:$mysqlVersion")
 
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
   implementation("ch.qos.logback:logback-core:$logbackVersion")
@@ -55,6 +58,7 @@ tasks {
   }
 
   getByName<JavaExec>("run") {
+    // Ctrl + C でプロセスが停止しないので
     // args = listOf("run", mainVerticleName, "--redeploy=${watchForChange}", "--launcher-class=${application.mainClassName}", "--on-redeploy=${doOnChange}")
     args = listOf("run", mainVerticleName, "--launcher-class=${application.mainClassName}")
   }
