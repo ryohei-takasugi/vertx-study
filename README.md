@@ -1,2 +1,2 @@
-# gradle-study
-Gradleの勉強環境
+# Vert.x study
+Vert.xの勉強環境
