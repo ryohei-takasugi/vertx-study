@@ -6,13 +6,19 @@ RUN mkdir /opt/gradle
 WORKDIR /opt/gradle
 # install common library
 RUN microdnf update && microdnf upgrade && microdnf install yum
-RUN yum update && yum upgrade && yum install -y /usr/bin/xargs vim unzip zip git jsondiff jq net-tools lsof
+RUN yum update && yum upgrade && yum install -y /usr/bin/xargs vim unzip zip git jsondiff jq net-tools lsof procps git-secrets make
 # install gradle
 RUN curl -sSOL "https://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip"
 RUN unzip -d /opt/gradle gradle-${gradleVersion}-bin.zip
-ENV PATH /opt/gradle/gradle-${gradleVersion}/bin:$PATH
+ENV GRADLE_USER_HOME /opt/gradle/gradle-${gradleVersion}
+ENV PATH $GRADLE_USER_HOME/bin:$PATH
 RUN touch /root/.bashrc
 RUN gradle -v
+# install git-secrets
+WORKDIR /opt/
+RUN git clone https://github.com/awslabs/git-secrets
+RUN cd git-secrets
+RUN make install
 # change dir
 RUN mkdir /root/projects
 WORKDIR /root/projects
