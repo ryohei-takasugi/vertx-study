@@ -21,6 +21,14 @@ gradle-app.setting
 .idea/
 *.iml
 
+# mac
 .DS_Store
 
+# log dir
 log/
+
+# java classpath
+.classpath
+
+# 
+.project
