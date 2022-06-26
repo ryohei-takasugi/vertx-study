@@ -5,8 +5,10 @@ ARG gradleVersion="6.8.2"
 RUN mkdir /opt/gradle
 WORKDIR /opt/gradle
 # install common library
-RUN microdnf update && microdnf upgrade && microdnf install yum
-RUN yum update && yum upgrade && yum install -y /usr/bin/xargs vim unzip zip git jsondiff jq net-tools lsof procps git-secrets make
+RUN microdnf update && microdnf upgrade \
+    && microdnf install yum
+RUN yum update && yum upgrade \
+    && yum install -y /usr/bin/xargs curl wget vim unzip zip git net-tools lsof procps make
 # install gradle
 RUN curl -sSOL "https://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip"
 RUN unzip -d /opt/gradle gradle-${gradleVersion}-bin.zip
@@ -14,11 +16,19 @@ ENV GRADLE_USER_HOME /opt/gradle/gradle-${gradleVersion}
 ENV PATH $GRADLE_USER_HOME/bin:$PATH
 RUN touch /root/.bashrc
 RUN gradle -v
+# install Gauge ( not support aarch64 )
+# RUN mkdir /opt/gauge
+# WORKDIR /opt/gauge
+# RUN curl -SsL https://downloads.gauge.org/stable | sh
+# ENV GAUGE_USER_HOME /opt/gauge/
+# ENV PATH $GAUGE_USER_HOME/bin:$PATH
+# RUN gauge -v
 # install git-secrets
 WORKDIR /opt/
 RUN git clone https://github.com/awslabs/git-secrets
-RUN cd git-secrets
+WORKDIR /opt/git-secrets
 RUN make install
+RUN git-secrets --scan-history
 # change dir
 RUN mkdir /root/projects
 WORKDIR /root/projects
