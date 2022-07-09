@@ -2,29 +2,32 @@ package io.vertx.starter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.http.*;
-import io.vertx.ext.web.*;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.impl.logging.Logger;
+import io.vertx.core.impl.logging.LoggerFactory;
+import io.vertx.ext.web.Router;
 import io.vertx.starter.handle.BodyHandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+/**
+ * main.
+ */
 public class MainVerticle extends AbstractVerticle {
 
   /**
-   * logger
+   * logger.
    */
-  private final static Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
 
   /**
-   * http port number
+   * http port number.
    */
-  private final static int PORT = 8080;
+  private static final int PORT = 8080;
 
   /**
-   * メイン処理
-   * @param startPromise
-   * @return null
+   * vert.x start.
+   * @param startPromise vert.x start promise.
+   * @throws Exception when this exceptional condition happens.
+   * @return null.
    */
   @Override
   public void start(Promise<Void> startPromise) throws Exception {

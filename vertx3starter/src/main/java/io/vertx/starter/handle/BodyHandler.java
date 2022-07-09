@@ -1,15 +1,14 @@
 package io.vertx.starter.handle;
 
 import io.vertx.core.Handler;
+import io.vertx.core.impl.logging.Logger;
+import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.starter.MainVerticle;
 import io.vertx.starter.model.MySQLClient;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BodyHandler implements Handler<RoutingContext> {
 
