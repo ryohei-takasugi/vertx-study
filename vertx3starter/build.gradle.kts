@@ -4,8 +4,10 @@ plugins {
   java
   application
   eclipse
+  maven
   checkstyle
   id("com.github.johnrengelman.shadow") version "5.2.0"
+  id("com.diffplug.spotless") version "6.8.0"
 }
 
 repositories {
@@ -58,6 +60,41 @@ application {
 checkstyle {
     toolVersion = "10.3"
     configFile = file("$projectDir/config/checkstyle/google_checks.xml")
+}
+
+spotless {
+  format("misc") {
+    target("*.java")
+    indentWithSpaces(2)
+    endWithNewline()
+  }
+  java {
+    target("src/*/java/**/*.java")
+    // Use the default importOrder configuration
+    importOrder()
+    // optional: you can specify import groups directly
+    // note: you can use an empty string for all the imports you didn't specify explicitly, and '\\#` prefix for static imports
+    // importOrder("java", "io", "vert.x", "starter")
+    // optional: instead of specifying import groups directly you can specify a config file
+    // export config file: https://github.com/diffplug/spotless/blob/main/ECLIPSE_SCREENSHOTS.md#creating-spotlessimportorder
+    // importOrderFile('eclipse-import-order.txt') // import order file as exported from eclipse
+
+    removeUnusedImports()
+
+    googleJavaFormat() // has its own section below
+    //eclipse()          // has its own section below
+    //prettier()         // has its own section below
+    //clangFormat()      // has its own section below
+
+    // licenseHeader("/* (C) $YEAR */") // or licenseHeaderFile
+  }
+  json {
+    target("src/**/*.json")                      // you have to set the target manually
+    // simple().indentWithSpaces(2)                 // has its own section below
+    // prettier().config(mapOf("parser" to "json")) // see Prettier section below
+    // eclipseWtp("json")                           // see Eclipse web tools platform section
+    gson().indentWithSpaces(2)                                       // has its own section below
+  }
 }
 
 tasks {
