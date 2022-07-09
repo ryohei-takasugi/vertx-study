@@ -8,23 +8,18 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.starter.handle.BodyHandler;
 
-/**
- * main.
- */
+/** main. */
 public class MainVerticle extends AbstractVerticle {
 
-  /**
-   * logger.
-   */
+  /** logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
 
-  /**
-   * http port number.
-   */
+  /** http port number. */
   private static final int PORT = 8080;
 
   /**
    * vert.x start.
+   *
    * @param startPromise vert.x start promise.
    * @throws Exception when this exceptional condition happens.
    * @return null.
@@ -38,5 +33,4 @@ public class MainVerticle extends AbstractVerticle {
     server.requestHandler(router).listen(PORT);
     LOGGER.info("listen start. port: " + PORT);
   }
-
 }

@@ -13,17 +13,17 @@ import io.vertx.sqlclient.SqlClient;
 
 public class MySQLClient {
 
-  private final static Logger LOGGER = LoggerFactory.getLogger(MySQLClient.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MySQLClient.class);
 
   public void connection() {
-    MySQLConnectOptions connectOptions = new MySQLConnectOptions()
-      .setPort(3306)
-      .setHost("localhost")
-      .setDatabase("first_app_development")
-      .setUser("root");
+    MySQLConnectOptions connectOptions =
+        new MySQLConnectOptions()
+            .setPort(3306)
+            .setHost("localhost")
+            .setDatabase("first_app_development")
+            .setUser("root");
     // Pool options
-    PoolOptions poolOptions = new PoolOptions()
-      .setMaxSize(5);
+    PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 
     // Create the client pool
     SqlClient client = MySQLPool.client(connectOptions, poolOptions);
@@ -32,7 +32,7 @@ public class MySQLClient {
     Query<RowSet<Row>> query = client.query("SELECT * FROM users WHERE id='1'");
     Future<RowSet<Row>> execute = query.execute();
     RowSet<Row> reuslt;
-    if( execute.succeeded() ) {
+    if (execute.succeeded()) {
       reuslt = execute.result();
       LOGGER.info("succeeded: " + reuslt.toString());
     } else {

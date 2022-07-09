@@ -6,7 +6,6 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.starter.MainVerticle;
 import io.vertx.starter.model.MySQLClient;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,28 +13,28 @@ public class BodyHandler implements Handler<RoutingContext> {
 
   /**
    * インスタンスの生成
+   *
    * @return BodyHandlerインスタンス
    */
   public static Handler<RoutingContext> create() {
     return new BodyHandler();
   }
 
-  /**
-   * 適当な初期値
-   * @FIXME 設定ファイルから読み込む
-   */
-  private final static Map<String, String> DEFAULT = new HashMap<String, String>(){{
-    put("id", "1");
-    put("name", "sato");
-  }};
+  /** 適当な初期値 @FIXME 設定ファイルから読み込む */
+  private static final Map<String, String> DEFAULT =
+      new HashMap<String, String>() {
+        {
+          put("id", "1");
+          put("name", "sato");
+        }
+      };
 
-  /**
-   * ロガー
-   */
-  private final static Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
+  /** ロガー */
+  private static final Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
 
   /**
    * handle処理（メイン処理）
+   *
    * @param event vert.x RoutingContext data
    * @return null
    */
@@ -46,9 +45,9 @@ public class BodyHandler implements Handler<RoutingContext> {
     try {
       // お試し
       MySQLClient mySqlClient = new MySQLClient();
-      mySqlClient.connection();  
+      mySqlClient.connection();
     } catch (Exception e) {
-      //LOGGER.error(null, e.getStackTrace(), e);
+      // LOGGER.error(null, e.getStackTrace(), e);
     }
 
     final Map<String, String> PARAM = getRequestParam(event);
@@ -60,24 +59,34 @@ public class BodyHandler implements Handler<RoutingContext> {
 
   /**
    * レスポンスとして返すJSONデータ
+   *
    * @param param
-   * @return JSONデータ
-   * @FIXME vert.xのjson系ライブラリで作成する
+   * @return JSONデータ @FIXME vert.xのjson系ライブラリで作成する
    */
   private String getResponseJson(Map<String, String> param) {
-    return "{" +
-              "\"status\": \"200\""+ "," +  
-              " \"data\": " +
-                "{" +
-                  "\"message\": \"Hello World from Vert.x-Web!\"" + "," +
-                  "\"id\": " + "\"" + param.get("id") + "\"" + "," +
-                  "\"name\":" + "\"" + param.get("name") + "\"" +
-              "}" +
-          "}";
+    return "{"
+        + "\"status\": \"200\""
+        + ","
+        + " \"data\": "
+        + "{"
+        + "\"message\": \"Hello World from Vert.x-Web!\""
+        + ","
+        + "\"id\": "
+        + "\""
+        + param.get("id")
+        + "\""
+        + ","
+        + "\"name\":"
+        + "\""
+        + param.get("name")
+        + "\""
+        + "}"
+        + "}";
   }
 
   /**
    * URLからパラメータまたはデフォルト値から応答するデータのMapを取得する
+   *
    * @param event
    * @return requestParam
    */
@@ -91,12 +100,13 @@ public class BodyHandler implements Handler<RoutingContext> {
 
   /**
    * URLにパラメータが設定されている場合その値を、設定されていない場合はデフォルト値を返す
+   *
    * @param event
    * @param key
    * @return value
    */
   private String getParam(RoutingContext event, String key) {
-    if ( !event.request().getParam(key).isEmpty() ) {
+    if (!event.request().getParam(key).isEmpty()) {
       return DEFAULT.get(key);
     } else {
       return event.request().getParam(key).toString();
