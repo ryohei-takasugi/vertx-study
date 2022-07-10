@@ -3,6 +3,7 @@ FROM openjdk:11-oraclelinux8
 # set version number
 ARG gradleVersion="6.8.2"
 ARG maven3Version="3.8.6"
+ARG projectFolder="/root/projects"
 
 # set the directory to execute the command
 RUN mkdir /opt/gradle
@@ -12,7 +13,7 @@ WORKDIR /opt/gradle
 RUN microdnf update && microdnf upgrade \
     && microdnf install yum
 RUN yum update && yum upgrade \
-    && yum install -y /usr/bin/xargs curl wget vim unzip zip git net-tools lsof procps make npm clang-format
+    && yum install -y /usr/bin/xargs curl wget vim unzip zip git net-tools lsof procps make npm
 
 # install gradle
 RUN curl -sSOL "https://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip"
@@ -47,8 +48,11 @@ RUN make install
 RUN git-secrets --scan-history
 
 # change dir
-RUN mkdir /root/projects
-WORKDIR /root/projects
+RUN mkdir ${projectFolder}
+WORKDIR ${projectFolder}
+
+# set m2repo
+ENV M2_HOME ${projectFolder}
 
 # set time zone
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtim

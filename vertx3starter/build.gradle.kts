@@ -12,6 +12,8 @@ plugins {
 
 repositories {
   mavenCentral()
+  jcenter()
+  mavenLocal()
 }
 
 val vertxVersion = "3.9.4"
@@ -31,12 +33,17 @@ val packaging = "jar"
 val version = "1.0.0"
 val name = "MainVerticle"
 
+val gsonVersion = "2.9.0"
+
 dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
 
   implementation("io.vertx:vertx-web:$vertxVersion")
   implementation("io.vertx:vertx-core:$vertxVersion")
+  implementation("io.vertx:vertx-config:$vertxVersion")
   implementation("io.vertx:vertx-mysql-client:$mysqlVersion")
+
+  implementation("com.google.code.gson:gson:$gsonVersion")
 
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
   implementation("ch.qos.logback:logback-core:$logbackVersion")
@@ -55,6 +62,11 @@ java {
 
 application {
   mainClassName = "io.vertx.core.Launcher"
+}
+eclipse {
+  project {
+    name = rootProject.name
+  }
 }
 
 checkstyle {

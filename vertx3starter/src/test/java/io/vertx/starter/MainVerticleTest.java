@@ -3,6 +3,7 @@ package io.vertx.starter;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.codec.BodyCodec;
@@ -37,7 +38,9 @@ class MainVerticleTest {
                     testContext.verify(
                         () -> {
                           assertTrue(response.body().length() > 0);
-                          assertTrue(response.body().contains("Hello Vert.x!"));
+                          JsonObject body = new JsonObject(response.body());
+                          String status = body.getString("status");
+                          assertTrue(status == "200");
                           testContext.completeNow();
                         })));
   }
