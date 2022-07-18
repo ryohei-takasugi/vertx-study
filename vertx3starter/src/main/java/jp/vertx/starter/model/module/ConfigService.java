@@ -1,4 +1,4 @@
-package io.vertx.starter.service;
+package jp.vertx.starter.model.module;
 
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;

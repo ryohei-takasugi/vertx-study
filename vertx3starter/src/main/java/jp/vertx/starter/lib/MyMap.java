@@ -1,4 +1,4 @@
-package io.vertx.starter.lib;
+package jp.vertx.starter.lib;
 
 import io.vertx.core.json.JsonObject;
 import java.util.Collection;

@@ -19,7 +19,7 @@ repositories {
 val vertxVersion = "3.9.4"
 val junitVersion = "5.3.2"
 val mysqlVersion = "4.3.1"
-val mainVerticleName = "io.vertx.starter.MainVerticle"
+val mainVerticleName = "jp.vertx.starter.MainVerticle"
 val watchForChange = "src/**/*.java"
 val doOnChange = "${projectDir}/gradlew classes"
 
