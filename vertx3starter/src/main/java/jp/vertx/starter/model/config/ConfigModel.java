@@ -1,13 +1,13 @@
-package jp.vertx.starter.model.module;
+package jp.vertx.starter.model.config;
 
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 
-public class ConfigService {
+public class ConfigModel {
 
   /** logger. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigModel.class);
 
   private final JsonObject contextConfig;
 
@@ -16,13 +16,13 @@ public class ConfigService {
    *
    * @param config
    */
-  public ConfigService(JsonObject jsonObject) {
+  public ConfigModel(JsonObject jsonObject) {
     if (jsonObject.isEmpty()) {
       this.contextConfig = defaultConfig();
     } else {
       this.contextConfig = jsonObject;
     }
-    LOGGER.debug(ConfigService.class.getName() + " " + this.contextConfig);
+    LOGGER.debug(ConfigModel.class.getName() + " " + this.contextConfig);
   }
 
   /**

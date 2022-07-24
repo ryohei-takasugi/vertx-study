@@ -4,12 +4,14 @@ import io.vertx.core.Handler;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
-import jp.vertx.starter.model.HomeModel;
+import jp.vertx.starter.model.api.HomeResponceModel;
+import jp.vertx.starter.model.api.RequestModel;
 import jp.vertx.starter.view.ComonView;
+import jp.vertx.starter.view.HomeView;
 
 public class HomeController implements Handler<RoutingContext> {
 
-  /** ロガー */
+  /** Logger */
   private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
   /**
@@ -32,12 +34,16 @@ public class HomeController implements Handler<RoutingContext> {
     LOGGER.info(HomeController.class.getName() + " begin");
 
     try {
-      HomeModel homeModel = new HomeModel(event);
-      ComonView homeView = new ComonView(event);
-      homeView.sendSuccessResponce(ComonView.OK, homeModel.get());
+      RequestModel requestModel = new RequestModel(event);
+      if (requestModel.getException()) {
+        throw new IllegalAccessError();
+      }
+      HomeResponceModel homeResponveModel = new HomeResponceModel(requestModel);
+      HomeView homeView = new HomeView(event);
+      homeView.sendSuccessResponce(ComonView.OK, homeResponveModel.get());
     } catch (Throwable t) {
       LOGGER.error(HomeController.class.getName() + " handle " + t);
-      event.fail(t);
+      event.fail(500, t);
     }
 
     LOGGER.info(HomeController.class.getName() + " end");

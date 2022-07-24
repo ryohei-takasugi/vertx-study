@@ -36,7 +36,7 @@ public class ComonView {
    * success responce.
    *
    * @param statusCode
-   * @param dataLv2
+   * @param responce
    * @return null
    */
   public void sendSuccessResponce(int statusCode, JsonObject responce) {
@@ -76,9 +76,8 @@ public class ComonView {
   /**
    * responce.
    *
-   * @param event
    * @param statusCode
-   * @param data
+   * @param responce
    * @return null
    */
   private void sendResponce(int statusCode, JsonObject responce) {

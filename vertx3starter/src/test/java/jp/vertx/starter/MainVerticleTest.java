@@ -1,4 +1,4 @@
-package io.vertx.starter;
+package jp.vertx.starter;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,7 +9,6 @@ import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.codec.BodyCodec;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import jp.vertx.starter.MainVerticle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,8 +39,8 @@ class MainVerticleTest {
                         () -> {
                           assertTrue(response.body().length() > 0);
                           JsonObject body = new JsonObject(response.body());
-                          String status = body.getString("status");
-                          assertTrue(status == "200");
+                          int status = body.getInteger("status");
+                          assertTrue(status == 200);
                           testContext.completeNow();
                         })));
   }
