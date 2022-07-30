@@ -1,4 +1,4 @@
-package jp.vertx.starter.model.config;
+package jp.vertx.starter.models.config;
 
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;

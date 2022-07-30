@@ -3,7 +3,7 @@ package jp.vertx.starter;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.ErrorHandler;
-import jp.vertx.starter.controller.HomeController;
+import jp.vertx.starter.controllers.HomeController;
 
 public class RouteMap {
 

@@ -1,4 +1,4 @@
-package jp.vertx.starter.model.api;
+package jp.vertx.starter.models.api;
 
 import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpMethod;
@@ -46,14 +46,6 @@ public class RequestModel {
 
   public RequestModel(RoutingContext event) {
     set(event);
-  }
-
-  public boolean getException() {
-    return this.exption;
-  }
-
-  private void setException(boolean exption) {
-    this.exption = exption;
   }
 
   public JsonObject get() {
@@ -184,6 +176,14 @@ public class RequestModel {
     return this.acceptableContentType;
   }
 
+  public boolean getException() {
+    return this.exption;
+  }
+
+  private void setException(boolean exption) {
+    this.exption = exption;
+  }
+
   private void setAbsoluteURI(String absoluteURI) {
     this.absoluteURI = absoluteURI;
   }
@@ -230,7 +230,6 @@ public class RequestModel {
   }
 
   private void setParams(MultiMap params) {
-    LOGGER.error(HomeResponceModel.class.getName() + " setParams " + params);
     params.forEach(
         p ->
             LOGGER.debug(

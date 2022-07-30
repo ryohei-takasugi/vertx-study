@@ -1,13 +1,13 @@
-package jp.vertx.starter.controller;
+package jp.vertx.starter.controllers;
 
 import io.vertx.core.Handler;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.RoutingContext;
-import jp.vertx.starter.model.api.HomeResponceModel;
-import jp.vertx.starter.model.api.RequestModel;
-import jp.vertx.starter.view.ComonView;
-import jp.vertx.starter.view.HomeView;
+import jp.vertx.starter.models.api.HomeResponceModel;
+import jp.vertx.starter.models.api.RequestModel;
+import jp.vertx.starter.views.ComonView;
+import jp.vertx.starter.views.HomeView;
 
 public class HomeController implements Handler<RoutingContext> {
 

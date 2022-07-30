@@ -1,4 +1,4 @@
-package jp.vertx.starter.model.data.client;
+package jp.vertx.starter.models.data.client;
 
 import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;

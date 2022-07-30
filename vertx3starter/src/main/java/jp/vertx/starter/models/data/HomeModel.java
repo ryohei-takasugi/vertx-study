@@ -1,4 +1,4 @@
-package jp.vertx.starter.model.data;
+package jp.vertx.starter.models.data;
 
 public class HomeModel {
 

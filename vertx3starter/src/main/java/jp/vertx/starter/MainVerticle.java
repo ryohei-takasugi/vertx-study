@@ -7,7 +7,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
-import jp.vertx.starter.model.config.ConfigModel;
+import jp.vertx.starter.models.config.ConfigModel;
 
 /** main. */
 public class MainVerticle extends AbstractVerticle {
