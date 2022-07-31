@@ -1,7 +1,6 @@
 package jp.vertx.starter.models.api;
 
 import io.vertx.core.MultiMap;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.impl.logging.Logger;
@@ -13,303 +12,145 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class RequestModel {
+public class RequestModel extends RequestEntity {
 
   /** logger */
-  private Logger LOGGER = LoggerFactory.getLogger(RequestModel.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(RequestModel.class);
 
-  /** main json */
-  public JsonObject main = new JsonObject();
+  /** RequestEntry */
+  private static final RequestEntity requestEntity = new RequestEntity();
 
+  private final RoutingContext event;
+
+  /** request json */
   public JsonObject request = new JsonObject();
+
+  /** responce json */
   public JsonObject responce = new JsonObject();
 
-  private boolean exption = true;
-
-  /** headers */
-  private Map<String, Object> headers = new HashMap<>();
-
-  private Map<String, Object> remoteAddress = new HashMap<>();
-  private Map<String, Object> version = new HashMap<>();
-  private Map<String, Object> params = new HashMap<>();
-  private int port = 0;
-  private boolean isSSL = false;
-  private String absoluteURI = "";
-  private String uri = "";
-  private String host = "";
-  private String path = "";
-  private String query = "";
-  private String scheme = "";
-  private String url = "";
-  private String method = "";
-  private String acceptableContentType = "";
-
+  /**
+   * contractor
+   *
+   * @param event
+   */
   public RequestModel(RoutingContext event) {
-    set(event);
+    this.event = event;
+    setEntity();
   }
 
   public JsonObject get() {
     try {
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.absoluteURI);
-      if (!absoluteURI.isBlank()) {
-        request.put("absoluteUrl", absoluteURI);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.remoteAddress);
-      if (!remoteAddress.isEmpty()) {
-        request.put("remoteAddress", new JsonObject(remoteAddress));
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.uri);
-      if (!uri.isBlank()) {
-        request.put("uri", uri);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.host);
-      if (!host.isBlank()) {
-        request.put("host", host);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.path);
-      if (!path.isBlank()) {
-        request.put("path", path);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.version);
-      if (!version.isEmpty()) {
-        request.put("version", new JsonObject(version));
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.query);
-      if (!query.isBlank()) {
-        request.put("query", query);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.params);
-      if (!params.isEmpty()) {
-        request.put("params", new JsonObject(params));
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.scheme);
-      if (!scheme.isBlank()) {
-        request.put("scheme", scheme);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.url);
-      if (!url.isBlank()) {
-        request.put("url", url);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.method);
-      if (!method.isBlank()) {
-        request.put("method", method);
-      }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.headers);
-      if (!headers.isEmpty()) {
-        request.put("header", new JsonObject(headers));
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getAbsoluteURI());
+      if (!requestEntity.getAbsoluteURI().isBlank()) {
+        request.put("absoluteUrl", requestEntity.getAbsoluteURI());
       }
       LOGGER.debug(
-          HomeResponceModel.class.getName() + " createRequest " + this.acceptableContentType);
-      if (!acceptableContentType.isBlank()) {
-        request.put("acceptableContentType", acceptableContentType);
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getRemoteAddress());
+      if (!requestEntity.getRemoteAddress().isEmpty()) {
+        request.put("remoteAddress", new JsonObject(requestEntity.getRemoteAddress()));
       }
-      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + this.port);
-      if (port > 0) {
-        request.put("port", port);
+      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + requestEntity.getUri());
+      if (!requestEntity.getUri().isBlank()) {
+        request.put("uri", requestEntity.getUri());
       }
-      request.put("isSSL", isSSL);
+      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + requestEntity.getHost());
+      if (!requestEntity.getHost().isBlank()) {
+        request.put("host", requestEntity.getHost());
+      }
+      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + requestEntity.getPath());
+      if (!requestEntity.getPath().isBlank()) {
+        request.put("path", requestEntity.getPath());
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getVersion());
+      if (!requestEntity.getVersion().isEmpty()) {
+        request.put("version", new JsonObject(requestEntity.getVersion()));
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getQuery());
+      if (!requestEntity.getQuery().isBlank()) {
+        request.put("query", requestEntity.getQuery());
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getParams());
+      if (!requestEntity.getParams().isEmpty()) {
+        request.put("params", new JsonObject(requestEntity.getParams()));
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getScheme());
+      if (!requestEntity.getScheme().isBlank()) {
+        request.put("scheme", requestEntity.getScheme());
+      }
+      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + requestEntity.getUrl());
+      if (!requestEntity.getUrl().isBlank()) {
+        request.put("url", requestEntity.getUrl());
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getMethod());
+      if (!requestEntity.getMethod().isBlank()) {
+        request.put("method", requestEntity.getMethod());
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName() + " createRequest " + requestEntity.getHeaders());
+      if (!requestEntity.getHeaders().isEmpty()) {
+        request.put("header", new JsonObject(requestEntity.getHeaders()));
+      }
+      LOGGER.debug(
+          HomeResponceModel.class.getName()
+              + " createRequest "
+              + requestEntity.getAcceptableContentType());
+      if (!requestEntity.getAcceptableContentType().isBlank()) {
+        request.put("acceptableContentType", requestEntity.getAcceptableContentType());
+      }
+      LOGGER.debug(HomeResponceModel.class.getName() + " createRequest " + requestEntity.getPort());
+      if (requestEntity.getPort() > 0) {
+        request.put("port", requestEntity.getPort());
+      }
+      request.put("isSSL", requestEntity.getIsSSL());
       return request;
-    } catch (Exception e) {
-      LOGGER.error(HomeResponceModel.class.getName() + " createRequest " + e);
-      setException(true);
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " createRequest " + t);
+      event.fail(500, t);
       return new JsonObject();
     }
   }
 
-  public String getAbsoluteURI() {
-    return this.absoluteURI;
-  }
-
-  public Map<String, Object> getRemoteAddress() {
-    return this.remoteAddress;
-  }
-
-  public String getUri() {
-    return this.uri;
-  }
-
-  public String getHost() {
-    return this.host;
-  }
-
-  public int getPort() {
-    return this.port;
-  }
-
-  public String getPath() {
-    return this.path;
-  }
-
-  public Map<String, Object> getVersion() {
-    return this.version;
-  }
-
-  public String getQuery() {
-    return this.query;
-  }
-
-  public Map<String, Object> getParams() {
-    return this.params;
-  }
-
-  public String getScheme() {
-    return this.scheme;
-  }
-
-  public boolean getIsSSL() {
-    return this.isSSL;
-  }
-
-  public String getUrl() {
-    return this.url;
-  }
-
-  public String getMethod() {
-    return this.method;
-  }
-
-  public Map<String, Object> getHeaders() {
-    return this.headers;
-  }
-
-  public String getAcceptableContentType() {
-    return this.acceptableContentType;
-  }
-
-  public boolean getException() {
-    return this.exption;
-  }
-
-  private void setException(boolean exption) {
-    this.exption = exption;
-  }
-
-  private void setAbsoluteURI(String absoluteURI) {
-    this.absoluteURI = absoluteURI;
-  }
-
-  private void setRemoteAddress(SocketAddress remoteAddress) {
-    try {
-      this.remoteAddress.put("host", remoteAddress.host());
-      this.remoteAddress.put("hostAddress", remoteAddress.hostAddress());
-      this.remoteAddress.put("hostName", remoteAddress.hostName());
-      this.remoteAddress.put("path", remoteAddress.path());
-      this.remoteAddress.put("isDomainSocket", remoteAddress.isDomainSocket());
-      this.remoteAddress.put("isInetSocket", remoteAddress.isInetSocket());
-      this.remoteAddress.put("port", remoteAddress.port());
-    } catch (Exception e) {
-      LOGGER.error(HomeResponceModel.class.getName() + " setRemoteAddress " + e);
-      this.remoteAddress.putAll(new HashMap<>());
-    }
-  }
-
-  private void setUri(String uri) {
-    this.uri = uri;
-  }
-
-  private void setHost(String host) {
-    this.host = host;
-  }
-
-  private void setPath(String path) {
-    this.path = path;
-  }
-
-  private void setVersion(HttpVersion version) {
-    try {
-      this.version.put("alpnName", version.alpnName());
-      this.version.put("name", version.name());
-    } catch (Exception e) {
-      LOGGER.error(HomeResponceModel.class.getName() + " setVersion " + e);
-      this.version.putAll(new HashMap<>());
-    }
-  }
-
-  private void setQuery(String query) {
-    this.query = query;
-  }
-
-  private void setParams(MultiMap params) {
-    params.forEach(
-        p ->
-            LOGGER.debug(
-                HomeResponceModel.class.getName()
-                    + " setParams "
-                    + p.getKey()
-                    + " = "
-                    + p.getValue()));
-    params.forEach(p -> this.params.put(p.getKey(), p.getValue()));
-  }
-
-  private void setScheme(String scheme) {
-    this.scheme = scheme;
-  }
-
-  private void setIsSSL(boolean isSSL) {
-    this.isSSL = isSSL;
-  }
-
-  private void setMethod(HttpMethod method) {
-    this.method = method.toString();
-  }
-
-  private void setHeaders(MultiMap header) {
-    try {
-      for (Entry<String, String> h : header.entries()) {
-        LOGGER.debug(
-            HomeResponceModel.class.getName() + " setHeaders " + h.getKey() + " = " + h.getValue());
-        if (h.getKey().equals("Cookie") || h.getKey().equals("Cache-Control")) {
-          String[] vList = h.getValue().split(";");
-          JsonObject tmp = new JsonObject();
-          for (int i = 0; i < vList.length; i++) {
-            String[] v = vList[i].split("=", 2);
-            tmp.put(v[0], v[1]);
-          }
-          this.headers.put(h.getKey(), tmp);
-        } else {
-          this.headers.put(h.getKey(), h.getValue());
-        }
-      }
-    } catch (Exception e) {
-      LOGGER.error(HomeResponceModel.class.getName() + " setHeaders " + e);
-    }
-  }
-
-  private void set(RoutingContext event) {
+  private void setEntity() {
     try {
       HttpServerRequest hsr = event.request();
       LOGGER.debug(HomeResponceModel.class.getName() + " set 1");
       if (!hsr.method().equals(null)) {
-        setMethod(hsr.method());
+        requestEntity.setMethod(hsr.method());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 2");
       if (!hsr.absoluteURI().equals(null)) {
-        setAbsoluteURI(hsr.absoluteURI());
+        requestEntity.setAbsoluteURI(hsr.absoluteURI());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 3");
       if (!hsr.host().equals(null)) {
-        setHost(hsr.host());
+        requestEntity.setHost(hsr.host());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 4");
       if (!hsr.path().equals(null)) {
-        setPath(hsr.path());
+        requestEntity.setPath(hsr.path());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 5");
       if (!hsr.version().equals(null)) {
         setVersion(hsr.version());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 6");
-      // if (hsr.uri().matches("[?]_")) {
-      LOGGER.debug(HomeResponceModel.class.getName() + " set 6 : " + hsr.query());
-      setQuery(hsr.query());
-      // }
+      if (hsr.uri().matches("[?]_")) {
+        LOGGER.debug(HomeResponceModel.class.getName() + " set 6 : " + hsr.query());
+        requestEntity.setQuery(hsr.query());
+      }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 7");
       if (!hsr.scheme().equals(null)) {
-        setScheme(hsr.scheme());
+        requestEntity.setScheme(hsr.scheme());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 8");
       if (!hsr.uri().equals(null)) {
-        setUri(hsr.uri());
+        requestEntity.setUri(hsr.uri());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 9");
       if (!hsr.params().isEmpty()) {
@@ -325,10 +166,83 @@ public class RequestModel {
         setRemoteAddress(hsr.remoteAddress());
       }
       LOGGER.debug(HomeResponceModel.class.getName() + " set 12");
-      setIsSSL(hsr.isSSL());
-      setException(false);
-    } catch (Exception e) {
-      setException(true);
+      requestEntity.setIsSSL(hsr.isSSL());
+    } catch (Throwable t) {
+      LOGGER.debug(HomeResponceModel.class.getName() + " setEntity " + t);
+      event.fail(500, t);
+    }
+  }
+
+  private void setRemoteAddress(SocketAddress remoteAddress) {
+    try {
+      Map<String, Object> ra = new HashMap<String, Object>();
+      ra.put("host", remoteAddress.host());
+      ra.put("hostAddress", remoteAddress.hostAddress());
+      ra.put("hostName", remoteAddress.hostName());
+      ra.put("path", remoteAddress.path());
+      ra.put("isDomainSocket", remoteAddress.isDomainSocket());
+      ra.put("isInetSocket", remoteAddress.isInetSocket());
+      ra.put("port", remoteAddress.port());
+      requestEntity.setRemoteAddress(ra);
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " setRemoteAddress " + t);
+      event.fail(500, t);
+    }
+  }
+
+  private void setVersion(HttpVersion version) {
+    try {
+      Map<String, Object> v = new HashMap<String, Object>();
+      v.put("alpnName", version.alpnName());
+      v.put("name", version.name());
+      requestEntity.setVersion(v);
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " setVersion " + t);
+      event.fail(500, t);
+    }
+  }
+
+  private void setParams(MultiMap params) {
+    try {
+      Map<String, Object> pa = new HashMap<String, Object>();
+      params.forEach(
+          p ->
+              LOGGER.debug(
+                  HomeResponceModel.class.getName()
+                      + " setParams "
+                      + p.getKey()
+                      + " = "
+                      + p.getValue()));
+      params.forEach(p -> pa.put(p.getKey(), p.getValue()));
+      requestEntity.setParams(pa);
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " setParams " + t);
+      event.fail(500, t);
+    }
+  }
+
+  private void setHeaders(MultiMap header) {
+    try {
+      Map<String, Object> hd = new HashMap<String, Object>();
+      for (Entry<String, String> h : header.entries()) {
+        LOGGER.debug(
+            HomeResponceModel.class.getName() + " setHeaders " + h.getKey() + " = " + h.getValue());
+        if (h.getKey().equals("Cookie") || h.getKey().equals("Cache-Control")) {
+          String[] vList = h.getValue().split(";");
+          JsonObject tmp = new JsonObject();
+          for (int i = 0; i < vList.length; i++) {
+            String[] v = vList[i].split("=", 2);
+            tmp.put(v[0], v[1]);
+          }
+          hd.put(h.getKey(), tmp);
+        } else {
+          hd.put(h.getKey(), h.getValue());
+        }
+      }
+      requestEntity.setHeaders(hd);
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " setHeaders " + t);
+      event.fail(500, t);
     }
   }
 }

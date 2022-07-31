@@ -3,31 +3,33 @@ package jp.vertx.starter.models.api;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.RoutingContext;
 
-public class HomeResponceModel {
+public class HomeResponceModel extends HomeResponceEntity {
 
   /** logger */
-  private Logger LOGGER = LoggerFactory.getLogger(HomeResponceModel.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(HomeResponceModel.class);
 
-  /** request */
-  public RequestModel requestModel;
+  /** HomeResponceEntry */
+  private static final HomeResponceEntity modelEntry = new HomeResponceEntity();
+
+  /** request model */
+  public final RequestModel requestModel;
+
+  /** request entry */
+  public static final RequestEntity requestEntity = new RequestEntity();
 
   /** responce */
   private JsonObject responce = new JsonObject();
-
-  /** default id */
-  private int id = 1;
-
-  /** default name */
-  private String name = "sato";
 
   /**
    * contractor
    *
    * @param null
    */
-  public HomeResponceModel(RequestModel requestModel) {
-    this.requestModel = requestModel;
+  public HomeResponceModel(RoutingContext event) {
+    this.requestModel = new RequestModel(event);
+    setForParams();
   }
 
   /**
@@ -38,91 +40,70 @@ public class HomeResponceModel {
    */
   public JsonObject get() {
     JsonObject main = new JsonObject();
-    set();
-    main.put("request", requestModel.get());
-    main.put("responce", responce);
-    return main;
+    try {
+      setResponce();
+      main.put("request", requestModel.get());
+      main.put("responce", responce);
+      main.put("status", 200);
+      return main;
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " get ", t);
+      return new JsonObject().put("status", 500);
+    }
   }
 
   /**
    * set responce data
-   * 
+   *
    * @param null
    * @return null
    */
-  public void set() {
-    responce.put("id", getId());
-    responce.put("name", getName());
+  private void setResponce() {
+    try {
+      responce.put("id", modelEntry.getId());
+      responce.put("name", modelEntry.getName());
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " setResponce ", t);
+    }
   }
 
   /**
    * set for params
-   * 
+   *
    * @param null
    * @return null
    */
-  public void setForParams() {
-    if (validateParam("_id", "String")) {
-      setId(Integer.valueOf(requestModel.getParams().get("_id").toString()));
-    }
-    if (validateParam("_name", "String")) {
-      setName(requestModel.getParams().get("_name").toString());
+  private void setForParams() {
+    try {
+      if (validateParam("_id", "String")) {
+        modelEntry.setId(Integer.valueOf(requestEntity.getParams().get("_id").toString()));
+      }
+      if (validateParam("_name", "String")) {
+        modelEntry.setName(requestEntity.getParams().get("_name").toString());
+      }
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " setForParams ", t);
     }
   }
 
-  /** 
+  /**
    * validate params
-   *  
+   *
    * @param keyName
    * @param KeyType
    * @return Existing And check OK
    */
   private boolean validateParam(String keyName, String KeyType) {
-    if (requestModel.getParams().containsKey(keyName)) {
-      if (requestModel.getParams().get(keyName).getClass().getName() == KeyType) {
-        return true;
+    try {
+      if (requestEntity.getParams().containsKey(keyName)) {
+        if (requestEntity.getParams().get(keyName).getClass().getName() == KeyType) {
+          return true;
+        }
       }
+      return false;
+    } catch (Throwable t) {
+      LOGGER.error(HomeResponceModel.class.getName() + " validateParam ", t);
+      return false;
     }
-    return false;
-  }
-
-  /**
-   * get id
-   * 
-   * @param null
-   * @return id
-   */ 
-  public int getId() {
-    return this.id;
-  }
-
-  /**
-   * set id
-   * 
-   * @param null
-   * @return null
-   */ 
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  /**
-   * get name
-   * 
-   * @param null
-   * @return name
-   */ 
-  public String getName() {
-    return this.name;
-  }
-
-  /**
-   * set name
-   * 
-   * @param null
-   * @return null
-   */ 
-  public void setName(String name) {
-    this.name = name;
   }
 }
