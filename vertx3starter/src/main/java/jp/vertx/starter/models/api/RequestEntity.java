@@ -56,10 +56,9 @@ public class RequestEntity {
   /** Acceptable Content Type */
   private String acceptableContentType = "";
 
-
   /**
    * contractor
-   * 
+   *
    * @return
    */
   public String getAbsoluteURI() {

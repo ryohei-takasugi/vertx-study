@@ -6,8 +6,6 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import jp.vertx.starter.models.api.HomeResponceModel;
-import jp.vertx.starter.models.api.RequestEntity;
-import jp.vertx.starter.models.api.RequestModel;
 import jp.vertx.starter.views.ComonView;
 import jp.vertx.starter.views.HomeView;
 
