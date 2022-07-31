@@ -1,6 +1,6 @@
 package jp.vertx.starter.models.data;
 
-public class HomeModel {
+public class HomeModel extends HomeEntity {
 
   private int status = 999;
 

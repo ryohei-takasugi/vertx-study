@@ -4,7 +4,7 @@ import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 
-public class ConfigModel {
+public class ConfigModel extends ConfigEntity {
 
   /** logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(ConfigModel.class);
