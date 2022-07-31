@@ -29,15 +29,15 @@ public class MainVerticle extends AbstractVerticle {
       LOGGER.info(MainVerticle.class.getName() + " start");
       HttpServer server = vertx.createHttpServer();
       Router defaultRouter = Router.router(vertx);
-      ConfigModel configService = new ConfigModel(Vertx.currentContext().config());
+      ConfigModel configModel = new ConfigModel(Vertx.currentContext().config());
 
       // set Route
       RouteMap routeMap = new RouteMap(defaultRouter, vertx);
       Router router = routeMap.getRouter();
 
       // listen start
-      server.requestHandler(router).listen(configService.getPort());
-      LOGGER.info("listen start. port: " + configService.getPort());
+      server.requestHandler(router).listen(configModel.getPort());
+      LOGGER.info("listen start. port: " + configModel.getPort());
 
     } catch (Exception e) {
       LOGGER.error(MainVerticle.class.getName() + " start " + e);
