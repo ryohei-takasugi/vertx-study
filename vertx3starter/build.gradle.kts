@@ -4,9 +4,7 @@ plugins {
   java
   application
   eclipse
-  maven
-  checkstyle
-  id("com.github.johnrengelman.shadow") version "5.2.0"
+  id("com.github.johnrengelman.shadow") version "7.1.0"
   id("com.diffplug.spotless") version "6.8.0"
 }
 
@@ -16,24 +14,21 @@ repositories {
   mavenLocal()
 }
 
-val vertxVersion = "3.9.4"
-val junitVersion = "5.3.2"
-val mysqlVersion = "4.3.1"
+val modowner: String by project
+val groupId = "${modowner}"
+// vert.x
+val version: String by project
+val vertxVersion: String by project
+val junitVersion: String by project
+// json
+val gsonVersion: String by project
+// log
+val slf4jVersion: String by project
+val logbackVersion: String by project
+
 val mainVerticleName = "jp.vertx.starter.MainVerticle"
 val watchForChange = "src/**/*.java"
 val doOnChange = "${projectDir}/gradlew classes"
-
-// log
-val slf4jVersion = "1.7.30"
-val logbackVersion = "1.2.3"
-// val modelVersion = ""
-val groupId = "io.vertx.starter"
-val artifactId = "starter"
-val packaging = "jar"
-val version = "1.0.0"
-val name = "MainVerticle"
-
-val gsonVersion = "2.9.0"
 
 dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
@@ -41,9 +36,9 @@ dependencies {
   implementation("io.vertx:vertx-web:$vertxVersion")
   implementation("io.vertx:vertx-core:$vertxVersion")
   implementation("io.vertx:vertx-config:$vertxVersion")
-  implementation("io.vertx:vertx-mysql-client:$mysqlVersion")
 
   implementation("com.google.code.gson:gson:$gsonVersion")
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
 
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
   implementation("ch.qos.logback:logback-core:$logbackVersion")
@@ -51,7 +46,6 @@ dependencies {
 
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("io.vertx:vertx-web-client")
-  //testImplementation("org.sahagin:sahagin-groovy:0.10.1")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
@@ -67,11 +61,6 @@ eclipse {
   project {
     name = rootProject.name
   }
-}
-
-checkstyle {
-    toolVersion = "10.3"
-    configFile = file("$projectDir/config/checkstyle/google_checks.xml")
 }
 
 spotless {
@@ -115,9 +104,7 @@ tasks {
   }
 
   getByName<JavaExec>("run") {
-    // Ctrl + C でプロセスが停止しないので
-    // args = listOf("run", mainVerticleName, "--redeploy=${watchForChange}", "--launcher-class=${application.mainClassName}", "--on-redeploy=${doOnChange}")
-    args = listOf("run", mainVerticleName, "--launcher-class=${application.mainClassName}")
+    args = listOf("run", mainVerticleName, "--redeploy=${watchForChange}", "--launcher-class=${application.mainClassName}", "--on-redeploy=${doOnChange}")
   }
 
   withType<ShadowJar> {
