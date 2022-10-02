@@ -1,9 +1,9 @@
-package jp.vertx.starter;
+package jp.sample.starter;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.ErrorHandler;
-import jp.vertx.starter.controllers.HomeController;
+import jp.sample.starter.controllers.HomeController;
 
 public class RouteMap {
 
@@ -11,9 +11,9 @@ public class RouteMap {
   private final Router r;
   private static final String CONTENT_TYPE = "application/json";
 
-  public RouteMap(Router router, Vertx vertx) {
+  public RouteMap(Vertx vertx) {
     this.v = vertx;
-    this.r = router;
+    this.r = Router.router(vertx);
     createRoute();
   }
 

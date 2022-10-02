@@ -1,4 +1,4 @@
-package jp.vertx.starter.models.data;
+package jp.sample.starter.models.data;
 
 public class HomeModel extends HomeEntity {
 

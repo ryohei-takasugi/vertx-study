@@ -1,4 +1,4 @@
-package jp.vertx.starter.views;
+package jp.sample.starter.views;
 
 import io.vertx.ext.web.RoutingContext;
 

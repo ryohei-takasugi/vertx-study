@@ -1,13 +1,12 @@
-package jp.vertx.starter;
+package jp.sample.starter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
-import jp.vertx.starter.models.config.ConfigModel;
+import jp.sample.starter.models.config.ConfigModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** main. */
 public class MainVerticle extends AbstractVerticle {
@@ -28,11 +27,9 @@ public class MainVerticle extends AbstractVerticle {
       // start WebApi
       LOGGER.info(MainVerticle.class.getName() + " start");
       HttpServer server = vertx.createHttpServer();
-      Router defaultRouter = Router.router(vertx);
-      ConfigModel configModel = new ConfigModel(Vertx.currentContext().config());
-
+      ConfigModel configModel = new ConfigModel(vertx);
       // set Route
-      RouteMap routeMap = new RouteMap(defaultRouter, vertx);
+      RouteMap routeMap = new RouteMap(vertx);
       Router router = routeMap.getRouter();
 
       // listen start

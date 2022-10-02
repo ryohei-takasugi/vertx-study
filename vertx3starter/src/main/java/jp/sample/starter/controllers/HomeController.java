@@ -1,13 +1,13 @@
-package jp.vertx.starter.controllers;
+package jp.sample.starter.controllers;
 
 import io.vertx.core.Handler;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import jp.vertx.starter.models.api.HomeResponceModel;
-import jp.vertx.starter.views.ComonView;
-import jp.vertx.starter.views.HomeView;
+import jp.sample.starter.models.request.RequestModel;
+import jp.sample.starter.models.responce.HomeResponceModel;
+import jp.sample.starter.views.ComonView;
+import jp.sample.starter.views.HomeView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HomeController implements Handler<RoutingContext> {
 
@@ -34,14 +34,16 @@ public class HomeController implements Handler<RoutingContext> {
     LOGGER.info(HomeController.class.getName() + " begin");
 
     try {
-      HomeResponceModel homeResponveModel = new HomeResponceModel(event);
-      HomeView homeView = new HomeView(event);
-      JsonObject responce = homeResponveModel.get();
-      if (responce.getInteger("status").equals(200)) {
-        homeView.sendSuccessResponce(ComonView.OK, responce);
-      } else {
-        event.fail(404);
+      RequestModel request = new RequestModel(event);
+      if (!("success".equals(request.getModelStatus()))) {
+        event.fail(500);
       }
+      HomeResponceModel responce = new HomeResponceModel(request);
+      if (!("success".equals(responce.getModelStatus()))) {
+        event.fail(500);
+      }
+      HomeView homeView = new HomeView(event);
+      homeView.sendSuccessResponce(ComonView.OK, responce.toJsonObject());
     } catch (Throwable t) {
       LOGGER.error(HomeController.class.getName() + " handle " + t);
       event.fail(500, t);

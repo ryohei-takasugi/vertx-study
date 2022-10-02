@@ -1,4 +1,4 @@
-package jp.vertx.starter.models.config;
+package jp.sample.starter.models.config;
 
 public class ConfigEntity {
   private String name = "";
@@ -32,14 +32,13 @@ public class ConfigEntity {
     return this.name;
   }
 
-
   /**
    * http listen port number.
    *
    * @return port number
    */
   public void setPort(int port) {
-    this.port = port; 
+    this.port = port;
   }
 
   /**

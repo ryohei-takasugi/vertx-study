@@ -1,4 +1,4 @@
-package jp.vertx.starter.controllers;
+package jp.sample.starter.controllers;
 
 import io.vertx.ext.web.handler.impl.ErrorHandlerImpl;
 

@@ -1,8 +1,10 @@
-package jp.vertx.starter.models.config;
+package jp.sample.starter.models.config;
 
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ConfigModel extends ConfigEntity {
 
@@ -12,16 +14,13 @@ public class ConfigModel extends ConfigEntity {
   /** config */
   private final JsonObject contextConfig;
 
-  /** ConfigEntity */
-  private final ConfigEntity configEntity;
-
   /**
    * contractor
    *
    * @param config
    */
-  public ConfigModel(JsonObject jsonObject) {
-    this.configEntity = new ConfigEntity();
+  public ConfigModel(Vertx vertx) {
+    JsonObject jsonObject = readConfigFile(vertx);
     if (jsonObject.isEmpty()) {
       this.contextConfig = defaultConfig();
     } else {
@@ -30,6 +29,43 @@ public class ConfigModel extends ConfigEntity {
     setEntity();
     LOGGER.debug(ConfigModel.class.getName() + " " + this.contextConfig);
   }
+
+  private JsonObject readConfigFile(Vertx vertx) {
+    try {
+      Buffer buf = vertx.fileSystem().readFileBlocking("config/config.json");
+      LOGGER.debug(ConfigModel.class.getName() + " readConfigFile " + buf.toString());
+      return new JsonObject(buf.toString());
+    } catch (Throwable t) {
+      LOGGER.error(ConfigModel.class.getName() + " readConfigFile ", t);
+      return new JsonObject();
+    }
+  }
+
+  // private JsonObject readConfigFile(Vertx vertx) {
+  //   try {
+  //     ConfigStoreOptions fileStore =
+  //         new ConfigStoreOptions()
+  //             .setType("file")
+  //             .setOptional(true)
+  //             .setConfig(new JsonObject().put("path", "config/config.json"));
+  //     ConfigRetrieverOptions options = new ConfigRetrieverOptions().addStore(fileStore);
+  //     ConfigRetriever retriever = ConfigRetriever.create(vertx, options);
+  //     JsonObject result = new JsonObject();
+  //     retriever.getConfig(
+  //         ar -> {
+  //           if (ar.failed()) {
+  //             LOGGER.error("message");
+  //           } else {
+  //             result.mergeIn(ar.result());
+  //           }
+  //         });
+  //     LOGGER.debug("@@@ config" + result);
+  //     return result;
+  //   } catch (Throwable t) {
+  //     LOGGER.error("message", t);
+  //     return new JsonObject();
+  //   }
+  // }
 
   /**
    * default config
@@ -47,9 +83,9 @@ public class ConfigModel extends ConfigEntity {
 
   private void setEntity() {
     try {
-      configEntity.setPort(this.contextConfig.getInteger("port"));
-      configEntity.setDefaultId(this.contextConfig.getJsonObject("default").getInteger("id"));
-      configEntity.setDefaultName(this.contextConfig.getJsonObject("default").getString("name"));
+      setPort(this.contextConfig.getInteger("port"));
+      setDefaultId(this.contextConfig.getJsonObject("default").getInteger("id"));
+      setDefaultName(this.contextConfig.getJsonObject("default").getString("name"));
     } catch (Exception e) {
       LOGGER.error(e.fillInStackTrace().getMessage());
     }

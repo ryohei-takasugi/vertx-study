@@ -1,9 +1,9 @@
-package jp.vertx.starter.views;
+package jp.sample.starter.views;
 
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ComonView {
 
@@ -82,10 +82,10 @@ public class ComonView {
    */
   private void sendResponce(int statusCode, JsonObject responce) {
     try {
-      LOGGER.debug(ComonView.class.getName() + " " + responce.toString());
+      LOGGER.debug(ComonView.class.getName() + " " + responce.encode());
       event.response().setStatusCode(statusCode);
       event.response().putHeader("content-type", event.getAcceptableContentType());
-      event.response().end(responce.toString());
+      event.response().end(responce.encode());
     } catch (Throwable t) {
       LOGGER.error(
           ComonView.class.getName() + " sendResponce " + t.fillInStackTrace().getMessage());
