@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 class AppTest {
 
-    @Test
-    @DisplayName("Check that the server has started")
-    void checkServerHasStarted(Vertx vertx) {
-        assertTrue(true);
-    }
+  @Test
+  @DisplayName("Check that the server has started")
+  void checkServerHasStarted(Vertx vertx) {
+    assertTrue(true);
+  }
 }

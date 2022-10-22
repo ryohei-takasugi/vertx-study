@@ -14,34 +14,33 @@ import jp.sample.vertx1.MainServices.MainServiceVerticle;
 /** main. */
 public class Main extends AbstractVerticle {
 
-    /**
-     * vert.x start.
-     *
-     * @param startPromise vert.x start promise.
-     * @return null.
-     */
-    @Override
-    public void start(Promise<Void> startPromise) {
-        JsonObject config = getConfig();
-        vertx.deployVerticle(MainServiceVerticle.class, new DeploymentOptions().setConfig(config));
-        vertx.deployVerticle(
-                ClientServiceVerticle.class, new DeploymentOptions().setConfig(config));
-    }
+  /**
+   * vert.x start.
+   *
+   * @param startPromise vert.x start promise.
+   * @return null.
+   */
+  @Override
+  public void start(Promise<Void> startPromise) {
+    JsonObject config = getConfig();
+    vertx.deployVerticle(MainServiceVerticle.class, new DeploymentOptions().setConfig(config));
+    vertx.deployVerticle(ClientServiceVerticle.class, new DeploymentOptions().setConfig(config));
+  }
 
-    /**
-     * load vert.x config (run option -conf config/config.json)
-     *
-     * @return config
-     */
-    private JsonObject getConfig() {
-        final ConfigRetriever retriever = ConfigRetriever.create(vertx);
-        JsonObject config = new JsonObject();
-        retriever.getConfig(
-                ar -> {
-                    if (ar.succeeded()) {
-                        config.mergeIn(ar.result());
-                    }
-                });
-        return config;
-    }
+  /**
+   * load vert.x config (run option -conf config/config.json)
+   *
+   * @return config
+   */
+  private JsonObject getConfig() {
+    final ConfigRetriever retriever = ConfigRetriever.create(vertx);
+    JsonObject config = new JsonObject();
+    retriever.getConfig(
+        ar -> {
+          if (ar.succeeded()) {
+            config.mergeIn(ar.result());
+          }
+        });
+    return config;
+  }
 }

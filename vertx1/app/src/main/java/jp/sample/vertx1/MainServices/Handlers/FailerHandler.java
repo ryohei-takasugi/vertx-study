@@ -7,30 +7,30 @@ import org.slf4j.LoggerFactory;
 
 public class FailerHandler implements Handler<RoutingContext> {
 
-    /** Logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(FailerHandler.class);
+  /** Logger */
+  private static final Logger LOGGER = LoggerFactory.getLogger(FailerHandler.class);
 
-    /**
-     * Create FailerHandler class method.
-     *
-     * @return FailerHandler instance.
-     */
-    public static Handler<RoutingContext> create() {
-        return new FailerHandler();
-    }
+  /**
+   * Create FailerHandler class method.
+   *
+   * @return FailerHandler instance.
+   */
+  public static Handler<RoutingContext> create() {
+    return new FailerHandler();
+  }
 
-    /**
-     * main.
-     *
-     * @param event vert.x RoutingContext data.
-     * @return null.
-     */
-    @Override
-    public void handle(RoutingContext event) {
-        if (event.statusCode() == 404) {
-            event.response().sendFile("error/404.html");
-        } else {
-            event.response().sendFile("error/500.html");
-        }
+  /**
+   * main.
+   *
+   * @param event vert.x RoutingContext data.
+   * @return null.
+   */
+  @Override
+  public void handle(RoutingContext event) {
+    if (event.statusCode() == 404) {
+      event.response().sendFile("error/404.html");
+    } else {
+      event.response().sendFile("error/500.html");
     }
+  }
 }

@@ -9,19 +9,19 @@ import org.slf4j.LoggerFactory;
 
 public class ClientServiceVerticle extends AbstractVerticle {
 
-    /** logger. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceVerticle.class);
+  /** logger. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceVerticle.class);
 
-    /**
-     * vert.x start.
-     *
-     * @param startPromise vert.x start promise.
-     * @return null.
-     */
-    @Override
-    public void start(Promise<Void> startPromise) {
-        // WebClient client = WebClient.create(vertx);
-        EventBus eb = vertx.eventBus();
-        eb.consumer("web-client:GET", NicoNicoHandler.create(vertx));
-    }
+  /**
+   * vert.x start.
+   *
+   * @param startPromise vert.x start promise.
+   * @return null.
+   */
+  @Override
+  public void start(Promise<Void> startPromise) {
+    // WebClient client = WebClient.create(vertx);
+    EventBus eb = vertx.eventBus();
+    eb.consumer("web-client:GET", NicoNicoHandler.create(vertx));
+  }
 }
