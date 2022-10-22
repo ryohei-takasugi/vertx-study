@@ -61,12 +61,13 @@ public class CallHandler implements Handler<RoutingContext> {
         HttpServerResponse responce = event.response();
         responce.setStatusCode(200);
 
-        fut.onComplete(
-                niconico -> {
-                    if (niconico.succeeded()) {
-                        Message<Object> m = niconico.result();
-                        responce.end(m.body().toString());
-                    }
-                });
+        fut.onSuccess(
+                        niconico -> {
+                            responce.end(niconico.body().toString());
+                        })
+                .onFailure(
+                        th -> {
+                            LOGGER.error("web client error", th);
+                        });
     }
 }

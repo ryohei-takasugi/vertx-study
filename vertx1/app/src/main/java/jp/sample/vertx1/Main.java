@@ -23,8 +23,7 @@ public class Main extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) {
         JsonObject config = getConfig();
-        vertx.deployVerticle(
-                MainServiceVerticle.class, new DeploymentOptions().setConfig(config));
+        vertx.deployVerticle(MainServiceVerticle.class, new DeploymentOptions().setConfig(config));
         vertx.deployVerticle(
                 ClientServiceVerticle.class, new DeploymentOptions().setConfig(config));
     }

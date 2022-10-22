@@ -20,6 +20,7 @@ public class ClientServiceVerticle extends AbstractVerticle {
      */
     @Override
     public void start(Promise<Void> startPromise) {
+        // WebClient client = WebClient.create(vertx);
         EventBus eb = vertx.eventBus();
         eb.consumer("web-client:GET", NicoNicoHandler.create(vertx));
     }
