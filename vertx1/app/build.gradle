@@ -32,8 +32,9 @@ repositories {
 // ---------------------------------------------
 dependencies {
 	// vert.x
-	implementation "io.vertx:vertx-web:$vertxVersion"
 	implementation "io.vertx:vertx-core:$vertxVersion"
+	implementation "io.vertx:vertx-web:$vertxVersion"
+	implementation "io.vertx:vertx-web-client:$vertxVersion"
 	implementation "io.vertx:vertx-config:$vertxVersion"
 
 	// logger
@@ -74,7 +75,7 @@ eclipse {
 		name = rootProject.name
 	}
 }
-// create settings/org.eclipse.buildship.core.prefs
+// for vscode
 tasks.eclipse.doFirst {
 		File prefs = file(".settings/org.eclipse.buildship.core.prefs")
 		if(!prefs.exists()){

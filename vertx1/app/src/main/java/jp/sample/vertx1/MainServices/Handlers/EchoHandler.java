@@ -1,4 +1,4 @@
-package jp.sample.vertx1.Handlers;
+package jp.sample.vertx1.MainServices.Handlers;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;
@@ -14,13 +14,14 @@ public class EchoHandler implements Handler<RoutingContext> {
 
     /** config */
     private final JsonObject config;
+
     /**
      * EchoHandler Contractor
-     * 
+     *
      * @param config
      */
     public EchoHandler(JsonObject config) {
-      this.config = config;
+        this.config = config;
     }
 
     /**
@@ -40,8 +41,8 @@ public class EchoHandler implements Handler<RoutingContext> {
      */
     @Override
     public void handle(RoutingContext event) {
-      HttpServerResponse responce = event.response();
-      responce.setStatusCode(200);
-      responce.end(config.encode());
+        HttpServerResponse responce = event.response();
+        responce.setStatusCode(200);
+        responce.end(config.encode());
     }
 }

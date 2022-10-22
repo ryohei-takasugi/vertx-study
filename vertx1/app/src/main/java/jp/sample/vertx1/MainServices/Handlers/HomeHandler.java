@@ -1,6 +1,7 @@
-package jp.sample.vertx1.Handlers;
+package jp.sample.vertx1.MainServices.Handlers;
 
 import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,8 @@ public class HomeHandler implements Handler<RoutingContext> {
      */
     @Override
     public void handle(RoutingContext event) {
-        // TODO Auto-generated method stub
-
+        HttpServerResponse responce = event.response();
+        responce.setStatusCode(200);
+        responce.end("Hello Vert.x!!");
     }
 }
