@@ -26,7 +26,7 @@ val gsonVersion: String by project
 val slf4jVersion: String by project
 val logbackVersion: String by project
 
-val mainVerticleName = "jp.vertx.starter.MainVerticle"
+val mainVerticleName = "jp.sample.starter.MainVerticle"
 val watchForChange = "src/**/*.java"
 val doOnChange = "${projectDir}/gradlew classes"
 
