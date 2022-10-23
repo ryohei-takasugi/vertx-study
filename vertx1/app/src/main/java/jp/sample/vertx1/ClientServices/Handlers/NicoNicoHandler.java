@@ -6,10 +6,11 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
-import io.vertx.ext.web.client.WebClientOptions;
-
+import java.util.Map;
+import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,25 +42,9 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>> {
 
   @Override
   public void handle(Message<JsonObject> event) {
-    // TODO Auto-generated method stub
-    JsonObject message = event.body();
+    HttpRequest<Buffer> request = createRequest(event.body());
     JsonObject reply = new JsonObject();
-
-    WebClient client = WebClient.create(vertx);
-    Future<HttpResponse<Buffer>> fut =
-        client
-            .get(443, "api.search.nicovideo.jp", "/api/v2/snapshot/video/contents/search")
-            .ssl(true)
-            .addQueryParam("q", "初音ミク")
-            .addQueryParam("targets", "title")
-            .addQueryParam("fields", "contentId,title,viewCounter")
-            .addQueryParam("filters[viewCounter][gte]", "10000")
-            .addQueryParam("_sort", "-viewCounter")
-            .addQueryParam("_offset", "0")
-            .addQueryParam("_limit", "3")
-            .addQueryParam("_context", "apiguide")
-            .send();
-
+    Future<HttpResponse<Buffer>> fut = request.send();
     fut.onSuccess(
             responce -> {
               reply.put("status", responce.statusCode());
@@ -73,5 +58,23 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>> {
               reply.put("body", th.getMessage());
               event.reply(reply);
             });
+  }
+
+  private HttpRequest<Buffer> createRequest(JsonObject message) {
+
+    WebClient client = WebClient.create(vertx);
+    int port = message.getInteger("port").intValue();
+    String host = message.getString("host");
+    String url = message.getString("url");
+    HttpRequest<Buffer> request = client.get(port, host, url);
+    if (message.getBoolean("isSSL")) {
+      request.ssl(true);
+    }
+    Map<String, Object> queries = message.getJsonObject("queries").getMap();
+    for (Entry<String, Object> q : queries.entrySet()) {
+      request.addQueryParam(q.getKey(), q.getValue().toString());
+    }
+
+    return request;
   }
 }

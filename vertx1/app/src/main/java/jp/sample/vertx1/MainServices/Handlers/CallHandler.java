@@ -8,6 +8,7 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,13 +52,23 @@ public class CallHandler implements Handler<RoutingContext> {
   public void handle(RoutingContext event) {
     EventBus eb = vertx.eventBus();
     JsonObject request = new JsonObject();
-    JsonObject reply = new JsonObject();
+    JsonObject query = new JsonObject();
 
-    request.put("host", "https://api.search.nicovideo.jp");
-    request.put(
-        "query",
-        "q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
-    request.put("param", "/api/v2/snapshot/video/contents/search?");
+    request.put("host", "api.search.nicovideo.jp");
+    request.put("port", 443);
+    request.put("isSSL", true);
+    request.put("url", "/api/v2/snapshot/video/contents/search");
+    query.put("q", "初音ミク");
+    query.put("targets", "title");
+    query.put("fields", "contentId,title,viewCounter");
+    query.put("filters[viewCounter][gte]", "10000");
+    query.put("_sort", "-viewCounter");
+    query.put("_offset", "0");
+    query.put("_limit", "3");
+    query.put("_context", "apiguide");
+    request.put("queries", query);
+    LOGGER.debug(request.encodePrettily());
+
     Future<Message<Object>> fut = eb.request("web-client:GET", request);
 
     HttpServerResponse responce = event.response();
@@ -66,6 +77,7 @@ public class CallHandler implements Handler<RoutingContext> {
     fut.onSuccess(
             niconico -> {
               JsonObject body = (JsonObject) niconico.body();
+              NicoNicoModel model = new NicoNicoModel(body.getJsonObject("body"));
               LOGGER.debug(body.encodePrettily());
               if (body.getInteger("status") != 500) {
                 responce.end(body.encodePrettily(), "SJIS");

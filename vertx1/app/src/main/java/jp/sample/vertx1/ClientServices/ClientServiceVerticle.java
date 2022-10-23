@@ -1,12 +1,8 @@
 package jp.sample.vertx1.ClientServices;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.json.JsonObject;
 import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
