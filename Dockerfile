@@ -1,7 +1,7 @@
 FROM openjdk:11-oraclelinux8
 
 # set version number
-ARG gradleVersion="6.8.2"
+ARG gradleVersion="7.3.3"
 ARG maven3Version="3.8.6"
 ARG projectFolder="/root/projects"
 
