@@ -53,9 +53,11 @@ public class CallHandler implements Handler<RoutingContext> {
     JsonObject request = new JsonObject();
     JsonObject reply = new JsonObject();
 
+    request.put("host", "https://api.search.nicovideo.jp");
     request.put(
-        "uri",
-        "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
+        "query",
+        "q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
+    request.put("param", "/api/v2/snapshot/video/contents/search?");
     Future<Message<Object>> fut = eb.request("web-client:GET", request);
 
     HttpServerResponse responce = event.response();
@@ -63,11 +65,18 @@ public class CallHandler implements Handler<RoutingContext> {
 
     fut.onSuccess(
             niconico -> {
-              responce.end(niconico.body().toString());
+              JsonObject body = (JsonObject) niconico.body();
+              LOGGER.debug(body.encodePrettily());
+              if (body.getInteger("status") != 500) {
+                responce.end(body.encodePrettily(), "SJIS");
+              } else {
+                responce.end("web client error");
+              }
             })
         .onFailure(
             th -> {
               LOGGER.error("web client error", th);
+              responce.end("web client error");
             });
   }
 }
