@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Good Thymes Virtual Grocery</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
+</head>
+
+<body>
+
+  <table>
+    <tbody>
+      <tr>
+        <th>id</th>
+        <th>title</th>
+        <th>count</th>
+      </tr>
+      <tr th:each="d : ${data}">
+        <td th:text="${d.contentId}"></td>
+        <td th:text="${d.title}"></td>
+        <td th:text="${d.viewCounter}"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

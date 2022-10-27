@@ -8,6 +8,11 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +37,9 @@ public class CallHandler implements Handler<RoutingContext> {
   /** config */
   private final JsonObject config;
 
+  /** TemplateEngine */
+  private final ThymeleafTemplateEngine engine;
+
   /**
    * CallHandler Contractor
    *
@@ -40,6 +48,7 @@ public class CallHandler implements Handler<RoutingContext> {
   public CallHandler(Vertx vertx, JsonObject config) {
     this.vertx = vertx;
     this.config = config;
+    this.engine = ThymeleafTemplateEngine.create(vertx);
   }
 
   /**
@@ -80,15 +89,37 @@ public class CallHandler implements Handler<RoutingContext> {
               NicoNicoModel model = new NicoNicoModel(body.getJsonObject("body"));
               LOGGER.debug(body.encodePrettily());
               if (body.getInteger("status") != 500) {
-                responce.end(body.encodePrettily(), "SJIS");
+
+                List<JsonObject> list =
+                    (List<JsonObject>) body.getJsonObject("body").getJsonArray("data").getList();
+                Map<String, Object> listMap = new HashMap<>();
+                List<Map<String, Object>> l = new ArrayList<Map<String, Object>>();
+                for (int i = 0; i < list.size(); i++) {
+                  Map<String, Object> data = list.get(i).getMap();
+                  l.add(data);
+                }
+                listMap.put("data", l);
+                LOGGER.debug("listMap: {}", listMap.toString());
+
+                engine.render(
+                    listMap,
+                    "templates/index.html",
+                    res -> {
+                      if (res.succeeded()) {
+                        responce.setStatusCode(200);
+                        responce.end(res.result());
+                      } else {
+                        event.fail(res.cause());
+                      }
+                    });
               } else {
-                responce.end("web client error");
+                event.failed();
               }
             })
         .onFailure(
             th -> {
               LOGGER.error("web client error", th);
-              responce.end("web client error");
+              event.fail(th);
             });
   }
 }
