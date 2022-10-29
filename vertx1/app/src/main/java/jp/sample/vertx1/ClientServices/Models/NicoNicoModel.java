@@ -15,6 +15,7 @@ public class NicoNicoModel {
   // private static final Logger LOGGER = LoggerFactory.getLogger(NicoNicoModel.class);
 
   private final String id;
+
   private final Integer totalCount;
   private final Integer status;
   private Map<String, Object> entities = new HashMap<String, Object>();

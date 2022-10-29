@@ -50,7 +50,7 @@ public class MainServiceVerticle extends AbstractVerticle {
     Router router = Router.router(vertx);
 
     /** static page */
-    router.route().handler(StaticHandler.create());
+    router.route().handler(StaticHandler.create("webroot"));
 
     /** acsess logger */
     router.route().handler(LoggerHandler.create());
