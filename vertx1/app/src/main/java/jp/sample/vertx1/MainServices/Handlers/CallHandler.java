@@ -4,6 +4,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpServerResponse;
@@ -37,6 +38,12 @@ public class CallHandler implements Handler<RoutingContext> {
   /** TemplateEngine */
   private final ThymeleafTemplateEngine engine;
 
+  /** index.html file */
+  private final static String INDEX = "templates/index.html";
+
+  /** event bus address */
+  private final static String GET_ADDRESS = "web-client:GET";
+
   /**
    * CallHandler Contractor
    *
@@ -69,17 +76,17 @@ public class CallHandler implements Handler<RoutingContext> {
     LOGGER.debug(request.encodePrettily());
     LOGGER.debug(config.getString("sample"));
 
-    Future<Message<Object>> fut = eb.request("web-client:GET", request);
-
     HttpServerResponse responce = event.response();
 
+    DeliveryOptions option = new DeliveryOptions().setSendTimeout(3000);
+    Future<Message<Object>> fut = eb.request(GET_ADDRESS, request, option);
     fut.onSuccess(
             niconico -> {
               JsonObject resbody = (JsonObject) niconico.body();
               LOGGER.debug("resbody: {}", resbody.encodePrettily());
               NicoNicoModel model = new NicoNicoModel(resbody);
               if (model.status() == 200) {
-                Future<Buffer> futEng = engine.render(model.entities(), "templates/index.html");
+                Future<Buffer> futEng = engine.render(model.entities(), INDEX);
                 futEng
                     .onSuccess(
                         html -> {
