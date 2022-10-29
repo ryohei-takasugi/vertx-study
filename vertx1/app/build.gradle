@@ -56,7 +56,9 @@ dependencies {
 // java compile options
 // ---------------------------------------------
 java {
+	// Java version compatibility used when compiling Java sources
 	sourceCompatibility = JavaVersion.VERSION_11
+	// Java version to generate classes
 	targetCompatibility = JavaVersion.VERSION_11
 }
 
@@ -115,8 +117,13 @@ def watchForChange = 'src/**/*.java'
 // Vert.x will call this task on changes
 def doOnChange = ".${File.separator}gradlew classes"
 
+def args2 = runModArgs.split("\\s+")
+
 run {
-	args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange", runModArgs]
+	args = ['run', mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$mainClassName", "--on-redeploy=$doOnChange"]
+	args2.each {
+		args += it
+	}
 }
 
 // ---------------------------------------------
