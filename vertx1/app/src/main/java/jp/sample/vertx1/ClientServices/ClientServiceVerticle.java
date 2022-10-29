@@ -4,13 +4,13 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 
 public class ClientServiceVerticle extends AbstractVerticle {
 
   /** logger. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceVerticle.class);
+  // private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceVerticle.class);
 
   /**
    * vert.x start.

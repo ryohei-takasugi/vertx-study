@@ -89,7 +89,7 @@ public class MainServiceVerticle extends AbstractVerticle {
     router
         .get("/call")
         .produces(CONTENT_TYPE)
-        .handler(CallHandler.create(vertx, config))
+        .handler(CallHandler.create(vertx, config.getJsonObject("app")))
         .failureHandler(FailerHandler.create());
 
     return router;
