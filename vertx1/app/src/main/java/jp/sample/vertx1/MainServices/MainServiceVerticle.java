@@ -6,6 +6,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import jp.sample.vertx1.MainServices.Handlers.CallHandler;
@@ -91,6 +92,12 @@ public class MainServiceVerticle extends AbstractVerticle {
         .produces(CONTENT_TYPE)
         .handler(CallHandler.create(vertx, config.getJsonObject("app")))
         .failureHandler(FailerHandler.create());
+
+    /** Create body required for put or post */
+    router.route().handler(BodyHandler.create());
+
+    /** Not created */
+    router.put("/call").produces(CONTENT_TYPE).handler(null);
 
     return router;
   }

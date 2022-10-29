@@ -91,6 +91,7 @@ public class CallHandler implements Handler<RoutingContext> {
                     .onSuccess(
                         html -> {
                           responce.setStatusCode(200);
+                          responce.putHeader("content-type", "text/html");
                           responce.end(html);
                         })
                     .onFailure(
