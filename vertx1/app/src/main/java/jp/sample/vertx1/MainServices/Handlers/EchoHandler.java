@@ -43,6 +43,6 @@ public class EchoHandler implements Handler<RoutingContext> {
   public void handle(RoutingContext event) {
     HttpServerResponse responce = event.response();
     responce.setStatusCode(200);
-    responce.end(config.encode());
+    responce.end(config.encodePrettily());
   }
 }
