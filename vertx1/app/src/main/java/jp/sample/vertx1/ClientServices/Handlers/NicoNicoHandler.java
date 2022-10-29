@@ -42,13 +42,16 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>> {
 
   @Override
   public void handle(Message<JsonObject> event) {
-    WebClient client = WebClient.create(vertx);
+
     JsonObject clientCofig = event.body();
-    RequestOptions option = new RequestOptions(clientCofig);
     HttpMethod method = HttpMethod.valueOf(clientCofig.getString("method"));
+    RequestOptions option = new RequestOptions(clientCofig);
+
+    WebClient client = WebClient.create(vertx);
     HttpRequest<Buffer> request = client.request(method, option);
-    JsonObject reply = new JsonObject();
+
     Future<HttpResponse<Buffer>> fut = request.send();
+    JsonObject reply = new JsonObject();
     fut.onSuccess(
             responce -> {
               reply.put("status", responce.statusCode());

@@ -20,7 +20,7 @@ public class FailerHandler implements Handler<RoutingContext> {
   }
 
   /**
-   * main.
+   * main method.
    *
    * @param event vert.x RoutingContext data.
    * @return null.

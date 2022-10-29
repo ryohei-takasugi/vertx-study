@@ -9,6 +9,7 @@ import java.util.Map;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
 
+/** This is the data model for video search results on Nico Nico Douga. */
 public class NicoNicoModel {
 
   /** Logger */
@@ -59,18 +60,40 @@ public class NicoNicoModel {
     }
   }
 
+  /**
+   * Response id.
+   *
+   * @return id
+   */
   public String id() {
     return id;
   }
 
+  /**
+   * The total number of views for all videos included in the response
+   *
+   * @return
+   */
   public Integer totalCount() {
     return totalCount;
   }
 
+  /**
+   * Response status.
+   *
+   * @return
+   */
   public Integer status() {
     return status;
   }
 
+  /**
+   * All videos included in the response. The Key name is {@code "data"}. The Values is video list.
+   * The video list is of type {@code List<Map<String, Object>>}. Map<String, Object> type contains
+   * {@code contentId, title and viewCounter} for each video.
+   *
+   * @return
+   */
   public Map<String, Object> entities() {
     return entities;
   }
