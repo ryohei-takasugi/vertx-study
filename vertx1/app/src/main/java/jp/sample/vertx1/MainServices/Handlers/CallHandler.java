@@ -39,10 +39,10 @@ public class CallHandler implements Handler<RoutingContext> {
   private final ThymeleafTemplateEngine engine;
 
   /** index.html file */
-  private final static String INDEX = "templates/index.html";
+  private static final String INDEX = "templates/index.html";
 
   /** event bus address */
-  private final static String GET_ADDRESS = "web-client:GET";
+  private static final String GET_ADDRESS = "web-client:GET";
 
   /**
    * CallHandler Contractor

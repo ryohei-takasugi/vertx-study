@@ -3,17 +3,198 @@
  */
 package jp.sample.vertx1;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.vertx.core.VertxOptions;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.file.FileSystem;
+import io.vertx.core.file.FileSystemOptions;
+import io.vertx.ext.web.client.HttpRequest;
+import io.vertx.ext.web.client.HttpResponse;
+import io.vertx.ext.web.client.WebClient;
+import io.vertx.ext.web.codec.BodyCodec;
+import io.vertx.junit5.Checkpoint;
+import io.vertx.junit5.VertxExtension;
+import io.vertx.junit5.VertxTestContext;
+import java.util.concurrent.atomic.AtomicInteger;
+import jp.sample.vertx1.MainServices.MainServiceVerticle;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-class AppTest {
+/**
+ * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
+ */
+@DisplayName("👋 A fairly basic test example")
+@ExtendWith(VertxExtension.class)
+class SampleVerticleTest {
+  /** logger. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(SampleVerticleTest.class);
 
   @Test
-  @DisplayName("Check that the server has started")
-  void checkServerHasStarted(Vertx vertx) {
-    assertTrue(true);
+  @DisplayName("⏱ Count 3 timer ticks")
+  void countThreeTicks(Vertx vertx, VertxTestContext testContext) {
+    AtomicInteger counter = new AtomicInteger();
+    vertx.setPeriodic(
+        100,
+        id -> {
+          if (counter.incrementAndGet() == 3) {
+            testContext.completeNow();
+          }
+        });
+  }
+
+  @Test
+  @DisplayName("⏱ Count 3 timer ticks, with a checkpoint")
+  void countThreeTicksWithCheckpoints(Vertx vertx, VertxTestContext testContext) {
+    Checkpoint checkpoint = testContext.checkpoint(3);
+    vertx.setPeriodic(100, id -> checkpoint.flag());
+  }
+
+  @Test
+  @DisplayName("🚀 Deploy a HTTP service verticle and make 10 requests")
+  void useSampleVerticle(Vertx vertx, VertxTestContext testContext) {
+    WebClient webClient = WebClient.create(vertx);
+    HttpRequest<String> request =
+        webClient
+            .get(8080, "localhost", "/")
+            .as(BodyCodec.string())
+            .putHeader("content-type", "application/json");
+
+    Checkpoint deploymentCheckpoint = testContext.checkpoint();
+    Checkpoint requestCheckpoint = testContext.checkpoint(10);
+
+    FileSystem fs = vertx.fileSystem();
+    Buffer config = fs.readFileBlocking("config/config.json");
+    LOGGER.info("@@@ config: {}", config.toJsonObject());
+    DeploymentOptions option = new DeploymentOptions().setConfig(config.toJsonObject());
+
+    Future<String> fut = vertx.deployVerticle(new MainServiceVerticle(), option);
+    fut.onSuccess(
+            id -> {
+              LOGGER.info("@@@ id: {}", id);
+              deploymentCheckpoint.flag();
+              for (int i = 0; i < 10; i++) {
+                LOGGER.info("@@@ loop number: {}", i);
+                Future<HttpResponse<String>> send = request.send();
+                send.onSuccess(
+                    resp -> {
+                      testContext.verify(
+                          () -> {
+                            assertThat(resp.statusCode()).isEqualTo(200);
+                            assertThat(resp.body()).contains("Hello Vert.x!!");
+                            requestCheckpoint.flag();
+                          });
+                    });
+              }
+              testContext.completeNow();
+            })
+        .onFailure(
+            th -> {
+              LOGGER.error("deploy verticle error", th);
+            });
+    // vertx.deployVerticle(
+    //     new Main(),
+    //     new DeploymentOptions().setConfig(config.toJsonObject()).setInstances(1),
+    //     testContext.succeeding(
+    //         id -> {
+    //           LOGGER.info("@@@ id: {}", id);
+    //           deploymentCheckpoint.flag();
+    //           LOGGER.info("@@@ deploymentCheckpoint flag");
+
+    //           for (int i = 0; i < 10; i++) {
+    //             LOGGER.info("6 + {}", i);
+    //             webClient
+    //                 .get(8080, "localhost", "/")
+    //                 .as(BodyCodec.string())
+    //                 .putHeader("content-type", "application/json")
+    //                 .send(
+    //                     testContext.succeeding(
+    //                         resp -> {
+    //                           testContext.verify(
+    //                               () -> {
+    //                                 assertThat(resp.statusCode()).isEqualTo(200);
+    //                                 assertThat(resp.body()).contains("Hello Vert.x!!");
+    //                                 requestCheckpoint.flag();
+    //                               });
+    //                         }));
+    //           }
+    //           testContext.completeNow();
+    //         }));
+  }
+
+  @AfterEach
+  public void finish(Vertx vertx, VertxTestContext testContext) {
+    vertx.close(
+        testContext.succeeding(
+            response -> {
+              testContext.completeNow();
+            }));
+  }
+
+  @DisplayName("➡️ A nested test with customized lifecycle")
+  @Nested
+  class CustomLifecycleTest {
+
+    Vertx vertx;
+
+    @BeforeEach
+    void prepare() {
+      vertx =
+          Vertx.vertx(
+              new VertxOptions()
+                  .setMaxEventLoopExecuteTime(1000)
+                  .setPreferNativeTransport(true)
+                  .setFileSystemOptions(new FileSystemOptions().setFileCachingEnabled(true)));
+    }
+
+    @Test
+    @DisplayName("⬆️ Deploy SampleVerticle")
+    void deploySampleVerticle(VertxTestContext testContext) {
+      FileSystem fs = vertx.fileSystem();
+      Buffer config = fs.readFileBlocking("config/config.json");
+      vertx.deployVerticle(
+          new MainServiceVerticle(),
+          new DeploymentOptions().setConfig(config.toJsonObject()),
+          testContext.succeeding(id -> testContext.completeNow()));
+    }
+
+    @Test
+    @DisplayName("🛂 Make a HTTP client request to SampleVerticle")
+    void httpRequest(VertxTestContext testContext) {
+      WebClient webClient = WebClient.create(vertx);
+
+      FileSystem fs = vertx.fileSystem();
+      Buffer config = fs.readFileBlocking("config/config.json");
+
+      vertx.deployVerticle(
+          new MainServiceVerticle(),
+          new DeploymentOptions().setConfig(config.toJsonObject()),
+          testContext.succeeding(
+              id -> {
+                webClient
+                    .get(8080, "localhost", "/")
+                    .as(BodyCodec.string())
+                    .send(
+                        testContext.succeeding(
+                            resp -> {
+                              testContext.verify(
+                                  () -> {
+                                    assertThat(resp.statusCode()).isEqualTo(200);
+                                    assertThat(resp.body()).contains("Hello Vert.x!!");
+                                    testContext.completeNow();
+                                  });
+                            }));
+              }));
+    }
+
+    @AfterEach
+    void cleanup() {
+      vertx.close();
+    }
   }
 }

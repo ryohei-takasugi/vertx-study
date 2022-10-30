@@ -5,7 +5,9 @@ package jp.sample.vertx1;
 
 import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
@@ -23,8 +25,18 @@ public class Main extends AbstractVerticle {
   @Override
   public void start(Promise<Void> startPromise) {
     JsonObject config = getConfig();
-    vertx.deployVerticle(MainServiceVerticle.class, new DeploymentOptions().setConfig(config));
-    vertx.deployVerticle(ClientServiceVerticle.class, new DeploymentOptions().setConfig(config));
+    DeploymentOptions option = new DeploymentOptions().setConfig(config);
+    Future<String> main = vertx.deployVerticle(MainServiceVerticle.class, option);
+    Future<String> client = vertx.deployVerticle(ClientServiceVerticle.class, option);
+    CompositeFuture.all(main, client)
+        .onComplete(
+            ar -> {
+              if (ar.succeeded()) {
+                startPromise.complete();
+              } else {
+                startPromise.fail(ar.cause());
+              }
+            });
   }
 
   /**

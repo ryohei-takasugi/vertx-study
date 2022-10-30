@@ -1,6 +1,7 @@
 package jp.sample.vertx1.MainServices;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
@@ -36,9 +37,17 @@ public class MainServiceVerticle extends AbstractVerticle {
     final HttpServerOptions httpOptions = new HttpServerOptions(config.getJsonObject("http"));
 
     HttpServer server = vertx.createHttpServer(httpOptions);
-    server.requestHandler(router).listen();
-
-    LOGGER.info("listen start. port: " + httpOptions.getPort());
+    Future<HttpServer> listen = server.requestHandler(router).listen();
+    listen
+        .onSuccess(
+            srv -> {
+              LOGGER.info("listen start. port: " + httpOptions.getPort());
+              startPromise.complete();
+            })
+        .onFailure(
+            th -> {
+              startPromise.fail(th);
+            });
   }
 
   /**
