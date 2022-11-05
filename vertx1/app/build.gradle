@@ -15,7 +15,7 @@ plugins {
 	id 'eclipse'
 	id 'com.diffplug.spotless' version '6.8.0'
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
-	id "com.github.spotbugs" version "5.0.13"
+  id 'de.aaschmid.cpd' version '3.3'
 }
 
 // ---------------------------------------------
@@ -146,6 +146,21 @@ shadowJar {
 	mergeServiceFiles {
 		include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
 	}
+}
+
+// ---------------------------------------------
+// cpd options
+// ---------------------------------------------
+cpd {
+    language = 'java'
+    toolVersion = '6.13.0'
+}
+cpdCheck {
+    reports {
+        text.enabled = true
+        xml.enabled = false
+    }
+    source = sourceSets.main.allJava
 }
 
 // ---------------------------------------------
