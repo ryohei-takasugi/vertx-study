@@ -26,7 +26,7 @@ public class EchoHandler implements Handler<RoutingContext> {
 
   /**
    * Create EchoHandler class method.
-   * 
+   *
    * @param config config of boot parameter
    * @return EchoHandler instance.
    */

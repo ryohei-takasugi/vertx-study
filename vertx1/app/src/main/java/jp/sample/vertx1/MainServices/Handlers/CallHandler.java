@@ -28,7 +28,7 @@ public class CallHandler implements Handler<RoutingContext> {
 
   /**
    * Create CallHandler class method.
-   * 
+   *
    * @param vertx Vert.x of ClientServiceVerticle
    * @param config config of boot parameter
    * @return CallHandler instance.
@@ -54,7 +54,7 @@ public class CallHandler implements Handler<RoutingContext> {
 
   /**
    * CallHandler Contractor
-   * 
+   *
    * @param vertx Vert.x of ClientServiceVerticle
    * @param config config of boot parameter
    */
