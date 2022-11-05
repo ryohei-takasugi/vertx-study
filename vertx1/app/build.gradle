@@ -16,7 +16,7 @@ plugins {
 	id 'com.diffplug.spotless' version '6.8.0'
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
 	id 'com.github.spotbugs' version '5.0.13'
-  id 'de.aaschmid.cpd' version '3.3'
+	id 'pmd'
 }
 
 // ---------------------------------------------
@@ -150,18 +150,12 @@ shadowJar {
 }
 
 // ---------------------------------------------
-// cpd options
+// pwd options
 // ---------------------------------------------
-cpd {
-    language = 'java'
-    toolVersion = '6.13.0'
-}
-cpdCheck {
-    reports {
-        text.enabled = true
-        xml.enabled = false
-    }
-    source = sourceSets.main.allJava
+pmd {
+		consoleOutput = true
+		toolVersion = "6.39.0"
+		rulesMinimumPriority = 1
 }
 
 // ---------------------------------------------
@@ -184,9 +178,9 @@ spotbugs {
 // Javadoc options
 // ---------------------------------------------
 javadoc {
-    group = 'jp.sample.vertx1'
-    description = 'Generates API documents.'
-    source = sourceSets.main.allJava
+		group = 'jp.sample.vertx1'
+		description = 'Generates API documents.'
+		source = sourceSets.main.allJava
 }
 
 // ---------------------------------------------
