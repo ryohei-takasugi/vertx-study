@@ -78,6 +78,7 @@ application {
 // ---------------------------------------------
 eclipse {
 	project {
+		buildCommand 'org.eclipse.buildship.core.gradleprojectbuilder'
 		name = rootProject.name
 	}
 }
@@ -86,8 +87,11 @@ tasks.eclipse.doFirst {
 		File prefs = file(".settings/org.eclipse.buildship.core.prefs")
 		if(!prefs.exists()){
 				prefs.append('''
-						connection.project.dir=
+						connection.project.dir=master
 						eclipse.preferences.version=1
+						connection.gradle.distribution=GRADLE_DISTRIBUTION(WRAPPER)
+						show.console.view=true
+						show.executions.view=true
 						'''.stripIndent())
 		}
 }
