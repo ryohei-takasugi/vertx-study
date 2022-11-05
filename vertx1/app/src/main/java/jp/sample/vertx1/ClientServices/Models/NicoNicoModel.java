@@ -89,7 +89,7 @@ public class NicoNicoModel {
 
   /**
    * All videos included in the response. The Key name is {@code "data"}. The Values is video list.
-   * The video list is of type {@code List&lt;Map&lt;String, Object&gt;}. Map&lt;String, Object&gt; type contains
+   * The video list is of type List&lt;Map&lt;String, Object&gt;&gt;. Map&lt;String, Object&gt; type contains
    * {@code contentId, title and viewCounter} for each video.
    *
    * @return data map
