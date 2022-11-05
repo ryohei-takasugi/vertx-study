@@ -146,13 +146,14 @@ shadowJar {
 
 // ---------------------------------------------
 // spotbugs
+// https://spotbugs.readthedocs.io/ja/latest/ant.html
 // ---------------------------------------------
 spotbugs {
 		ignoreFailures = true
 		showStackTraces = true
 		showProgress = true
-		effort = 'default'
-		reportLevel = 'default'
+		effort = 'max'
+		reportLevel = 'high'
 		reportsDir = file("$buildDir/spotbugs")
 		onlyAnalyze = [ 'jp.sample.vertx1.*' ]
 		maxHeapSize = '1g'
