@@ -15,6 +15,7 @@ plugins {
 	id 'eclipse'
 	id 'com.diffplug.spotless' version '6.8.0'
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
+	id "com.github.spotbugs" version "5.0.13"
 }
 
 // ---------------------------------------------
@@ -141,6 +142,21 @@ shadowJar {
 	mergeServiceFiles {
 		include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
 	}
+}
+
+// ---------------------------------------------
+// spotbugs
+// ---------------------------------------------
+spotbugs {
+		ignoreFailures = true
+		showStackTraces = true
+		showProgress = true
+		effort = 'default'
+		reportLevel = 'default'
+		reportsDir = file("$buildDir/spotbugs")
+		onlyAnalyze = [ 'jp.sample.vertx1.*' ]
+		maxHeapSize = '1g'
+		jvmArgs = [ '-Duser.language=ja' ]
 }
 
 // ---------------------------------------------
