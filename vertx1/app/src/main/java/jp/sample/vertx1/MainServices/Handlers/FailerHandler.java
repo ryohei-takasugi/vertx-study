@@ -23,7 +23,6 @@ public class FailerHandler implements Handler<RoutingContext> {
    * main method.
    *
    * @param event vert.x RoutingContext data.
-   * @return null.
    */
   @Override
   public void handle(RoutingContext event) {

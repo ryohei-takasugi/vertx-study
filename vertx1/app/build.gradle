@@ -160,6 +160,12 @@ spotbugs {
 		jvmArgs = [ '-Duser.language=ja' ]
 }
 
+task myJavadoc(type: Javadoc) {
+    group = 'jp.sample.vertx1'
+    description = 'Generates API documents.'
+    source = sourceSets.main.allJava
+}
+
 // ---------------------------------------------
 // code formater
 // ---------------------------------------------

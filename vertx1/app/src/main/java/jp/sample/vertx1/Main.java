@@ -20,7 +20,6 @@ public class Main extends AbstractVerticle {
    * vert.x start.
    *
    * @param startPromise vert.x start promise.
-   * @return null.
    */
   @Override
   public void start(Promise<Void> startPromise) {

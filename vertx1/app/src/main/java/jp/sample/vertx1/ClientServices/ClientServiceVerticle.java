@@ -16,11 +16,10 @@ public class ClientServiceVerticle extends AbstractVerticle {
    * vert.x start.
    *
    * @param startPromise vert.x start promise.
-   * @return null.
    */
   @Override
   public void start(Promise<Void> startPromise) {
     EventBus eb = vertx.eventBus();
-    eb.consumer("web-client:GET", NicoNicoHandler.create(vertx));
+    eb.consumer("web-client:GET", NicoNicoHandler.create(vertx)).completionHandler(startPromise);
   }
 }

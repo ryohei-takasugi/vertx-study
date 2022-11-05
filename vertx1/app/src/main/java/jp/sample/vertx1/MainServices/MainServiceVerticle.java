@@ -27,7 +27,6 @@ public class MainServiceVerticle extends AbstractVerticle {
    * vert.x start.
    *
    * @param startPromise vert.x start promise.
-   * @return null.
    */
   @Override
   public void start(Promise<Void> startPromise) {

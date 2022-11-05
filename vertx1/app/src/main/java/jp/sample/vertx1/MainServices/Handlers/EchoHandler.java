@@ -18,7 +18,7 @@ public class EchoHandler implements Handler<RoutingContext> {
   /**
    * EchoHandler Contractor
    *
-   * @param config
+   * @param config config of boot parameter
    */
   public EchoHandler(JsonObject config) {
     this.config = config;
@@ -26,7 +26,8 @@ public class EchoHandler implements Handler<RoutingContext> {
 
   /**
    * Create EchoHandler class method.
-   *
+   * 
+   * @param config config of boot parameter
    * @return EchoHandler instance.
    */
   public static Handler<RoutingContext> create(JsonObject config) {
@@ -37,7 +38,6 @@ public class EchoHandler implements Handler<RoutingContext> {
    * main method.
    *
    * @param event vert.x RoutingContext data.
-   * @return null.
    */
   @Override
   public void handle(RoutingContext event) {

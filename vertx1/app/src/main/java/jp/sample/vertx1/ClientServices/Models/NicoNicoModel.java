@@ -72,7 +72,7 @@ public class NicoNicoModel {
   /**
    * The total number of views for all videos included in the response
    *
-   * @return
+   * @return total count number
    */
   public Integer totalCount() {
     return totalCount;
@@ -81,7 +81,7 @@ public class NicoNicoModel {
   /**
    * Response status.
    *
-   * @return
+   * @return status code
    */
   public Integer status() {
     return status;
@@ -89,10 +89,10 @@ public class NicoNicoModel {
 
   /**
    * All videos included in the response. The Key name is {@code "data"}. The Values is video list.
-   * The video list is of type {@code List<Map<String, Object>>}. Map<String, Object> type contains
+   * The video list is of type {@code List&lt;Map&lt;String, Object&gt;}. Map&lt;String, Object&gt; type contains
    * {@code contentId, title and viewCounter} for each video.
    *
-   * @return
+   * @return data map
    */
   public Map<String, Object> entities() {
     return entities;
