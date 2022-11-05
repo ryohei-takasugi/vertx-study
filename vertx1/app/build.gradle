@@ -15,6 +15,7 @@ plugins {
 	id 'eclipse'
 	id 'com.diffplug.spotless' version '6.8.0'
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
+	id 'com.github.spotbugs' version '5.0.13'
   id 'de.aaschmid.cpd' version '3.3'
 }
 
@@ -179,7 +180,10 @@ spotbugs {
 		jvmArgs = [ '-Duser.language=ja' ]
 }
 
-task myJavadoc(type: Javadoc) {
+// ---------------------------------------------
+// Javadoc options
+// ---------------------------------------------
+javadoc {
     group = 'jp.sample.vertx1'
     description = 'Generates API documents.'
     source = sourceSets.main.allJava
