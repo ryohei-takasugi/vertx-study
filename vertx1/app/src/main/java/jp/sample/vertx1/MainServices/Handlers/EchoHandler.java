@@ -4,13 +4,11 @@ import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
 
 public class EchoHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  // private static final Logger LOGGER = LoggerFactory.getLogger(EchoHandler.class);
+  // private static final LogUtils LOGGER = new LogUtils(EchoHandler.class);
 
   /** config */
   private final JsonObject config;

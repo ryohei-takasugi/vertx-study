@@ -11,13 +11,14 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Map;
+import jp.sample.vertx1.MainServices.models.CallModel;
+import jp.sample.vertx1.share.LogUtils;
 
-public class NicoNicoHandler implements Handler<Message<JsonObject>> {
+public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
 
   /** Logger */
-  private static final Logger LOGGER = LoggerFactory.getLogger(NicoNicoHandler.class);
+  private static final LogUtils LOGGER = new LogUtils(NicoNicoHandler.class);
 
   /** vertx */
   private final Vertx vertx;
@@ -35,16 +36,21 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>> {
    * @param vertx Vert.x of ClientServiceVerticle
    * @return NicoNicoHandler instance.
    */
-  public static Handler<Message<JsonObject>> create(Vertx vertx) {
+  public static Handler<Message<Map<String, Object>>> create(Vertx vertx) {
     return new NicoNicoHandler(vertx);
   }
 
   @Override
-  public void handle(Message<JsonObject> event) {
+  public void handle(Message<Map<String, Object>> requestEvent) {
 
-    JsonObject clientCofig = event.body();
-    HttpMethod method = HttpMethod.valueOf(clientCofig.getString("method"));
-    RequestOptions option = new RequestOptions(clientCofig);
+    // JsonObject clientCofig = requestEvent.body();
+    // HttpMethod method = HttpMethod.valueOf(clientCofig.getString("method"));
+    // RequestOptions option = new RequestOptions(clientCofig);
+
+    CallModel model = new CallModel(requestEvent.body());
+    HttpMethod method = model.method();
+    LOGGER.info(model.sessionId(), model.toJson().encodePrettily());
+    RequestOptions option = new RequestOptions(model.toJson());
 
     WebClient client = WebClient.create(vertx);
     HttpRequest<Buffer> request = client.request(method, option);
@@ -53,16 +59,17 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>> {
     JsonObject reply = new JsonObject();
     fut.onSuccess(
             responce -> {
+              LOGGER.info(model.sessionId(), Integer.toString(responce.statusCode()));
               reply.put("status", responce.statusCode());
               reply.put("body", responce.bodyAsJsonObject());
-              event.reply(reply);
+              requestEvent.reply(reply);
             })
         .onFailure(
             th -> {
-              LOGGER.error("web client erro ", th);
+              LOGGER.error(model.sessionId(), "web client erro ", th);
               reply.put("status", 500);
               reply.put("body", th.getMessage());
-              event.reply(reply);
+              requestEvent.reply(reply);
             });
   }
 }

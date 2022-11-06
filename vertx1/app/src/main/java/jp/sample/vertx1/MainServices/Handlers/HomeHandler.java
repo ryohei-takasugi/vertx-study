@@ -3,13 +3,12 @@ package jp.sample.vertx1.MainServices.Handlers;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import jp.sample.vertx1.share.LogUtils;
 
 public class HomeHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  // private static final Logger LOGGER = LoggerFactory.getLogger(HomeHandler.class);
+  private static final LogUtils LOGGER = new LogUtils(HomeHandler.class);
 
   /**
    * Create BodyHandler class method.
@@ -27,6 +26,7 @@ public class HomeHandler implements Handler<RoutingContext> {
    */
   @Override
   public void handle(RoutingContext event) {
+    LOGGER.info(event.session(), "home");
     HttpServerResponse responce = event.response();
     responce.setStatusCode(200);
     responce.end("Hello Vert.x!!");

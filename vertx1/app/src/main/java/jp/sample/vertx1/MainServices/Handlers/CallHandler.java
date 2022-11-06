@@ -11,14 +11,16 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
+import java.util.Map;
+import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
 import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jp.sample.vertx1.MainServices.models.CallModel;
+import jp.sample.vertx1.share.LogUtils;
 
 public class CallHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  private static final Logger LOGGER = LoggerFactory.getLogger(CallHandler.class);
+  private static final LogUtils LOGGER = new LogUtils(CallHandler.class);
 
   /**
    * Create CallHandler class method.
@@ -49,9 +51,6 @@ public class CallHandler implements Handler<RoutingContext> {
   /** index.html file */
   private static final String INDEX = "templates/index.html";
 
-  /** event bus address */
-  private static final String GET_ADDRESS = "web-client:GET";
-
   /**
    * CallHandler Contractor
    *
@@ -72,26 +71,30 @@ public class CallHandler implements Handler<RoutingContext> {
   @Override
   public void handle(RoutingContext event) {
     EventBus eb = vertx.eventBus();
-    JsonObject request = new JsonObject();
+    Map<String, Object> request = CallModel.createRequest(event.session());
 
-    request.put("method", "GET");
-    request.put("host", "api.search.nicovideo.jp");
-    request.put("port", 443);
-    request.put("ssl", true);
-    request.put(
-        "uri",
-        "/api/v2/snapshot/video/contents/search?q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
-    LOGGER.debug(request.encodePrettily());
-    LOGGER.debug(config.getString("sample"));
+    // JsonObject request = new JsonObject();
+
+    // request.put("session", event.session().id());
+    // request.put("method", "GET");
+    // request.put("host", "api.search.nicovideo.jp");
+    // request.put("port", 443);
+    // request.put("ssl", true);
+    // request.put(
+    //     "uri",
+    //
+    // "/api/v2/snapshot/video/contents/search?q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
+    // LOGGER.debug(event.session(), request.encodePrettily());
+    LOGGER.debug(event.session(), request.toString());
 
     HttpServerResponse responce = event.response();
 
     DeliveryOptions option = new DeliveryOptions().setSendTimeout(3000);
-    Future<Message<Object>> fut = eb.request(GET_ADDRESS, request, option);
+    Future<Message<Object>> fut = eb.request(ClientServiceVerticle.GET_ADDRESS, request, option);
     fut.onSuccess(
             niconico -> {
               JsonObject resbody = (JsonObject) niconico.body();
-              LOGGER.debug("resbody: {}", resbody.encodePrettily());
+              LOGGER.debug(event.session(), "resbody: " + resbody.encodePrettily());
               NicoNicoModel model = new NicoNicoModel(resbody);
               if (model.status() == 200) {
                 Future<Buffer> futEng = engine.render(model.entities(), INDEX);
@@ -99,7 +102,6 @@ public class CallHandler implements Handler<RoutingContext> {
                     .onSuccess(
                         html -> {
                           responce.setStatusCode(200);
-                          responce.putHeader("content-type", "text/html");
                           responce.end(html);
                         })
                     .onFailure(
@@ -116,7 +118,7 @@ public class CallHandler implements Handler<RoutingContext> {
             th -> {
               responce.setStatusCode(500);
               responce.setStatusMessage("Web client error");
-              LOGGER.error("web client error", th);
+              LOGGER.error(event.session(), "web client error", th);
               event.fail(th);
             });
   }

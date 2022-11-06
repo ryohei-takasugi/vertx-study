@@ -9,7 +9,10 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
+import io.vertx.ext.web.handler.ResponseContentTypeHandler;
+import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.sstore.SessionStore;
 import jp.sample.vertx1.MainServices.Handlers.CallHandler;
 import jp.sample.vertx1.MainServices.Handlers.EchoHandler;
 import jp.sample.vertx1.MainServices.Handlers.FailerHandler;
@@ -18,9 +21,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MainServiceVerticle extends AbstractVerticle {
+
   /** logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(MainServiceVerticle.class);
 
+  /** Content-type */
   private static final String CONTENT_TYPE = "application/json";
 
   /**
@@ -61,6 +66,14 @@ public class MainServiceVerticle extends AbstractVerticle {
     /** static page */
     router.route().handler(StaticHandler.create());
 
+    /** Auto Content-TYpe */
+    router.route().handler(ResponseContentTypeHandler.create());
+
+    /** session */
+    SessionStore store = SessionStore.create(vertx);
+    store.createSession(10000);
+    router.route().handler(SessionHandler.create(store));
+
     /** acsess logger */
     router.route().handler(LoggerHandler.create());
 
@@ -68,7 +81,6 @@ public class MainServiceVerticle extends AbstractVerticle {
     router.errorHandler(
         404,
         ctx -> {
-          LOGGER.error("NOT FOUND");
           ctx.response().sendFile("error/404.html");
         });
 
@@ -76,14 +88,13 @@ public class MainServiceVerticle extends AbstractVerticle {
     router.errorHandler(
         500,
         ctx -> {
-          LOGGER.error("Internal Server Error");
           ctx.response().sendFile("error/500.html");
         });
 
     /** root page */
     router
         .get("/")
-        .produces(CONTENT_TYPE)
+        .produces("text/html")
         .handler(HomeHandler.create())
         .failureHandler(FailerHandler.create());
 
@@ -97,7 +108,7 @@ public class MainServiceVerticle extends AbstractVerticle {
     /** other web api call page */
     router
         .get("/call")
-        .produces(CONTENT_TYPE)
+        .produces("text/html")
         .handler(CallHandler.create(vertx, config.getJsonObject("app")))
         .failureHandler(FailerHandler.create());
 

@@ -12,6 +12,9 @@ public class ClientServiceVerticle extends AbstractVerticle {
   /** logger. */
   // private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceVerticle.class);
 
+  /** event bus address */
+  public static final String GET_ADDRESS = "web-client:GET";
+
   /**
    * vert.x start.
    *
