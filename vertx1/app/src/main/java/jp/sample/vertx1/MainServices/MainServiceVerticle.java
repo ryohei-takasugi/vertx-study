@@ -17,6 +17,7 @@ import jp.sample.vertx1.MainServices.Handlers.EchoHandler;
 import jp.sample.vertx1.MainServices.Handlers.FailerHandler;
 import jp.sample.vertx1.MainServices.Handlers.HomeHandler;
 import jp.sample.vertx1.MainServices.Handlers.LoggerHandler;
+import jp.sample.vertx1.share.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +25,6 @@ public class MainServiceVerticle extends AbstractVerticle {
 
   /** logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(MainServiceVerticle.class);
-
-  /** Content-type */
-  private static final String CONTENT_TYPE = "application/json";
 
   /**
    * vert.x start.
@@ -94,21 +92,21 @@ public class MainServiceVerticle extends AbstractVerticle {
     /** root page */
     router
         .get("/")
-        .produces("text/html")
+        .produces(ContentType.HTML.getString())
         .handler(HomeHandler.create())
         .failureHandler(FailerHandler.create());
 
     /** config page */
     router
         .get("/echo")
-        .produces(CONTENT_TYPE)
+        .produces(ContentType.JSON.getString())
         .handler(EchoHandler.create(config))
         .failureHandler(FailerHandler.create());
 
     /** other web api call page */
     router
         .get("/call")
-        .produces("text/html")
+        .produces(ContentType.HTML.getString())
         .handler(CallHandler.create(vertx, config.getJsonObject("app")))
         .failureHandler(FailerHandler.create());
 
@@ -116,7 +114,7 @@ public class MainServiceVerticle extends AbstractVerticle {
     router.route().handler(BodyHandler.create());
 
     /** Not created */
-    router.put("/call").produces(CONTENT_TYPE).handler(null);
+    router.put("/call").produces(ContentType.HTML.getString()).handler(null);
 
     return router;
   }
