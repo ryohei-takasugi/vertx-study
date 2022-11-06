@@ -8,7 +8,6 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -17,6 +16,7 @@ import jp.sample.vertx1.MainServices.Handlers.CallHandler;
 import jp.sample.vertx1.MainServices.Handlers.EchoHandler;
 import jp.sample.vertx1.MainServices.Handlers.FailerHandler;
 import jp.sample.vertx1.MainServices.Handlers.HomeHandler;
+import jp.sample.vertx1.MainServices.Handlers.LoggerHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
