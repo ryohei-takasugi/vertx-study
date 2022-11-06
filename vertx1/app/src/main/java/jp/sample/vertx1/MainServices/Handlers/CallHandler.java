@@ -72,22 +72,10 @@ public class CallHandler implements Handler<RoutingContext> {
   public void handle(RoutingContext event) {
     EventBus eb = vertx.eventBus();
     Map<String, Object> request = CallModel.createRequest(event.session());
-
-    // JsonObject request = new JsonObject();
-
-    // request.put("session", event.session().id());
-    // request.put("method", "GET");
-    // request.put("host", "api.search.nicovideo.jp");
-    // request.put("port", 443);
-    // request.put("ssl", true);
-    // request.put(
-    //     "uri",
-    //
-    // "/api/v2/snapshot/video/contents/search?q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
-    // LOGGER.debug(event.session(), request.encodePrettily());
-    LOGGER.debug(event.session(), request.toString());
-
     HttpServerResponse responce = event.response();
+
+    LOGGER.debug(event.session(), request.toString());
+    LOGGER.debug(event.session(), config.getString("sample"));
 
     DeliveryOptions option = new DeliveryOptions().setSendTimeout(3000);
     Future<Message<Object>> fut = eb.request(ClientServiceVerticle.GET_ADDRESS, request, option);
