@@ -42,6 +42,7 @@ public class AbstractTest {
     clientCofig.put("port", config.getJsonObject("http").getInteger("port"));
     clientCofig.put("ssl", false);
     clientCofig.put("uri", uri);
+
     System.out.println(clientCofig.encodePrettily());
     RequestOptions option = new RequestOptions(clientCofig);
 
@@ -66,14 +67,39 @@ public class AbstractTest {
    * @param vertx {@link Vertx}
    * @return DeploymentOptions
    */
-  protected DeploymentOptions serverOptions(Vertx vertx, String testFileName) {
+  protected DeploymentOptions serverOptions(Vertx vertx, String testFilePath) {
     JsonObject config = loadConfig(vertx);
-    config.put("returnJsonData", testJsonData(vertx, testFileName));
+    config.put("returnJsonData", loadFile(vertx, testFilePath).toJsonObject());
     return new DeploymentOptions().setConfig(config);
   }
 
-  protected JsonObject testJsonData(Vertx vertx, String testFileName) {
+  /**
+   * load Test File
+   *
+   * @param vertx {@link Vertx}
+   * @param path Test file path in test's resources folder
+   * @return File Buffer Data
+   */
+  protected Buffer loadFile(Vertx vertx, String path) {
     FileSystem fs = vertx.fileSystem();
-    return fs.readFileBlocking(testFileName).toJsonObject();
+    return fs.readFileBlocking(path);
+  }
+
+  /**
+   * @param vertx
+   * @param testFilePath
+   * @return
+   */
+  protected JsonObject testJsonData(Vertx vertx, String testFilePath) {
+    return loadFile(vertx, testFilePath).toJsonObject();
+  }
+
+  /**
+   * @param vertx
+   * @param testFilePath
+   * @return
+   */
+  protected Buffer testXMLData(Vertx vertx, String testFilePath) {
+    return loadFile(vertx, testFilePath);
   }
 }

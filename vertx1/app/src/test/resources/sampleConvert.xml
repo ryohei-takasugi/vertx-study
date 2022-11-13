@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<tag>
+	<tag1 tag1_a1="attribute(tag1_a1)" tag1_a2="attribute(tag1_a2)">text(tag1)</tag1>
+	<tag2 tag2_a1="attribute(tag2_a1[1])" tag2_a2="attribute(tag2_a2[1])">text(tag2[1])</tag2>
+	<tag2 tag2_a1="attribute(tag2_a1[2])" tag2_a2="attribute(tag2_a2[2])">text(tag2[2])</tag2>
+	<tag3 tag3_a1="attribute(tag3_a1)" tag3_a2="attribute(tag3_a2)">
+		<tag31 tag31_a1="attribute(tag31_a1[1])" tag31_a2="attribute(tag31_a2[1])">text(tag31[1])</tag31>
+		<tag31 tag31_a1="attribute(tag31_a1[2])" tag31_a2="attribute(tag31_a2[2])">text(tag31[2])</tag31>
+	</tag3>
+</tag>

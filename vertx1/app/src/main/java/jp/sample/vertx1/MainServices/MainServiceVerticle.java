@@ -13,6 +13,7 @@ import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.sstore.SessionStore;
 import jp.sample.vertx1.MainServices.Handlers.CallHandler;
+import jp.sample.vertx1.MainServices.Handlers.ConvertHandler;
 import jp.sample.vertx1.MainServices.Handlers.EchoHandler;
 import jp.sample.vertx1.MainServices.Handlers.FailerHandler;
 import jp.sample.vertx1.MainServices.Handlers.HomeHandler;
@@ -114,7 +115,7 @@ public class MainServiceVerticle extends AbstractVerticle {
     router.route().handler(BodyHandler.create());
 
     /** Not created */
-    router.put("/call").produces(ContentType.HTML.getString()).handler(null);
+    router.put("/convert").produces(ContentType.JSON.getString()).handler(ConvertHandler.create());
 
     return router;
   }
