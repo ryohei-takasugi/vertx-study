@@ -1,18 +1,14 @@
 package jp.sample.vertx1.MainServices.Handlers;
 
 import io.vertx.core.Handler;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RequestBody;
 import io.vertx.ext.web.RoutingContext;
 import java.io.ByteArrayInputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import jp.sample.vertx1.share.CastXML;
 import jp.sample.vertx1.share.LogUtils;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /** PUT されたリクエストのBodyからXMLファイルを取得して、Jsonに変換後、Jsonをレスポンスとして返します。 */
 public class ConvertHandler implements Handler<RoutingContext> {
@@ -49,21 +45,9 @@ public class ConvertHandler implements Handler<RoutingContext> {
     return doc;
   }
 
-  private JsonArray convert(RoutingContext event, Document doc) throws Exception {
-    var array = new JsonArray();
-    var element = doc.getDocumentElement();
+  private JsonObject convert(RoutingContext event, Document doc) throws Exception {
     var xml = new CastXML(event, doc);
-    var nodeList = element.getElementsByTagName("Book");
-
-    for (int i = 0; i < nodeList.getLength(); i++) {
-      var detail = new JsonObject();
-      var node = (Element) nodeList.item(i);
-      detail.put("isbn", node.getAttribute("isbn"));
-      detail.put("author", node.getAttribute("author"));
-      detail.put("title", node.getAttribute("title"));
-      detail.put("content", node.getTextContent());
-      array.add(detail);
-    }
-    return array;
+    LOGGER.debug(event.session().id(), xml.toJson().encodePrettily());
+    return xml.toJson();
   }
 }
