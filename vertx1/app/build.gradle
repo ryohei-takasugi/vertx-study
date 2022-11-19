@@ -17,6 +17,7 @@ plugins {
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
 	id 'com.github.spotbugs' version '5.0.13'
 	id 'pmd'
+	id 'jacoco'
 }
 
 // ---------------------------------------------
@@ -57,6 +58,12 @@ dependencies {
 }
 
 // ---------------------------------------------
+// distZip options
+// ---------------------------------------------
+tasks.distZip.enabled = false
+tasks.distTar.enabled = false
+
+// ---------------------------------------------
 // java compile options
 // ---------------------------------------------
 java {
@@ -85,24 +92,26 @@ eclipse {
 }
 // for vscode
 tasks.eclipse.doFirst {
-		File prefs = file(".settings/org.eclipse.buildship.core.prefs")
-		if(!prefs.exists()){
-				prefs.append('''
-						connection.project.dir=master
-						eclipse.preferences.version=1
-						connection.gradle.distribution=GRADLE_DISTRIBUTION(WRAPPER)
-						show.console.view=true
-						show.executions.view=true
-						'''.stripIndent())
-		}
+	File prefs = file(".settings/org.eclipse.buildship.core.prefs")
+	if(!prefs.exists()){
+		prefs.append('''
+			connection.project.dir=master
+			eclipse.preferences.version=1
+			connection.gradle.distribution=GRADLE_DISTRIBUTION(WRAPPER)
+			show.console.view=true
+			show.executions.view=true
+			'''.stripIndent())
+	}
 }
 
 // ---------------------------------------------
 // test options
 // ---------------------------------------------
-tasks.named('test') {
+test {
 	// Use junit platform for unit tests.
 	useJUnitPlatform()
+	// report is always generated after tests run
+	finalizedBy jacocoTestReport
 }
 
 // ---------------------------------------------
@@ -141,7 +150,7 @@ shadowJar {
 	classifier = 'fat'
 
 	manifest {
-			attributes "Main-Verticle": mainVerticleName
+		attributes "Main-Verticle": mainVerticleName
 	}
 
 	mergeServiceFiles {
@@ -153,9 +162,9 @@ shadowJar {
 // pwd options
 // ---------------------------------------------
 pmd {
-		consoleOutput = true
-		toolVersion = "6.39.0"
-		rulesMinimumPriority = 1
+	consoleOutput = true
+	toolVersion = "6.39.0"
+	rulesMinimumPriority = 1
 }
 
 // ---------------------------------------------
@@ -163,24 +172,24 @@ pmd {
 // https://spotbugs.readthedocs.io/ja/latest/ant.html
 // ---------------------------------------------
 spotbugs {
-		ignoreFailures = true
-		showStackTraces = true
-		showProgress = true
-		effort = 'max'
-		reportLevel = 'high'
-		reportsDir = file("$buildDir/spotbugs")
-		onlyAnalyze = [ 'jp.sample.vertx1.*' ]
-		maxHeapSize = '1g'
-		jvmArgs = [ '-Duser.language=ja' ]
+	ignoreFailures = true
+	showStackTraces = true
+	showProgress = true
+	effort = 'max'
+	reportLevel = 'high'
+	reportsDir = file("$buildDir/spotbugs")
+	onlyAnalyze = [ 'jp.sample.vertx1.*' ]
+	maxHeapSize = '1g'
+	jvmArgs = [ '-Duser.language=ja' ]
 }
 
 // ---------------------------------------------
 // Javadoc options
 // ---------------------------------------------
 javadoc {
-		group = 'jp.sample.vertx1'
-		description = 'Generates API documents.'
-		source = sourceSets.main.allJava
+	group = 'jp.sample.vertx1'
+	description = 'Generates API documents.'
+	source = sourceSets.main.allJava
 }
 
 // ---------------------------------------------
@@ -219,4 +228,44 @@ spotless {
 		// eclipseWtp("json")                           // see Eclipse web tools platform section
 		gson().indentWithSpaces(2)                      // has its own section below
 	}
+}
+
+// ---------------------------------------------
+// jacoco(code coverage) config
+// ---------------------------------------------
+jacoco {
+	toolVersion = "0.8.8"
+	// reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+// ---------------------------------------------
+// jacoco(code coverage) report config
+// ---------------------------------------------
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('jacoco/html')
+	}
+}
+
+// ---------------------------------------------
+// jacoco(code coverage) metrics config
+// ---------------------------------------------
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.5
+			}
+		}
+	}
+}
+
+// ---------------------------------------------
+// check options
+// ---------------------------------------------
+check {
+	dependsOn jacocoTestCoverageVerification
 }
