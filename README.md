@@ -30,6 +30,7 @@ Vert.xの勉強環境
 1. Gradle に spotbugs(静的解析) プラグインの導入
 1. junit5 の導入
 1. Gradle に jacoco(コードカバレッジ測定) プラグインの導入
+1. Gradle に javafaker(ダミーデータ作成) プラグインの導入
 
 ---
 * nexus に関する勉強は Gradle-study で実施
