@@ -32,6 +32,8 @@ public class CallHandlerTest extends AbstractTest {
   /** テスト対象のURI */
   private String uri = "/call";
 
+  private JsonObject responce = new JsonObject();
+
   @BeforeAll
   @DisplayName("テスト対象を起動します")
   void startVerticle(Vertx vertx, VertxTestContext ctx) {
@@ -49,7 +51,8 @@ public class CallHandlerTest extends AbstractTest {
               ctx.failNow(th);
             });
 
-    DeploymentOptions clientOptions = serverOptions(vertx, "sampleNicoNicoData01.json");
+    this.responce = fakerResponce();
+    DeploymentOptions clientOptions = serverOptions(vertx, this.responce);
     Future<String> client = vertx.deployVerticle(new MockClientServiceVerticle(), clientOptions);
     client
         .onSuccess(
@@ -93,7 +96,7 @@ public class CallHandlerTest extends AbstractTest {
               ctx.verify(
                   () -> {
                     String body = responce.bodyAsString("UTF-8");
-                    JsonObject testJsonData = testJsonData(vertx, "sampleNicoNicoData01.json");
+                    JsonObject testJsonData = this.responce;
                     JsonArray array = testJsonData.getJsonArray("data");
                     for (int i = 0; i < array.size(); i++) {
                       JsonObject target = array.getJsonObject(i);
