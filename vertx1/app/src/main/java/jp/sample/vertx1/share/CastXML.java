@@ -2,22 +2,19 @@ package jp.sample.vertx1.share;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.RoutingContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 public class CastXML {
 
-  private final RoutingContext event;
   private final Document doc;
 
-  public CastXML(RoutingContext event, Document doc) {
-    this.event = event;
+  public CastXML(Document doc) {
     this.doc = doc;
   }
 
   public JsonObject toJson() {
-    var json = new JsonObject();
+    // var json = new JsonObject();
     var element = doc.getDocumentElement();
     // if (element.hasChildNodes()) {
     //   var array = new JsonArray();
@@ -83,23 +80,23 @@ public class CastXML {
     return !array.isEmpty();
   }
 
-  private JsonArray getChildNodes(Node target) {
-    var array = new JsonArray();
-    if (target.hasChildNodes()) {
-      var childs = target.getChildNodes();
-      for (int i = 0; i < childs.getLength(); i++) {
-        if (childs.item(i).getNodeType() == Node.ELEMENT_NODE) {
-          array.add(childs.item(i));
-        }
-      }
-    }
-    var result = new JsonArray();
-    array.forEach(
-        child -> {
-          if (!result.contains(child)) {
-            result.add(child);
-          }
-        });
-    return result;
-  }
+  // private JsonArray getChildNodes(Node target) {
+  //   var array = new JsonArray();
+  //   if (target.hasChildNodes()) {
+  //     var childs = target.getChildNodes();
+  //     for (int i = 0; i < childs.getLength(); i++) {
+  //       if (childs.item(i).getNodeType() == Node.ELEMENT_NODE) {
+  //         array.add(childs.item(i));
+  //       }
+  //     }
+  //   }
+  //   var result = new JsonArray();
+  //   array.forEach(
+  //       child -> {
+  //         if (!result.contains(child)) {
+  //           result.add(child);
+  //         }
+  //       });
+  //   return result;
+  // }
 }

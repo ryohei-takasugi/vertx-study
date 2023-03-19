@@ -46,7 +46,7 @@ public class ConvertHandler implements Handler<RoutingContext> {
   }
 
   private JsonObject convert(RoutingContext event, Document doc) throws Exception {
-    var xml = new CastXML(event, doc);
+    var xml = new CastXML(doc);
     LOGGER.debug(event.session(), xml.toJson().encodePrettily());
     return xml.toJson();
   }
