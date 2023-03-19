@@ -14,7 +14,7 @@ import jp.sample.vertx1.MainServices.Handlers.EchoHandleFactory;
 import jp.sample.vertx1.MainServices.Handlers.FailerHandleFactory;
 import jp.sample.vertx1.MainServices.Handlers.HomeHandleFactory;
 import jp.sample.vertx1.MainServices.Handlers.LoggerHandleFactory;
-import jp.sample.vertx1.share.ContentType;
+import jp.sample.vertx1.MainServices.models.ContentType;
 
 /** Create Router */
 public class MainRouter {

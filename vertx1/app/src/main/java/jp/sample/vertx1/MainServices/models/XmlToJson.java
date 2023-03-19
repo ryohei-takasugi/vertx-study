@@ -1,4 +1,4 @@
-package jp.sample.vertx1.share;
+package jp.sample.vertx1.MainServices.models;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;

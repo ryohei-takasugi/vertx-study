@@ -1,4 +1,4 @@
-package jp.sample.vertx1.share;
+package jp.sample.vertx1.MainServices.models;
 
 public enum ContentType {
   HTML("text/html"),
