@@ -14,13 +14,13 @@ import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
 import java.util.Map;
 import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
 import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
-import jp.sample.vertx1.MainServices.models.CallModel;
-import jp.sample.vertx1.share.LogUtils;
+import jp.sample.vertx1.share.MyLogger;
+import jp.sample.vertx1.share.model.CallModel;
 
 public class CallHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  private static final LogUtils LOGGER = new LogUtils(CallHandler.class);
+  private static final MyLogger LOGGER = MyLogger.create(CallHandler.class);
 
   /**
    * Create CallHandler class method.
@@ -70,13 +70,13 @@ public class CallHandler implements Handler<RoutingContext> {
    */
   @Override
   public void handle(RoutingContext event) {
-    EventBus eb = vertx.eventBus();
     Map<String, Object> request = CallModel.createRequest(event.session());
-    HttpServerResponse responce = event.response();
+    HttpServerResponse response = event.response();
 
     LOGGER.debug(event.session(), request.toString());
     LOGGER.debug(event.session(), config.getString("sample"));
 
+    EventBus eb = vertx.eventBus();
     DeliveryOptions option = new DeliveryOptions().setSendTimeout(3000);
     Future<Message<Object>> fut = eb.request(ClientServiceVerticle.GET_ADDRESS, request, option);
     fut.onSuccess(
@@ -89,23 +89,23 @@ public class CallHandler implements Handler<RoutingContext> {
                 futEng
                     .onSuccess(
                         html -> {
-                          responce.setStatusCode(200);
-                          responce.end(html);
+                          response.setStatusCode(200);
+                          response.end(html);
                         })
                     .onFailure(
                         th -> {
                           event.fail(th);
                         });
               } else {
-                responce.setStatusCode(500);
-                responce.setStatusMessage("Could not get information from Niconico Douga");
+                response.setStatusCode(500);
+                response.setStatusMessage("Could not get information from Niconico Douga");
                 event.failed();
               }
             })
         .onFailure(
             th -> {
-              responce.setStatusCode(500);
-              responce.setStatusMessage("Web client error");
+              response.setStatusCode(500);
+              response.setStatusMessage("Web client error");
               LOGGER.error(event.session(), "web client error", th);
               event.fail(th);
             });

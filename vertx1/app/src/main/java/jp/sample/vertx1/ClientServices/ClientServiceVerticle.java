@@ -1,8 +1,11 @@
 package jp.sample.vertx1.ClientServices;
 
+import java.util.Map;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageConsumer;
 import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandler;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
@@ -23,6 +26,12 @@ public class ClientServiceVerticle extends AbstractVerticle {
   @Override
   public void start(Promise<Void> startPromise) {
     EventBus eb = vertx.eventBus();
-    eb.consumer("web-client:GET", NicoNicoHandler.create(vertx)).completionHandler(startPromise);
+    MessageConsumer<Map<String, Object>> nico = eb.consumer(GET_ADDRESS, NicoNicoHandler.create(vertx));
+    nico.completionHandler(ar -> {
+      if (ar.failed()) {
+        startPromise.fail(ar.cause());
+      }
+      startPromise.complete();
+    });
   }
 }

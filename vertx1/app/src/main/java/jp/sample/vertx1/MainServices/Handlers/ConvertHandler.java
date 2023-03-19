@@ -7,14 +7,14 @@ import io.vertx.ext.web.RoutingContext;
 import java.io.ByteArrayInputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 import jp.sample.vertx1.share.CastXML;
-import jp.sample.vertx1.share.LogUtils;
+import jp.sample.vertx1.share.MyLogger;
 import org.w3c.dom.Document;
 
 /** PUT されたリクエストのBodyからXMLファイルを取得して、Jsonに変換後、Jsonをレスポンスとして返します。 */
 public class ConvertHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  private static final LogUtils LOGGER = new LogUtils(ConvertHandler.class);
+  private static final MyLogger LOGGER = MyLogger.create(ConvertHandler.class);
 
   public static ConvertHandler create() {
     return new ConvertHandler();
@@ -25,7 +25,7 @@ public class ConvertHandler implements Handler<RoutingContext> {
     try {
       var doc = load(event.body());
       var json = convert(event, doc);
-      LOGGER.debug(event.session().id(), json.encodePrettily());
+      LOGGER.debug(event.session(), json.encodePrettily());
       event.response().setStatusCode(200);
       event.response().end(json.encodePrettily());
     } catch (Throwable t) {
@@ -47,7 +47,7 @@ public class ConvertHandler implements Handler<RoutingContext> {
 
   private JsonObject convert(RoutingContext event, Document doc) throws Exception {
     var xml = new CastXML(event, doc);
-    LOGGER.debug(event.session().id(), xml.toJson().encodePrettily());
+    LOGGER.debug(event.session(), xml.toJson().encodePrettily());
     return xml.toJson();
   }
 }

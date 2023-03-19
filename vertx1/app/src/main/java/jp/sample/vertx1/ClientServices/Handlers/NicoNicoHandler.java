@@ -12,13 +12,14 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Map;
-import jp.sample.vertx1.MainServices.models.CallModel;
-import jp.sample.vertx1.share.LogUtils;
+
+import jp.sample.vertx1.share.MyLogger;
+import jp.sample.vertx1.share.model.CallModel;
 
 public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
 
   /** Logger */
-  private static final LogUtils LOGGER = new LogUtils(NicoNicoHandler.class);
+  private static final MyLogger LOGGER = MyLogger.create(NicoNicoHandler.class);
 
   /** vertx */
   private final Vertx vertx;
@@ -43,14 +44,11 @@ public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
   @Override
   public void handle(Message<Map<String, Object>> requestEvent) {
 
-    // JsonObject clientCofig = requestEvent.body();
-    // HttpMethod method = HttpMethod.valueOf(clientCofig.getString("method"));
-    // RequestOptions option = new RequestOptions(clientCofig);
-
     CallModel model = new CallModel(requestEvent.body());
     HttpMethod method = model.method();
-    LOGGER.info(model.sessionId(), model.toJson().encodePrettily());
     RequestOptions option = new RequestOptions(model.toJson());
+
+    LOGGER.debug(model.sessionId(), model.toJson().encodePrettily());
 
     WebClient client = WebClient.create(vertx);
     HttpRequest<Buffer> request = client.request(method, option);
@@ -58,15 +56,15 @@ public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
     Future<HttpResponse<Buffer>> fut = request.send();
     JsonObject reply = new JsonObject();
     fut.onSuccess(
-            responce -> {
-              LOGGER.info(model.sessionId(), Integer.toString(responce.statusCode()));
-              reply.put("status", responce.statusCode());
-              reply.put("body", responce.bodyAsJsonObject());
+            response -> {
+              LOGGER.info(model.sessionId(), Integer.toString(response.statusCode()));
+              reply.put("status", response.statusCode());
+              reply.put("body", response.bodyAsJsonObject());
               requestEvent.reply(reply);
             })
         .onFailure(
             th -> {
-              LOGGER.error(model.sessionId(), "web client erro ", th);
+              LOGGER.error(model.sessionId(), "web client error ", th);
               reply.put("status", 500);
               reply.put("body", th.getMessage());
               requestEvent.reply(reply);
