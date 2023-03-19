@@ -12,7 +12,6 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Map;
-
 import jp.sample.vertx1.share.MyLogger;
 import jp.sample.vertx1.share.model.CallModel;
 
