@@ -5,11 +5,11 @@ import io.vertx.core.json.JsonObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-public class CastXML {
+public class XmlToJson {
 
   private final Document doc;
 
-  public CastXML(Document doc) {
+  public XmlToJson(Document doc) {
     this.doc = doc;
   }
 

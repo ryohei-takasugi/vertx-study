@@ -6,7 +6,7 @@ import io.vertx.ext.web.RequestBody;
 import io.vertx.ext.web.RoutingContext;
 import java.io.ByteArrayInputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
-import jp.sample.vertx1.share.CastXML;
+import jp.sample.vertx1.share.XmlToJson;
 import jp.sample.vertx1.share.MyLogger;
 import org.w3c.dom.Document;
 
@@ -44,7 +44,7 @@ public class ConvertHandler implements Handler<RoutingContext> {
   }
 
   private JsonObject convert(RoutingContext event, Document doc) throws Exception {
-    var xml = new CastXML(doc);
+    var xml = new XmlToJson(doc);
     LOGGER.debug(event.session(), xml.toJson().encodePrettily());
     return xml.toJson();
   }
