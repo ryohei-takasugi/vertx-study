@@ -17,41 +17,35 @@ import jp.sample.vertx1.MainServices.MainServiceVerticle;
 public class Main extends AbstractVerticle {
 
   /**
-   * vert.x start.
+   * vert.x start – Vert.xアプリケーションの開始関数
    *
-   * @param startPromise vert.x start promise.
+   * @param startPromise Vert.x起動時に使用するPromiseオブジェクト
    */
   @Override
   public void start(Promise<Void> startPromise) {
-    JsonObject config = getConfig();
-    DeploymentOptions option = new DeploymentOptions().setConfig(config);
-    Future<String> main = vertx.deployVerticle(MainServiceVerticle.class, option);
-    Future<String> client = vertx.deployVerticle(ClientServiceVerticle.class, option);
-    CompositeFuture.all(main, client)
-        .onComplete(
-            ar -> {
-              if (ar.succeeded()) {
-                startPromise.complete();
-              } else {
-                startPromise.fail(ar.cause());
-              }
-            });
-  }
+    // ConfigRetrieverクラスを使用して設定ファイル(config)を読み込む
+    final Future<JsonObject> load = ConfigRetriever.create(vertx).getConfig();
 
-  /**
-   * load vert.x config (run option -conf config/config.json)
-   *
-   * @return config
-   */
-  private JsonObject getConfig() {
-    final ConfigRetriever retriever = ConfigRetriever.create(vertx);
-    JsonObject config = new JsonObject();
-    retriever.getConfig(
-        ar -> {
-          if (ar.succeeded()) {
-            config.mergeIn(ar.result());
-          }
-        });
-    return config;
+    // 設定ファイルが正常に読み込まれた場合の処理
+    load.onSuccess(
+            config -> {
+              if (config == null || config.isEmpty()) {
+                // 設定ファイルがnullまたは空である場合、初期化エラーにする
+                startPromise.fail(new IllegalArgumentException("Config file is required"));
+                return;
+              }
+              // デプロイオプションに設定を設定する
+              final DeploymentOptions options = new DeploymentOptions().setConfig(config);
+              // MainServiceVerticleとClientServiceVerticleをデプロイする
+              final Future<String> main = vertx.deployVerticle(MainServiceVerticle.class, options);
+              final Future<String> client =
+                  vertx.deployVerticle(ClientServiceVerticle.class, options);
+
+              // デプロイ完了時の処理
+              CompositeFuture.all(main, client)
+                  .onSuccess(ar -> startPromise.complete()) // 成功した場合、Promiseを完了させる
+                  .onFailure(startPromise::fail); // 失敗した場合、Promiseを失敗させる
+            })
+        .onFailure(startPromise::fail); // 設定ファイルを読み込めなかった場合、Promiseを失敗させる
   }
 }
