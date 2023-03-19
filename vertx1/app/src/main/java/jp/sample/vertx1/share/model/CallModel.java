@@ -1,4 +1,4 @@
-package jp.sample.vertx1.MainServices.models;
+package jp.sample.vertx1.share.model;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
