@@ -40,7 +40,7 @@ public class CallHandler implements Handler<RoutingContext> {
    * @param vertx Vert.x of ClientServiceVerticle
    * @param config config of boot parameter
    */
-  public CallHandler(Vertx vertx, JsonObject config) {
+  protected CallHandler(Vertx vertx, JsonObject config) {
     this.vertx = vertx;
     this.config = config;
     this.engine = ThymeleafTemplateEngine.create(vertx);

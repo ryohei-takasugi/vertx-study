@@ -18,7 +18,7 @@ public class EchoHandler implements Handler<RoutingContext> {
    *
    * @param config config of boot parameter
    */
-  public EchoHandler(JsonObject config) {
+  protected EchoHandler(JsonObject config) {
     this.config = config;
   }
 

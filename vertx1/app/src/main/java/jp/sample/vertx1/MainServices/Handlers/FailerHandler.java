@@ -15,6 +15,8 @@ public class FailerHandler implements Handler<RoutingContext> {
 
   private static final String File_500_PATH = "error/500.html";
 
+  protected FailerHandler() {}
+
   /**
    * main method.
    *

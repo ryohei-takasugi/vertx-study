@@ -4,8 +4,9 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.MessageConsumer;
+import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandleFactory;
+
 import java.util.Map;
-import jp.sample.vertx1.ClientServices.Handlers.Factories.NicoNicoHandleFactory;
 
 public class ClientServiceVerticle extends AbstractVerticle {
 

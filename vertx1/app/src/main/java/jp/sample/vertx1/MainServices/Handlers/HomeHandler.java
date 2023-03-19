@@ -10,6 +10,8 @@ public class HomeHandler implements Handler<RoutingContext> {
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(HomeHandler.class);
 
+  protected HomeHandler() {}
+
   /**
    * main method.
    *

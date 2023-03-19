@@ -1,10 +1,9 @@
-package jp.sample.vertx1.ClientServices.Handlers.Factories;
+package jp.sample.vertx1.ClientServices.Handlers;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.Message;
 import java.util.Map;
-import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandler;
 
 public class NicoNicoHandleFactory {
 

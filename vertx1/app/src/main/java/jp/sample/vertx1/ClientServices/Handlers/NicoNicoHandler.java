@@ -28,7 +28,7 @@ public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
    *
    * @param vertx Vert.x of ClientServiceVerticle
    */
-  public NicoNicoHandler(Vertx vertx) {
+  protected NicoNicoHandler(Vertx vertx) {
     this.vertx = vertx;
   }
 

@@ -1,9 +1,8 @@
-package jp.sample.vertx1.MainServices.Handlers.Factories;
+package jp.sample.vertx1.MainServices.Handlers;
 
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import jp.sample.vertx1.MainServices.Handlers.EchoHandler;
 
 public class EchoHandleFactory {
 
