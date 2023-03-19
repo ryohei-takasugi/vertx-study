@@ -23,24 +23,14 @@ public class EchoHandler implements Handler<RoutingContext> {
   }
 
   /**
-   * Create EchoHandler class method.
-   *
-   * @param config config of boot parameter
-   * @return EchoHandler instance.
-   */
-  public static Handler<RoutingContext> create(JsonObject config) {
-    return new EchoHandler(config);
-  }
-
-  /**
    * main method.
    *
    * @param event vert.x RoutingContext data.
    */
   @Override
   public void handle(RoutingContext event) {
-    HttpServerResponse responce = event.response();
-    responce.setStatusCode(200);
-    responce.end(config.encodePrettily());
+    HttpServerResponse response = event.response();
+    response.setStatusCode(200);
+    response.end(config.encodePrettily());
   }
 }

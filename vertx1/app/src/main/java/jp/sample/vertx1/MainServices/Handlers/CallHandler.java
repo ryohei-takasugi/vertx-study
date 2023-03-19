@@ -22,23 +22,6 @@ public class CallHandler implements Handler<RoutingContext> {
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(CallHandler.class);
 
-  /**
-   * Create CallHandler class method.
-   *
-   * @return CallHandler instance.
-   */
-
-  /**
-   * Create CallHandler class method.
-   *
-   * @param vertx Vert.x of ClientServiceVerticle
-   * @param config config of boot parameter
-   * @return CallHandler instance.
-   */
-  public static Handler<RoutingContext> create(Vertx vertx, JsonObject config) {
-    return new CallHandler(vertx, config);
-  }
-
   /** Vertx */
   private final Vertx vertx;
 

@@ -4,16 +4,16 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.sstore.SessionStore;
-import jp.sample.vertx1.MainServices.Handlers.CallHandler;
-import jp.sample.vertx1.MainServices.Handlers.ConvertHandler;
-import jp.sample.vertx1.MainServices.Handlers.EchoHandler;
-import jp.sample.vertx1.MainServices.Handlers.FailerHandler;
-import jp.sample.vertx1.MainServices.Handlers.HomeHandler;
+import jp.sample.vertx1.MainServices.Handlers.Factories.CallHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.Factories.ConvertHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.Factories.EchoHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.Factories.FailerHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.Factories.HomeHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.Factories.LoggerHandleFactory;
 import jp.sample.vertx1.share.ContentType;
 
 /** Create Router */
@@ -50,40 +50,43 @@ public class MainRouter {
     router.route().handler(SessionHandler.create(store));
 
     /** access logger */
-    router.route().handler(LoggerHandler.create());
+    router.route().handler(LoggerHandleFactory.create());
 
     /** default 404 error page */
-    router.errorHandler(404, FailerHandler.create());
+    router.errorHandler(404, FailerHandleFactory.create());
 
     /** default 500 error page */
-    router.errorHandler(500, FailerHandler.create());
+    router.errorHandler(500, FailerHandleFactory.create());
 
     /** root page */
     router
         .get("/")
         .produces(ContentType.HTML.getString())
-        .handler(HomeHandler.create())
-        .failureHandler(FailerHandler.create());
+        .handler(HomeHandleFactory.create())
+        .failureHandler(FailerHandleFactory.create());
 
     /** config page */
     router
         .get("/echo")
         .produces(ContentType.JSON.getString())
-        .handler(EchoHandler.create(config))
-        .failureHandler(FailerHandler.create());
+        .handler(EchoHandleFactory.create(config))
+        .failureHandler(FailerHandleFactory.create());
 
     /** other web api call page */
     router
         .get("/call")
         .produces(ContentType.HTML.getString())
-        .handler(CallHandler.create(vertx, config.getJsonObject("app")))
-        .failureHandler(FailerHandler.create());
+        .handler(CallHandleFactory.create(vertx, config.getJsonObject("app")))
+        .failureHandler(FailerHandleFactory.create());
 
     /** Create body required for put or post */
     router.route().handler(BodyHandler.create());
 
     /** Not created */
-    router.put("/convert").produces(ContentType.JSON.getString()).handler(ConvertHandler.create());
+    router
+        .put("/convert")
+        .produces(ContentType.JSON.getString())
+        .handler(ConvertHandleFactory.create());
 
     return router;
   }

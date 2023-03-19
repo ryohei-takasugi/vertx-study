@@ -5,9 +5,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.MessageConsumer;
 import java.util.Map;
-import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandler;
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
+import jp.sample.vertx1.ClientServices.Handlers.Factories.NicoNicoHandleFactory;
 
 public class ClientServiceVerticle extends AbstractVerticle {
 
@@ -26,7 +24,7 @@ public class ClientServiceVerticle extends AbstractVerticle {
   public void start(Promise<Void> startPromise) {
     EventBus eb = vertx.eventBus();
     MessageConsumer<Map<String, Object>> nico =
-        eb.consumer(GET_ADDRESS, NicoNicoHandler.create(vertx));
+        eb.consumer(GET_ADDRESS, NicoNicoHandleFactory.create(vertx));
     nico.completionHandler(
         ar -> {
           if (ar.failed()) {

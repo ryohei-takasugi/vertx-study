@@ -15,15 +15,6 @@ public class LoggerHandler implements Handler<RoutingContext> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LoggerHandler.class);
 
-  /**
-   * Create LoggerHandler class method.
-   *
-   * @return LoggerHandler instance.
-   */
-  public static Handler<RoutingContext> create() {
-    return new LoggerHandler();
-  }
-
   @Override
   public void handle(RoutingContext context) {
     // common logging data

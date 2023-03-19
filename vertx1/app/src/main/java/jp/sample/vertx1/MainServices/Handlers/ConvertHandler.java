@@ -16,10 +16,6 @@ public class ConvertHandler implements Handler<RoutingContext> {
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(ConvertHandler.class);
 
-  public static ConvertHandler create() {
-    return new ConvertHandler();
-  }
-
   @Override
   public void handle(RoutingContext event) {
     try {

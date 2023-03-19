@@ -32,14 +32,6 @@ public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
     this.vertx = vertx;
   }
 
-  /**
-   * @param vertx Vert.x of ClientServiceVerticle
-   * @return NicoNicoHandler instance.
-   */
-  public static Handler<Message<Map<String, Object>>> create(Vertx vertx) {
-    return new NicoNicoHandler(vertx);
-  }
-
   @Override
   public void handle(Message<Map<String, Object>> requestEvent) {
 

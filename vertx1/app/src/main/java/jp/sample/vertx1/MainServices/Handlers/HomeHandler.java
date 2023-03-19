@@ -11,15 +11,6 @@ public class HomeHandler implements Handler<RoutingContext> {
   private static final MyLogger LOGGER = MyLogger.create(HomeHandler.class);
 
   /**
-   * Create BodyHandler class method.
-   *
-   * @return BodyHandler instance.
-   */
-  public static Handler<RoutingContext> create() {
-    return new HomeHandler();
-  }
-
-  /**
    * main method.
    *
    * @param event vert.x RoutingContext data.
