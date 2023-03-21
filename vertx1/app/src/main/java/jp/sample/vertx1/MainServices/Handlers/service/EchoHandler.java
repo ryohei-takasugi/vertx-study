@@ -1,16 +1,27 @@
-package jp.sample.vertx1.MainServices.Handlers;
+package jp.sample.vertx1.MainServices.Handlers.service;
 
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import jp.sample.vertx1.MainServices.Modules.IResponse;
 import jp.sample.vertx1.share.MyLogger;
 
-public class HomeHandler implements Handler<RoutingContext>, IResponse<String> {
+public class EchoHandler implements Handler<RoutingContext>, IResponse<String> {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(HomeHandler.class);
+  private static final MyLogger LOGGER = MyLogger.create(EchoHandler.class);
 
-  protected HomeHandler() {}
+  /** config */
+  private final JsonObject config;
+
+  /**
+   * EchoHandler Contractor
+   *
+   * @param config config of boot parameter
+   */
+  protected EchoHandler(JsonObject config) {
+    this.config = config;
+  }
 
   /**
    * main method.
@@ -19,7 +30,7 @@ public class HomeHandler implements Handler<RoutingContext>, IResponse<String> {
    */
   @Override
   public void handle(RoutingContext event) {
-    success(event, "Hello Vert.x!!");
+    success(event, config.encodePrettily());
   }
 
   @Override

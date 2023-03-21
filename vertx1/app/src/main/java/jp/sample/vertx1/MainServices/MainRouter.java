@@ -8,12 +8,12 @@ import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.sstore.SessionStore;
-import jp.sample.vertx1.MainServices.Handlers.CallHandleFactory;
-import jp.sample.vertx1.MainServices.Handlers.ConvertHandleFactory;
-import jp.sample.vertx1.MainServices.Handlers.EchoHandleFactory;
 import jp.sample.vertx1.MainServices.Handlers.FailerHandleFactory;
-import jp.sample.vertx1.MainServices.Handlers.HomeHandleFactory;
 import jp.sample.vertx1.MainServices.Handlers.LoggerHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.service.CallHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.service.ConvertHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.service.EchoHandleFactory;
+import jp.sample.vertx1.MainServices.Handlers.service.HomeHandleFactory;
 import jp.sample.vertx1.MainServices.models.ContentType;
 
 /** Create Router */
