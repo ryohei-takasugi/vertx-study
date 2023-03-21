@@ -11,7 +11,7 @@ import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
 import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
 import jp.sample.vertx1.MainServices.Modules.IResponseRoutingContext;
 import jp.sample.vertx1.share.MyLogger;
-import jp.sample.vertx1.share.model.CallModel;
+import jp.sample.vertx1.share.model.CallEventBusModel;
 
 public class CallHandler implements Handler<RoutingContext>, IResponseRoutingContext<Buffer> {
 
@@ -50,7 +50,7 @@ public class CallHandler implements Handler<RoutingContext>, IResponseRoutingCon
   public void handle(RoutingContext event) {
     LOGGER.debug(event.session(), config.getString("sample"));
 
-    var request = CallModel.createRequest(event.session());
+    var request = CallEventBusModel.createRequest(event.session());
     var eb = event.vertx().eventBus();
     var fut = eb.request(ClientServiceVerticle.GET_ADDRESS, request, OPTIONS);
     fut.onSuccess(
