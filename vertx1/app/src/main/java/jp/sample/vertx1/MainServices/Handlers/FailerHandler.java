@@ -2,10 +2,10 @@ package jp.sample.vertx1.MainServices.Handlers;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
-import jp.sample.vertx1.MainServices.Modules.IResponse;
+import jp.sample.vertx1.MainServices.Modules.IResponseRoutingContext;
 import jp.sample.vertx1.share.MyLogger;
 
-public class FailerHandler implements Handler<RoutingContext>, IResponse<String> {
+public class FailerHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
 
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(FailerHandler.class);

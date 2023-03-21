@@ -9,11 +9,11 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
 import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
 import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
-import jp.sample.vertx1.MainServices.Modules.IResponse;
+import jp.sample.vertx1.MainServices.Modules.IResponseRoutingContext;
 import jp.sample.vertx1.share.MyLogger;
 import jp.sample.vertx1.share.model.CallModel;
 
-public class CallHandler implements Handler<RoutingContext>, IResponse<Buffer> {
+public class CallHandler implements Handler<RoutingContext>, IResponseRoutingContext<Buffer> {
 
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(CallHandler.class);

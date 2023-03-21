@@ -2,7 +2,7 @@ package jp.sample.vertx1.MainServices.Modules;
 
 import io.vertx.ext.web.RoutingContext;
 
-public interface IResponse<E> {
+public interface IResponseRoutingContext<E> {
 
   static final int SUCCESS_STATUS_CODE = 200;
   static final int FAILED_STATUS_CODE = 500;

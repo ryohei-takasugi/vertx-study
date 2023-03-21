@@ -3,10 +3,10 @@ package jp.sample.vertx1.MainServices.Handlers.service;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import jp.sample.vertx1.MainServices.Modules.IResponse;
+import jp.sample.vertx1.MainServices.Modules.IResponseRoutingContext;
 import jp.sample.vertx1.share.MyLogger;
 
-public class EchoHandler implements Handler<RoutingContext>, IResponse<String> {
+public class EchoHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
 
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(EchoHandler.class);
