@@ -107,12 +107,23 @@ public class NicoNicoModel {
   /** Logger */
   // private static final Logger LOGGER = LoggerFactory.getLogger(NicoNicoModel.class);
 
+  /** リクエストID */
   private final String id;
 
+  /** 検索ヒット件数 */
   private final Integer totalCount;
+
+  /** HTTPステータス */
   private final Integer status;
+
+  /** ヒットしたコンテンツ。要素の内容はパラメータfieldsによって異なります */
   private Map<String, Object> entities = new HashMap<String, Object>();
 
+  /**
+   * コンストラクタ
+   *
+   * @param response ニコニコ動画 『スナップショット検索API v2』から取得したJsonObject
+   */
   public NicoNicoModel(JsonObject response) {
     if (response == null || response.isEmpty()) {
       throw new IllegalArgumentException("response data is null");

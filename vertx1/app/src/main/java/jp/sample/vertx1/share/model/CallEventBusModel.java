@@ -3,13 +3,11 @@ package jp.sample.vertx1.share.model;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Session;
-import java.util.HashMap;
-import java.util.Map;
 import jp.sample.vertx1.share.MyLogger;
 
-public class CallModel {
+public class CallEventBusModel implements IEventBusModel {
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(CallModel.class);
+  private static final MyLogger LOGGER = MyLogger.create(CallEventBusModel.class);
 
   private final String sessionId;
   private final HttpMethod method;
@@ -18,8 +16,8 @@ public class CallModel {
   private final boolean ssl;
   private final String uri;
 
-  public static Map<String, Object> createRequest(Session session) {
-    Map<String, Object> request = new HashMap<String, Object>();
+  public static JsonObject createRequest(Session session) {
+    var request = new JsonObject();
     request.put("sessionId", session.id());
     request.put("method", HttpMethod.GET.toString());
     request.put("host", "api.search.nicovideo.jp");
@@ -28,41 +26,41 @@ public class CallModel {
     request.put(
         "uri",
         "/api/v2/snapshot/video/contents/search?q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide");
-    LOGGER.debug(session, request.toString());
+    LOGGER.debug(session, request.encode());
     return request;
   }
 
-  public CallModel(Map<String, Object> body) {
+  public CallEventBusModel(JsonObject body) {
     if (body.isEmpty()) {
       new IllegalArgumentException();
     }
-    if (body.get("sessionId") instanceof String) {
-      this.sessionId = (String) body.get("sessionId");
+    if (body.containsKey("sessionId")) {
+      this.sessionId = body.getString("sessionId");
     } else {
       this.sessionId = null;
     }
-    if (body.get("method") instanceof HttpMethod) {
-      this.method = (HttpMethod) body.get("method");
+    if (body.containsKey("method")) {
+      this.method = HttpMethod.valueOf(body.getString("method"));
     } else {
       this.method = HttpMethod.GET;
     }
-    if (body.get("host") instanceof String) {
-      this.host = (String) body.get("host");
+    if (body.containsKey("host")) {
+      this.host = body.getString("host");
     } else {
       this.host = "localhost";
     }
-    if (body.get("port") instanceof Number) {
-      this.port = (int) body.get("port");
+    if (body.containsKey("port")) {
+      this.port = body.getNumber("port").intValue();
     } else {
       this.port = 80;
     }
-    if (body.get("ssl") instanceof Boolean) {
-      this.ssl = (Boolean) body.get("ssl");
+    if (body.containsKey("ssl")) {
+      this.ssl = body.getBoolean("ssl");
     } else {
       this.ssl = true;
     }
-    if (body.get("uri") instanceof String) {
-      this.uri = (String) body.get("uri");
+    if (body.containsKey("uri")) {
+      this.uri = body.getString("uri");
     } else {
       this.uri = "/";
     }
