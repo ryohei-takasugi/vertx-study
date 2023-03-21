@@ -1,38 +1,34 @@
 package jp.sample.vertx1.MainServices.Handlers;
 
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
-import java.util.Map;
 import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
 import jp.sample.vertx1.ClientServices.Models.NicoNicoModel;
+import jp.sample.vertx1.MainServices.Modules.IResponse;
 import jp.sample.vertx1.share.MyLogger;
 import jp.sample.vertx1.share.model.CallModel;
 
-public class CallHandler implements Handler<RoutingContext> {
+public class CallHandler implements Handler<RoutingContext>, IResponse<Buffer> {
 
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(CallHandler.class);
 
-  /** Vertx */
-  private final Vertx vertx;
-
   /** config */
-  private final JsonObject config;
+  protected final JsonObject config;
 
   /** TemplateEngine */
   private final ThymeleafTemplateEngine engine;
 
   /** index.html file */
   private static final String INDEX = "templates/index.html";
+
+  /** Request Option to send to the event bus */
+  private static final DeliveryOptions OPTIONS = new DeliveryOptions().setSendTimeout(3000);
 
   /**
    * CallHandler Contractor
@@ -41,7 +37,6 @@ public class CallHandler implements Handler<RoutingContext> {
    * @param config config of boot parameter
    */
   protected CallHandler(Vertx vertx, JsonObject config) {
-    this.vertx = vertx;
     this.config = config;
     this.engine = ThymeleafTemplateEngine.create(vertx);
   }
@@ -53,44 +48,68 @@ public class CallHandler implements Handler<RoutingContext> {
    */
   @Override
   public void handle(RoutingContext event) {
-    Map<String, Object> request = CallModel.createRequest(event.session());
-    HttpServerResponse response = event.response();
-
-    LOGGER.debug(event.session(), request.toString());
     LOGGER.debug(event.session(), config.getString("sample"));
 
-    EventBus eb = vertx.eventBus();
-    DeliveryOptions option = new DeliveryOptions().setSendTimeout(3000);
-    Future<Message<Object>> fut = eb.request(ClientServiceVerticle.GET_ADDRESS, request, option);
+    var request = CallModel.createRequest(event.session());
+    var eb = event.vertx().eventBus();
+    var fut = eb.request(ClientServiceVerticle.GET_ADDRESS, request, OPTIONS);
     fut.onSuccess(
-            niconico -> {
-              JsonObject resbody = (JsonObject) niconico.body();
-              LOGGER.debug(event.session(), "resbody: " + resbody.encodePrettily());
-              NicoNicoModel model = new NicoNicoModel(resbody);
-              if (model.status() == 200) {
-                Future<Buffer> futEng = engine.render(model.entities(), INDEX);
-                futEng
-                    .onSuccess(
-                        html -> {
-                          response.setStatusCode(200);
-                          response.end(html);
-                        })
-                    .onFailure(
-                        th -> {
-                          event.fail(th);
-                        });
-              } else {
-                response.setStatusCode(500);
-                response.setStatusMessage("Could not get information from Niconico Douga");
-                event.failed();
+            clientResponse -> {
+              if (clientResponse == null || !(clientResponse.body() instanceof JsonObject)) {
+                var message = "Could not get information from Niconico Douga";
+                failed(event, FAILED_STATUS_CODE, message);
+                return;
               }
+
+              var responseBody = (JsonObject) clientResponse.body();
+              LOGGER.debug(event.session(), "responseBody: " + responseBody.encodePrettily());
+
+              var model = new NicoNicoModel(responseBody);
+              if (model.status() != 200) {
+                var message = "Could not get information from Niconico Douga";
+                failed(event, FAILED_STATUS_CODE, message);
+                return;
+              }
+              var futEng = engine.render(model.entities(), INDEX);
+              futEng
+                  .onSuccess(
+                      html -> {
+                        success(event, html);
+                        return;
+                      })
+                  .onFailure(
+                      th -> {
+                        var message = "Web client error";
+                        failed(event, FAILED_STATUS_CODE, message, th);
+                        return;
+                      });
             })
         .onFailure(
             th -> {
-              response.setStatusCode(500);
-              response.setStatusMessage("Web client error");
-              LOGGER.error(event.session(), "web client error", th);
-              event.fail(th);
+              var message = "Web client error";
+              failed(event, FAILED_STATUS_CODE, message, th);
+              return;
             });
+  }
+
+  @Override
+  public void success(RoutingContext event, Buffer html) {
+    LOGGER.info(event.session(), "response HTML FILE");
+    var response = event.response();
+    response.setStatusCode(SUCCESS_STATUS_CODE);
+    response.end(html);
+  }
+
+  @Override
+  public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
+    LOGGER.error(event.session(), errorMessage, th);
+    var response = event.response();
+    response.setStatusCode(statusCode);
+    response.setStatusMessage(errorMessage);
+    response.end();
+  }
+
+  public void failed(RoutingContext event, int statusCode, String message) {
+    failed(event, statusCode, message, null);
   }
 }

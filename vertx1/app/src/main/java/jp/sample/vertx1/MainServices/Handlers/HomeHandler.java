@@ -1,11 +1,11 @@
 package jp.sample.vertx1.MainServices.Handlers;
 
 import io.vertx.core.Handler;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
+import jp.sample.vertx1.MainServices.Modules.IResponse;
 import jp.sample.vertx1.share.MyLogger;
 
-public class HomeHandler implements Handler<RoutingContext> {
+public class HomeHandler implements Handler<RoutingContext>, IResponse<String> {
 
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(HomeHandler.class);
@@ -19,9 +19,19 @@ public class HomeHandler implements Handler<RoutingContext> {
    */
   @Override
   public void handle(RoutingContext event) {
-    LOGGER.info(event.session(), "home");
-    HttpServerResponse response = event.response();
-    response.setStatusCode(200);
-    response.end("Hello Vert.x!!");
+    success(event, "Hello Vert.x!!");
+  }
+
+  @Override
+  public void success(RoutingContext event, String object) {
+    LOGGER.info(event.session(), object);
+    var response = event.response();
+    response.setStatusCode(SUCCESS_STATUS_CODE);
+    response.end(object);
+  }
+
+  @Override
+  public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
+    // not used
   }
 }

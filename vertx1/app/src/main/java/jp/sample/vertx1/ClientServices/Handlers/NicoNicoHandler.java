@@ -1,15 +1,10 @@
 package jp.sample.vertx1.ClientServices.Handlers;
 
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.Message;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.client.HttpRequest;
-import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import java.util.Map;
 import jp.sample.vertx1.share.MyLogger;
@@ -35,17 +30,17 @@ public class NicoNicoHandler implements Handler<Message<Map<String, Object>>> {
   @Override
   public void handle(Message<Map<String, Object>> requestEvent) {
 
-    CallModel model = new CallModel(requestEvent.body());
-    HttpMethod method = model.method();
-    RequestOptions option = new RequestOptions(model.toJson());
+    var model = new CallModel(requestEvent.body());
+    var method = model.method();
+    var option = new RequestOptions(model.toJson());
 
     LOGGER.debug(model.sessionId(), model.toJson().encodePrettily());
 
-    WebClient client = WebClient.create(vertx);
-    HttpRequest<Buffer> request = client.request(method, option);
+    var client = WebClient.create(vertx);
+    var request = client.request(method, option);
 
-    Future<HttpResponse<Buffer>> fut = request.send();
-    JsonObject reply = new JsonObject();
+    var fut = request.send();
+    var reply = new JsonObject();
     fut.onSuccess(
             response -> {
               LOGGER.info(model.sessionId(), Integer.toString(response.statusCode()));
