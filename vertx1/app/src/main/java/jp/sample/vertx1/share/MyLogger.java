@@ -22,14 +22,13 @@ public class MyLogger {
   }
 
   private String getStringSessionId(Object s) {
-    switch (s.getClass().getName()) {
-      case "io.vertx.ext.web.Session":
-        Session session = (Session) s;
-        return session.id();
-      case "java.lang.String":
-        return s.toString();
-      default:
-        return "";
+    if (s instanceof Session) {
+      Session session = (Session) s;
+      return session.id();
+    } else if (s instanceof String) {
+      return s.toString();
+    } else {
+      return "";
     }
   }
 
@@ -41,6 +40,8 @@ public class MyLogger {
   public void info(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
+      LOGGER.info("[Blank] {}", msg);
+    } else {
       LOGGER.info("[{}] {}", strSessionId, msg);
     }
   }
@@ -53,6 +54,8 @@ public class MyLogger {
   public void warn(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
+      LOGGER.warn("[Blank] {}", msg);
+    } else {
       LOGGER.warn("[{}] {}", strSessionId, msg);
     }
   }
@@ -65,6 +68,8 @@ public class MyLogger {
   public void error(Object session, String msg, Throwable t) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
+      LOGGER.error("[Blank] {}", msg, t);
+    } else {
       LOGGER.error("[{}] {}", strSessionId, msg, t);
     }
   }
@@ -76,8 +81,10 @@ public class MyLogger {
    */
   public void debug(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
-    if (strSessionId.isBlank()) {
-      if (DEBUG_ENABLED) {
+    if (DEBUG_ENABLED) {
+      if (strSessionId.isBlank()) {
+        LOGGER.debug("[Blank] {}", msg);
+      } else {
         LOGGER.debug("[{}] {}", strSessionId, msg);
       }
     }
@@ -90,8 +97,10 @@ public class MyLogger {
    */
   public void trace(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
-    if (strSessionId.isBlank()) {
-      if (TRACE_ENABLED) {
+    if (TRACE_ENABLED) {
+      if (strSessionId.isBlank()) {
+        LOGGER.trace("[Blank] {}", msg);
+      } else {
         LOGGER.trace("[{}] {}", strSessionId, msg);
       }
     }
