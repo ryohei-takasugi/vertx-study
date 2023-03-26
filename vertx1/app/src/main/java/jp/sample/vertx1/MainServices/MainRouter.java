@@ -31,9 +31,9 @@ public class MainRouter {
   }
 
   public MainRouter(Vertx v, JsonObject c) {
-    router = Router.router(v);
-    vertx = v;
-    config = c;
+    this.router = Router.router(v);
+    this.vertx = v;
+    this.config = c;
   }
 
   private Router createRouter() {
@@ -45,9 +45,15 @@ public class MainRouter {
     router.route().handler(ResponseContentTypeHandler.create());
 
     /** session */
-    final SessionStore store = SessionStore.create(vertx);
-    store.createSession(10000);
-    router.route().handler(SessionHandler.create(store));
+    // final LocalSessionStore store = LocalSessionStore.create(vertx);
+    // store.createSession(10000);
+    router
+        .route()
+        .handler(
+            SessionHandler.create(SessionStore.create(vertx))
+                .setCookieHttpOnlyFlag(true)
+                .setCookieMaxAge(60)
+                .setSessionTimeout(60));
 
     /** access logger */
     router.route().handler(LoggerHandleFactory.create());
