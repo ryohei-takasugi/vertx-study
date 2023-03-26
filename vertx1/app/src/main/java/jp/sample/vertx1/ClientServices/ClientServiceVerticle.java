@@ -6,11 +6,12 @@ import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;
 import jp.sample.vertx1.ClientServices.Handlers.NicoNicoHandleFactory;
+import jp.sample.vertx1.share.MyLogger;
 
 public class ClientServiceVerticle extends AbstractVerticle {
 
   /** logger. */
-  // private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceVerticle.class);
+  private static final MyLogger LOGGER = MyLogger.create(ClientServiceVerticle.class);
 
   /** event bus address */
   public static final String GET_ADDRESS = "web-client:GET";
@@ -28,6 +29,7 @@ public class ClientServiceVerticle extends AbstractVerticle {
     nico.completionHandler(
         ar -> {
           if (ar.failed()) {
+            LOGGER.info("common", "success consumer");
             startPromise.fail(ar.cause());
           }
           startPromise.complete();

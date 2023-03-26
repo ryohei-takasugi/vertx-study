@@ -12,7 +12,8 @@ import jp.sample.vertx1.share.MyLogger;
 import org.w3c.dom.Document;
 
 /** PUT されたリクエストのBodyからXMLファイルを取得して、Jsonに変換後、Jsonをレスポンスとして返します。 */
-public class ConvertHandler implements Handler<RoutingContext>, IResponseRoutingContext<JsonObject> {
+public class ConvertHandler
+    implements Handler<RoutingContext>, IResponseRoutingContext<JsonObject> {
 
   /** Logger */
   private static final MyLogger LOGGER = MyLogger.create(ConvertHandler.class);
