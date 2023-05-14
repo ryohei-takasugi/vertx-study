@@ -3,6 +3,6 @@
     "port": 8080
   },
   "app": {
-    "sample": "test"
+    "sample": "test_github_actions"
   }
 }
