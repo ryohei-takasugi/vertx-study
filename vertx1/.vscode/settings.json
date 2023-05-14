@@ -4,5 +4,6 @@
     "**/.git": false,
     "**/.hg": false,
     "**/.svn": false
-  }
+  },
+  "sarif-viewer.connectToGithubCodeScanning": "on"
 }
