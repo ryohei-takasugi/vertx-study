@@ -1,0 +1,85 @@
+13:09:56.313 DEBUG [main] i.v.c.l.LoggerFactory [?:?] Using io.vertx.core.logging.SLF4JLogDelegateFactory
+13:09:56.354 DEBUG [main] i.n.u.i.l.InternalLoggerFactory [InternalLoggerFactory.java:63] Using SLF4J as the default logging framework
+13:09:56.356 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:495] -Dio.netty.noUnsafe: false
+13:09:56.356 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:998] Java version: 11
+13:09:56.358 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:136] sun.misc.Unsafe.theUnsafe: available
+13:09:56.360 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:160] sun.misc.Unsafe.copyMemory: available
+13:09:56.361 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:192] sun.misc.Unsafe.storeFence: available
+13:09:56.362 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:235] java.nio.Buffer.address: available
+13:09:56.363 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:319] direct buffer constructor: unavailable: Reflective setAccessible(true) disabled
+13:09:56.364 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:384] java.nio.Bits.unaligned: available, true
+13:09:56.365 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:451] jdk.internal.misc.Unsafe.allocateUninitializedArray(int): unavailable: class io.netty.util.internal.PlatformDependent0$7 cannot access class jdk.internal.misc.Unsafe (in module java.base) because module java.base does not export jdk.internal.misc to unnamed module @3c419631
+13:09:56.366 DEBUG [main] i.n.u.i.PlatformDependent0 [PlatformDependent0.java:481] java.nio.DirectByteBuffer.<init>(long, int): unavailable
+13:09:56.367 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:1120] sun.misc.Unsafe: available
+13:09:56.377 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:1231] maxDirectMemory: 3137339392 bytes (maybe)
+13:09:56.377 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:1250] -Dio.netty.tmpdir: /tmp (java.io.tmpdir)
+13:09:56.378 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:1329] -Dio.netty.bitMode: 64 (sun.arch.data.model)
+13:09:56.380 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:178] -Dio.netty.maxDirectMemory: -1 bytes
+13:09:56.381 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:185] -Dio.netty.uninitializedArrayAllocationThreshold: -1
+13:09:56.391 DEBUG [main] i.n.u.i.CleanerJava9 [CleanerJava9.java:71] java.nio.ByteBuffer.cleaner(): available
+13:09:56.392 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:205] -Dio.netty.noPreferDirect: false
+13:09:56.399 DEBUG [main] i.n.u.ResourceLeakDetector [ResourceLeakDetector.java:129] -Dio.netty.leakDetection.level: simple
+13:09:56.400 DEBUG [main] i.n.u.ResourceLeakDetector [ResourceLeakDetector.java:130] -Dio.netty.leakDetection.targetRecords: 4
+13:09:56.411 DEBUG [main] i.n.c.MultithreadEventLoopGroup [MultithreadEventLoopGroup.java:44] -Dio.netty.eventLoopThreads: 8
+13:09:56.420 DEBUG [main] i.n.u.i.InternalThreadLocalMap [InternalThreadLocalMap.java:86] -Dio.netty.threadLocalMap.stringBuilder.initialSize: 1024
+13:09:56.421 DEBUG [main] i.n.u.i.InternalThreadLocalMap [InternalThreadLocalMap.java:89] -Dio.netty.threadLocalMap.stringBuilder.maxSize: 4096
+13:09:56.425 DEBUG [main] i.n.c.n.NioEventLoop [NioEventLoop.java:109] -Dio.netty.noKeySetOptimization: false
+13:09:56.426 DEBUG [main] i.n.c.n.NioEventLoop [NioEventLoop.java:110] -Dio.netty.selectorAutoRebuildThreshold: 512
+13:09:56.430 DEBUG [main] i.n.u.i.PlatformDependent [PlatformDependent.java:971] org.jctools-core.MpscChunkedArrayQueue: available
+13:09:56.456 DEBUG [main] i.n.r.d.DefaultDnsServerAddressStreamProvider [DefaultDnsServerAddressStreamProvider.java:80] Default DNS servers: [/127.0.0.11:53] (sun.net.dns.ResolverConfiguration)
+13:09:56.459 DEBUG [main] i.n.u.NetUtil [NetUtil.java:136] -Djava.net.preferIPv4Stack: false
+13:09:56.460 DEBUG [main] i.n.u.NetUtil [NetUtil.java:137] -Djava.net.preferIPv6Addresses: false
+13:09:56.462 DEBUG [main] i.n.u.NetUtilInitializations [NetUtilInitializations.java:129] Loopback interface: lo (lo, 127.0.0.1)
+13:09:56.464 DEBUG [main] i.n.u.NetUtil [NetUtil.java:173] /proc/sys/net/core/somaxconn: 4096
+13:09:56.473 DEBUG [main] i.n.r.DefaultHostsFileEntriesResolver [DefaultHostsFileEntriesResolver.java:53] -Dio.netty.hostsFileRefreshInterval: 0
+13:09:56.537 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:157] -Dio.netty.allocator.numHeapArenas: 8
+13:09:56.538 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:158] -Dio.netty.allocator.numDirectArenas: 8
+13:09:56.539 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:160] -Dio.netty.allocator.pageSize: 8192
+13:09:56.540 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:165] -Dio.netty.allocator.maxOrder: 9
+13:09:56.540 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:169] -Dio.netty.allocator.chunkSize: 4194304
+13:09:56.541 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:170] -Dio.netty.allocator.smallCacheSize: 256
+13:09:56.541 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:171] -Dio.netty.allocator.normalCacheSize: 64
+13:09:56.542 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:172] -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+13:09:56.543 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:173] -Dio.netty.allocator.cacheTrimInterval: 8192
+13:09:56.543 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:174] -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+13:09:56.544 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:175] -Dio.netty.allocator.useCacheForAllThreads: false
+13:09:56.544 DEBUG [vert.x-eventloop-thread-2] i.n.b.PooledByteBufAllocator [PooledByteBufAllocator.java:176] -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+13:09:56.559 DEBUG [vert.x-eventloop-thread-2] i.n.c.DefaultChannelId [DefaultChannelId.java:79] -Dio.netty.processId: 66176 (auto-detected)
+13:09:56.561 DEBUG [vert.x-eventloop-thread-2] i.n.c.DefaultChannelId [DefaultChannelId.java:101] -Dio.netty.machineId: 02:42:ac:ff:fe:14:00:02 (auto-detected)
+13:09:56.571 DEBUG [vert.x-eventloop-thread-2] i.n.b.ByteBufUtil [ByteBufUtil.java:87] -Dio.netty.allocator.type: pooled
+13:09:56.571 DEBUG [vert.x-eventloop-thread-2] i.n.b.ByteBufUtil [ByteBufUtil.java:96] -Dio.netty.threadLocalDirectBufferSize: 0
+13:09:56.572 DEBUG [vert.x-eventloop-thread-2] i.n.b.ByteBufUtil [ByteBufUtil.java:99] -Dio.netty.maxThreadLocalCharBufferSize: 16384
+13:09:56.587 INFO  [vert.x-eventloop-thread-2] j.s.v.MainServiceVerticle [MainServiceVerticle.java:35] listen start. port: 8080
+13:09:56.589 INFO  [vert.x-eventloop-thread-0] i.v.c.i.l.c.VertxIsolatedDeployer [?:?] Succeeded in deploying verticle
+13:09:59.203 DEBUG [vert.x-eventloop-thread-2] i.n.u.Recycler [Recycler.java:85] -Dio.netty.recycler.maxCapacityPerThread: 4096
+13:09:59.204 DEBUG [vert.x-eventloop-thread-2] i.n.u.Recycler [Recycler.java:86] -Dio.netty.recycler.ratio: 8
+13:09:59.204 DEBUG [vert.x-eventloop-thread-2] i.n.u.Recycler [Recycler.java:87] -Dio.netty.recycler.chunkSize: 32
+13:09:59.205 DEBUG [vert.x-eventloop-thread-2] i.n.u.Recycler [Recycler.java:88] -Dio.netty.recycler.blocking: false
+13:09:59.209 DEBUG [vert.x-eventloop-thread-2] i.n.b.AbstractByteBuf [AbstractByteBuf.java:63] -Dio.netty.buffer.checkAccessible: true
+13:09:59.209 DEBUG [vert.x-eventloop-thread-2] i.n.b.AbstractByteBuf [AbstractByteBuf.java:64] -Dio.netty.buffer.checkBounds: true
+13:09:59.211 DEBUG [vert.x-eventloop-thread-2] i.n.u.ResourceLeakDetectorFactory [ResourceLeakDetectorFactory.java:196] Loaded default ResourceLeakDetector: io.netty.util.ResourceLeakDetector@be41640
+13:09:59.234 DEBUG [vert.x-eventloop-thread-2] i.n.h.c.c.ZlibCodecFactory [ZlibCodecFactory.java:39] -Dio.netty.noJdkZlibDecoder: false
+13:09:59.235 DEBUG [vert.x-eventloop-thread-2] i.n.h.c.c.ZlibCodecFactory [ZlibCodecFactory.java:42] -Dio.netty.noJdkZlibEncoder: false
+13:09:59.252 DEBUG [vert.x-eventloop-thread-2] i.v.e.w.h.i.SessionHandlerImpl [?:?] Using session cookies without https could make you susceptible to session hijacking: http://localhost:8080/echo
+13:09:59.261 INFO  [vert.x-eventloop-thread-2] j.s.v.h.m.EchoHandler [MyLogger.java:45] [404ea66f5eb3412e1055b56bc456eb70] {
+  "main-verticle" : {
+    "http-options" : {
+      "port" : 8080
+    },
+    "app" : {
+      "sample" : "test_github_actions"
+    }
+  },
+  "api-verticle" : {
+    "http-options" : {
+      "port" : 8080
+    },
+    "app" : {
+      "sample" : "sample"
+    }
+  }
+}
+13:09:59.269 INFO  [vert.x-eventloop-thread-2] j.s.v.h.m.LoggerHandler [LoggerHandler.java:101] remoteClient:127.0.0.1 sessionId:404ea66f5eb3412e1055b56bc456eb70 [2023-08-26 13:09:59.257] "GET /echo HTTP/1.1" status:200 Content-Length:260 referrer:"-" userAgent:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" ExecutionTime:"11"ms
+13:09:59.294 DEBUG [vert.x-eventloop-thread-2] i.v.e.w.h.i.SessionHandlerImpl [?:?] Using session cookies without https could make you susceptible to session hijacking: http://localhost:8080/favicon.ico
+13:09:59.296 WARN  [vert.x-eventloop-thread-2] j.s.v.h.m.LoggerHandler [LoggerHandler.java:99] remoteClient:127.0.0.1 sessionId:404ea66f5eb3412e1055b56bc456eb70 [2023-08-26 13:09:59.295] "GET /favicon.ico HTTP/1.1" status:405 Content-Length:0 referrer:"http://localhost:8080/echo" userAgent:"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" ExecutionTime:"0"ms
+13:10:19.642 DEBUG [vert.x-eventloop-thread-2] i.n.b.PoolThreadCache [PoolThreadCache.java:224] Freed 3 thread-local buffer(s) from thread: vert.x-eventloop-thread-2

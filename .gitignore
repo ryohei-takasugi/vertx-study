@@ -1,6 +1,6 @@
 .gradle
 build/
-bin/
+vertx1/app/bin
 .settings
 
 # Ignore VertX file cache
@@ -32,3 +32,6 @@ log/
 
 # 
 .project
+
+# shadowjar sample
+!app-shadow-1.0.0-SNAPSHOT/
