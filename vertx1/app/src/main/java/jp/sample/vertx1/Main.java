@@ -3,15 +3,10 @@
  */
 package jp.sample.vertx1;
 
-import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Future;
 import io.vertx.core.Promise;
-import io.vertx.core.json.JsonObject;
-import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
-import jp.sample.vertx1.MainServices.MainServiceVerticle;
 
 /** main. */
 public class Main extends AbstractVerticle {
@@ -23,29 +18,17 @@ public class Main extends AbstractVerticle {
    */
   @Override
   public void start(Promise<Void> startPromise) {
-    // ConfigRetrieverクラスを使用して設定ファイル(config)を読み込む
-    final Future<JsonObject> load = ConfigRetriever.create(vertx).getConfig();
 
-    // 設定ファイルが正常に読み込まれた場合の処理
-    load.onSuccess(
-            config -> {
-              if (config == null || config.isEmpty()) {
-                // 設定ファイルがnullまたは空である場合、初期化エラーにする
-                startPromise.fail(new IllegalArgumentException("Config file is required"));
-                return;
-              }
-              // デプロイオプションに設定を設定する
-              final DeploymentOptions options = new DeploymentOptions().setConfig(config);
-              // MainServiceVerticleとClientServiceVerticleをデプロイする
-              final Future<String> main = vertx.deployVerticle(MainServiceVerticle.class, options);
-              final Future<String> client =
-                  vertx.deployVerticle(ClientServiceVerticle.class, options);
+    // デプロイオプションに設定を設定する
+    final DeploymentOptions options = new DeploymentOptions().setConfig(config());
 
-              // デプロイ完了時の処理
-              CompositeFuture.all(main, client)
-                  .onSuccess(ar -> startPromise.complete()) // 成功した場合、Promiseを完了させる
-                  .onFailure(startPromise::fail); // 失敗した場合、Promiseを失敗させる
-            })
-        .onFailure(startPromise::fail); // 設定ファイルを読み込めなかった場合、Promiseを失敗させる
+    // MainServiceVerticleとClientServiceVerticleをデプロイする
+    final var main = vertx.deployVerticle(MainServiceVerticle.class, options);
+    final var client = vertx.deployVerticle(ApiServiceVerticle.class, options);
+
+    // デプロイ完了時の処理
+    CompositeFuture.all(main, client)
+        .onSuccess(ar -> startPromise.complete()) // 成功した場合、Promiseを完了させる
+        .onFailure(th -> startPromise.fail(th)); // 失敗した場合、Promiseを失敗させる
   }
 }

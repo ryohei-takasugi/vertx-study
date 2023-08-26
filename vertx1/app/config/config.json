@@ -1,8 +1,18 @@
 {
-  "http": {
-    "port": 8080
+  "main-verticle": {
+    "http-options": {
+      "port": 8080
+    },
+    "app": {
+      "sample": "test_github_actions"
+    }
   },
-  "app": {
-    "sample": "test_github_actions"
+  "api-verticle": {
+    "http-options": {
+      "port": 8080
+    },
+    "app": {
+      "sample": "sample"
+    }
   }
 }

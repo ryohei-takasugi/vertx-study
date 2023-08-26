@@ -45,7 +45,9 @@ public class AbstractTest {
     JsonObject clientCofig = new JsonObject();
     clientCofig.put("method", method.name());
     clientCofig.put("host", "localhost");
-    clientCofig.put("port", config.getJsonObject("http").getInteger("port"));
+    clientCofig.put(
+        "port",
+        config.getJsonObject("main-verticle").getJsonObject("http-options").getInteger("port"));
     clientCofig.put("ssl", false);
     clientCofig.put("uri", uri);
 

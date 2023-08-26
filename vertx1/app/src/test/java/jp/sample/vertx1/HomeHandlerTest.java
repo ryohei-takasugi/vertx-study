@@ -12,7 +12,6 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import jp.sample.vertx1.MainServices.MainServiceVerticle;
 import jp.sample.vertx1.share.AbstractTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

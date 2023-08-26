@@ -22,15 +22,15 @@ ENV GRADLE_USER_HOME /opt/gradle/gradle-${gradleVersion}
 ENV PATH $GRADLE_USER_HOME/bin:$PATH
 RUN gradle -v
 
-# install Maven
-RUN mkdir -p /opt/maven /opt/maven/ref
-WORKDIR /opt/maven
-RUN curl -sSOL "https://apache.osuosl.org/maven/maven-3/${maven3Version}/binaries/apache-maven-${maven3Version}-bin.tar.gz"
-RUN tar -zxvf apache-maven-${maven3Version}-bin.tar.gz
-RUN rm apache-maven-${maven3Version}-bin.tar.gz
-ENV MAVEN_HOME /opt/maven/apache-maven-${maven3Version}
-ENV PATH $MAVEN_HOME/bin:$PATH
-RUN mvn -version
+# # install Maven
+# RUN mkdir -p /opt/maven /opt/maven/ref
+# WORKDIR /opt/maven
+# RUN curl -sSOL "https://apache.osuosl.org/maven/maven-3/${maven3Version}/binaries/apache-maven-${maven3Version}-bin.tar.gz"
+# RUN tar -zxvf apache-maven-${maven3Version}-bin.tar.gz
+# RUN rm apache-maven-${maven3Version}-bin.tar.gz
+# ENV MAVEN_HOME /opt/maven/apache-maven-${maven3Version}
+# ENV PATH $MAVEN_HOME/bin:$PATH
+# RUN mvn -version
 
 # install Gauge ( not support aarch64 )
 # RUN mkdir /opt/gauge

@@ -6,8 +6,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import jp.sample.vertx1.ClientServices.ClientServiceVerticle;
-import jp.sample.vertx1.MainServices.MainServiceVerticle;
 import jp.sample.vertx1.share.AbstractTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +38,7 @@ public class BasicTest extends AbstractTest {
   void startClientServiceVerticle(Vertx vertx, VertxTestContext ctx) {
     JsonObject config = loadConfig(vertx);
     DeploymentOptions options = new DeploymentOptions().setConfig(config);
-    Future<String> fut = vertx.deployVerticle(new ClientServiceVerticle(), options);
+    Future<String> fut = vertx.deployVerticle(new ApiServiceVerticle(), options);
     fut.onSuccess(
             id -> {
               // 起動できたら成功

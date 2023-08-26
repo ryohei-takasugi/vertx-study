@@ -1,6 +1,6 @@
 package jp.sample.vertx1;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
@@ -12,7 +12,6 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import jp.sample.vertx1.MainServices.MainServiceVerticle;
 import jp.sample.vertx1.share.AbstractTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@DisplayName("CallHandlerに対する試験を行います")
+@DisplayName("NicoNicoPageに対する試験を行います")
 @ExtendWith(VertxExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
 public class ConvertHandlerTest extends AbstractTest {
