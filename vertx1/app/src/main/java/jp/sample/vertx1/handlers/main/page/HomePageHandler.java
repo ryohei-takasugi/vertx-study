@@ -1,4 +1,4 @@
-package jp.sample.vertx1.handlers.main;
+package jp.sample.vertx1.handlers.main.page;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;

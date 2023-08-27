@@ -1,4 +1,4 @@
-package jp.sample.vertx1.handlers.main;
+package jp.sample.vertx1.handlers.main.api;
 
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;

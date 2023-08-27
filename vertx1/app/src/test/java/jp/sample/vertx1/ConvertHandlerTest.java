@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class ConvertHandlerTest extends AbstractTest {
 
   /** テスト対象のURI */
-  private String uri = "/convert";
+  private String uri = "/prefix/api/convert";
 
   @BeforeAll
   @DisplayName("テスト対象を起動します")

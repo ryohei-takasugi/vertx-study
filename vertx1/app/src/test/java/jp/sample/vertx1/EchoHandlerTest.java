@@ -27,7 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class EchoHandlerTest extends AbstractTest {
 
   /** テスト対象のURI */
-  private String uri = "/echo";
+  private String uri = "/prefix/api/echo";
 
   @BeforeAll
   @DisplayName("テスト対象を起動します")

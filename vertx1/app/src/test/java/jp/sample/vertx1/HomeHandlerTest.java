@@ -1,6 +1,6 @@
 package jp.sample.vertx1;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class HomeHandlerTest extends AbstractTest {
 
   /** テスト対象のURI */
-  private String uri = "/";
+  private String uri = "/prefix/";
 
   @BeforeAll
   @DisplayName("テスト対象のVerticleを起動します")

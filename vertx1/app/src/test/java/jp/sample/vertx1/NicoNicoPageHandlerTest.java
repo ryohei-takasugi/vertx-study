@@ -29,7 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class NicoNicoPageHandlerTest extends AbstractTest {
 
   /** テスト対象のURI */
-  private String uri = "/call";
+  private String uri = "/prefix/call";
 
   private JsonObject responce = new JsonObject();
 

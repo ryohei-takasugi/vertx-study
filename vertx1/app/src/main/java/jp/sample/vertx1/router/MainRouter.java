@@ -6,8 +6,8 @@ import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.sstore.SessionStore;
-import jp.sample.vertx1.handlers.main.FailerHandleFactory;
 import jp.sample.vertx1.handlers.main.LoggerHandleFactory;
+import jp.sample.vertx1.handlers.main.page.FailerPageHandleFactory;
 import jp.sample.vertx1.models.config.Config;
 
 /** Create Router */
@@ -53,13 +53,16 @@ public class MainRouter {
     router.route().handler(LoggerHandleFactory.create());
 
     /** default 404 error page */
-    router.errorHandler(404, FailerHandleFactory.create(vertx));
+    router.errorHandler(404, FailerPageHandleFactory.create(vertx));
 
     /** default 500 error page */
-    router.errorHandler(500, FailerHandleFactory.create(vertx));
+    router.errorHandler(500, FailerPageHandleFactory.create(vertx));
 
-    /** Service Router */
-    router.route().path("/prefix/*").subRouter(ServerRouter.create(vertx, router, config));
+    /** api Service Router */
+    router.route().path("/prefix/api/*").subRouter(ApiServiceRouter.create(vertx, router, config));
+
+    /** page Service Router */
+    router.route().path("/prefix/*").subRouter(PageServiceRouter.create(vertx, router, config));
 
     return router;
   }
