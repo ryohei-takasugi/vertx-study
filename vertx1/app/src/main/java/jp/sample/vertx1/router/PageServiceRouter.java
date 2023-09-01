@@ -11,19 +11,19 @@ import jp.sample.vertx1.models.enumeration.ContentType;
 public class PageServiceRouter {
   public static Router create(Vertx vertx, Router router, Config config) {
 
-    /** root page */
+    /** common */
     router
-        .get("/")
+        .route()
         .produces(ContentType.HTML.getString())
-        .handler(HomePageHandleFactory.create())
         .failureHandler(FailerPageHandleFactory.create(vertx));
+
+    /** root page */
+    router.get("/").handler(HomePageHandleFactory.create());
 
     /** other web api call page */
     router
         .get("/call")
-        .produces(ContentType.HTML.getString())
-        .handler(NicoNicoPageHandleFactory.create(vertx, config.appOptions().toJson()))
-        .failureHandler(FailerPageHandleFactory.create(vertx));
+        .handler(NicoNicoPageHandleFactory.create(vertx, config.appOptions().toJson()));
 
     return router;
   }
