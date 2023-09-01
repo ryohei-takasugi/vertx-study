@@ -7,7 +7,7 @@ import io.vertx.core.json.JsonObject;
 
 public class NicoNicoHandleFactory {
   /** event bus address */
-  public static final String GET_ADDRESS = "web-client:GET";
+  public static final String GET_ADDRESS = "/my-service/nico-nico/get";
 
   /**
    * @param vertx Vert.x of ClientServiceVerticle
