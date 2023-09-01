@@ -8,7 +8,7 @@ import jp.sample.vertx1.modules.UriBuilder;
 
 public class NicoNicoRequest implements IEventBus {
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(NicoNicoRequest.class);
+  private static final HandlerLogger logger = HandlerLogger.create(NicoNicoRequest.class);
 
   private final LocalSession sessionId;
   private final HttpMethod method;
@@ -38,7 +38,7 @@ public class NicoNicoRequest implements IEventBus {
     request.put("port", 443);
     request.put("ssl", true);
     request.put("uri", uri.toString());
-    LOGGER.debug(session, request.encode());
+    logger.debug(session, request.encode());
     return request;
   }
 

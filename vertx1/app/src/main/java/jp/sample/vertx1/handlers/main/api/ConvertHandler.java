@@ -16,7 +16,7 @@ public class ConvertHandler
     implements Handler<RoutingContext>, IResponseRoutingContext<JsonObject> {
 
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(ConvertHandler.class);
+  private static final HandlerLogger logger = HandlerLogger.create(ConvertHandler.class);
 
   protected ConvertHandler() {}
 
@@ -49,7 +49,7 @@ public class ConvertHandler
 
   @Override
   public void success(RoutingContext event, JsonObject object) {
-    LOGGER.info(event.session(), object.encode());
+    logger.info(event.session(), object.encode());
     var response = event.response();
     response.setStatusCode(SUCCESS_STATUS_CODE);
     response.end(object.encode());
@@ -57,7 +57,7 @@ public class ConvertHandler
 
   @Override
   public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
-    LOGGER.error(event.session(), errorMessage, th);
+    logger.error(event.session(), errorMessage, th);
     var response = event.response();
     response.setStatusCode(statusCode);
     response.setStatusMessage(errorMessage);

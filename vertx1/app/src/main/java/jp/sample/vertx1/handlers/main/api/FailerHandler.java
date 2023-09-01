@@ -9,7 +9,7 @@ import jp.sample.vertx1.modules.HandlerLogger;
 public class FailerHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(FailerHandler.class);
+  private static final HandlerLogger logger = HandlerLogger.create(FailerHandler.class);
 
   protected FailerHandler(Config config) {}
 

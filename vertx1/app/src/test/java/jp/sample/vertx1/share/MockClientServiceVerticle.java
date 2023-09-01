@@ -1,16 +1,17 @@
 package jp.sample.vertx1.share;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MockClientServiceVerticle extends AbstractVerticle {
 
   /** logger. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(MockClientServiceVerticle.class);
+  private static final Logger logger = LoggerFactory.getLogger(MockClientServiceVerticle.class);
 
   /**
    * vert.x start.
@@ -27,7 +28,7 @@ public class MockClientServiceVerticle extends AbstractVerticle {
               JsonObject body = config().getJsonObject("returnJsonData");
               reply.put("status", 200);
               reply.put("body", body);
-              LOGGER.info(reply.encodePrettily());
+              logger.info(reply.encodePrettily());
               m.reply(reply);
             })
         .completionHandler(startPromise);

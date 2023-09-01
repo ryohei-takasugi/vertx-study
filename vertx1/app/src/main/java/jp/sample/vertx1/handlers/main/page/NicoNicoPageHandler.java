@@ -17,7 +17,7 @@ public class NicoNicoPageHandler
     implements Handler<RoutingContext>, IResponseRoutingContext<Buffer> {
 
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(NicoNicoPageHandler.class);
+  private static final HandlerLogger logger = HandlerLogger.create(NicoNicoPageHandler.class);
 
   /** config */
   protected final JsonObject config;
@@ -61,7 +61,7 @@ public class NicoNicoPageHandler
               }
 
               var responseBody = (JsonObject) clientResponse.body();
-              LOGGER.debug(event.session(), "responseBody: " + responseBody.encodePrettily());
+              logger.debug(event.session(), "responseBody: " + responseBody.encodePrettily());
 
               var model = new NicoNicoModel(responseBody);
               if (model.status() != 200) {
@@ -93,7 +93,7 @@ public class NicoNicoPageHandler
 
   @Override
   public void success(RoutingContext event, Buffer html) {
-    LOGGER.info(event.session(), "response HTML FILE");
+    logger.info(event.session(), "response HTML FILE");
     var response = event.response();
     response.setStatusCode(SUCCESS_STATUS_CODE);
     response.end(html);
@@ -101,7 +101,7 @@ public class NicoNicoPageHandler
 
   @Override
   public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
-    LOGGER.error(event.session(), errorMessage, th);
+    logger.error(event.session(), errorMessage, th);
     var response = event.response();
     response.setStatusCode(statusCode);
     response.setStatusMessage(errorMessage);

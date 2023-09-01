@@ -9,7 +9,7 @@ import jp.sample.vertx1.modules.HandlerLogger;
 public class FailerPageHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
 
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(FailerPageHandler.class);
+  private static final HandlerLogger logger = HandlerLogger.create(FailerPageHandler.class);
 
   private static final String File_404_PATH = "error/404.html";
   private static final String File_500_PATH = "error/500.html";
@@ -73,7 +73,7 @@ public class FailerPageHandler implements Handler<RoutingContext>, IResponseRout
 
   @Override
   public void failed(RoutingContext event, int statusCode, String filePath, Throwable th) {
-    LOGGER.error(event.session(), filePath, th);
+    logger.error(event.session(), filePath, th);
     var response = event.response();
     response.setStatusCode(statusCode);
     response.sendFile(filePath);
@@ -85,7 +85,7 @@ public class FailerPageHandler implements Handler<RoutingContext>, IResponseRout
 
   public void failedMessage(
       RoutingContext event, int statusCode, String errorMessage, Throwable th) {
-    LOGGER.error(event.session(), errorMessage, th);
+    logger.error(event.session(), errorMessage, th);
     var response = event.response();
     response.setStatusCode(statusCode);
     response.setStatusMessage(errorMessage);

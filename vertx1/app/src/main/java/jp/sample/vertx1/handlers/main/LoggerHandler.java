@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class LoggerHandler implements Handler<RoutingContext> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(LoggerHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(LoggerHandler.class);
 
   protected LoggerHandler() {}
 
@@ -94,11 +94,11 @@ public class LoggerHandler implements Handler<RoutingContext> {
 
   protected void doLog(int status, String message) {
     if (status >= 500) {
-      LOGGER.error(message);
+      logger.error(message);
     } else if (status >= 400) {
-      LOGGER.warn(message);
+      logger.warn(message);
     } else {
-      LOGGER.info(message);
+      logger.info(message);
     }
   }
 }

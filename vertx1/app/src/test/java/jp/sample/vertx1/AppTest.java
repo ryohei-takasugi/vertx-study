@@ -3,7 +3,18 @@
  */
 package jp.sample.vertx1;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
@@ -19,11 +30,6 @@ import io.vertx.ext.web.codec.BodyCodec;
 import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
@@ -32,7 +38,7 @@ import org.slf4j.LoggerFactory;
 @ExtendWith(VertxExtension.class)
 class SampleVerticleTest {
   /** logger. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(SampleVerticleTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(SampleVerticleTest.class);
 
   @Test
   @DisplayName("⏱ Count 3 timer ticks")
@@ -69,16 +75,16 @@ class SampleVerticleTest {
 
     FileSystem fs = vertx.fileSystem();
     Buffer config = fs.readFileBlocking("config/config.json");
-    LOGGER.info("@@@ config: {}", config.toJsonObject());
+    logger.info("@@@ config: {}", config.toJsonObject());
     DeploymentOptions option = new DeploymentOptions().setConfig(config.toJsonObject());
 
     Future<String> fut = vertx.deployVerticle(new MainServiceVerticle(), option);
     fut.onSuccess(
             id -> {
-              LOGGER.info("@@@ id: {}", id);
+              logger.info("@@@ id: {}", id);
               deploymentCheckpoint.flag();
               for (int i = 0; i < 10; i++) {
-                LOGGER.info("@@@ loop number: {}", i);
+                logger.info("@@@ loop number: {}", i);
                 Future<HttpResponse<String>> send = request.send();
                 send.onSuccess(
                     resp -> {
@@ -94,19 +100,19 @@ class SampleVerticleTest {
             })
         .onFailure(
             th -> {
-              LOGGER.error("deploy verticle error", th);
+              logger.error("deploy verticle error", th);
             });
     // vertx.deployVerticle(
     //     new Main(),
     //     new DeploymentOptions().setConfig(config.toJsonObject()).setInstances(1),
     //     testContext.succeeding(
     //         id -> {
-    //           LOGGER.info("@@@ id: {}", id);
+    //           logger.info("@@@ id: {}", id);
     //           deploymentCheckpoint.flag();
-    //           LOGGER.info("@@@ deploymentCheckpoint flag");
+    //           logger.info("@@@ deploymentCheckpoint flag");
 
     //           for (int i = 0; i < 10; i++) {
-    //             LOGGER.info("6 + {}", i);
+    //             logger.info("6 + {}", i);
     //             webClient
     //                 .get(8080, "localhost", "/")
     //                 .as(BodyCodec.string())

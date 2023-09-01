@@ -7,14 +7,14 @@ import io.vertx.ext.web.Session;
 
 public class HandlerLogger {
 
-  private final Logger LOGGER;
-  private final Boolean DEBUG_ENABLED;
-  private final Boolean TRACE_ENABLED;
+  private final Logger logger;
+  private final Boolean isDebugEnabled;
+  private final Boolean isTraceEnabled;
 
   private HandlerLogger(Logger l) {
-    LOGGER = l;
-    DEBUG_ENABLED = l.isDebugEnabled();
-    TRACE_ENABLED = l.isDebugEnabled() || l.isTraceEnabled();
+    logger = l;
+    isDebugEnabled = l.isDebugEnabled();
+    isTraceEnabled = l.isDebugEnabled() || l.isTraceEnabled();
   }
 
   public static HandlerLogger create(Class<?> clazz) {
@@ -41,9 +41,9 @@ public class HandlerLogger {
   public void info(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
-      LOGGER.info("[Blank] {}", msg);
+      logger.info("[Blank] {}", msg);
     } else {
-      LOGGER.info("[{}] {}", strSessionId, msg);
+      logger.info("[{}] {}", strSessionId, msg);
     }
   }
 
@@ -55,9 +55,9 @@ public class HandlerLogger {
   public void warn(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
-      LOGGER.warn("[Blank] {}", msg);
+      logger.warn("[Blank] {}", msg);
     } else {
-      LOGGER.warn("[{}] {}", strSessionId, msg);
+      logger.warn("[{}] {}", strSessionId, msg);
     }
   }
 
@@ -69,9 +69,9 @@ public class HandlerLogger {
   public void error(Object session, String msg, Throwable t) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
-      LOGGER.error("[Blank] {}", msg, t);
+      logger.error("[Blank] {}", msg, t);
     } else {
-      LOGGER.error("[{}] {}", strSessionId, msg, t);
+      logger.error("[{}] {}", strSessionId, msg, t);
     }
   }
 
@@ -82,11 +82,11 @@ public class HandlerLogger {
    */
   public void debug(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
-    if (DEBUG_ENABLED) {
+    if (isDebugEnabled) {
       if (strSessionId.isBlank()) {
-        LOGGER.debug("[Blank] {}", msg);
+        logger.debug("[Blank] {}", msg);
       } else {
-        LOGGER.debug("[{}] {}", strSessionId, msg);
+        logger.debug("[{}] {}", strSessionId, msg);
       }
     }
   }
@@ -98,11 +98,11 @@ public class HandlerLogger {
    */
   public void trace(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
-    if (TRACE_ENABLED) {
+    if (isTraceEnabled) {
       if (strSessionId.isBlank()) {
-        LOGGER.trace("[Blank] {}", msg);
+        logger.trace("[Blank] {}", msg);
       } else {
-        LOGGER.trace("[{}] {}", strSessionId, msg);
+        logger.trace("[{}] {}", strSessionId, msg);
       }
     }
   }

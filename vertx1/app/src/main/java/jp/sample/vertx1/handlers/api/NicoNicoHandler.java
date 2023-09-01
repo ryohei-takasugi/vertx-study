@@ -16,7 +16,7 @@ import jp.sample.vertx1.modules.HandlerLogger;
 public class NicoNicoHandler implements Handler<Message<JsonObject>>, IResponseEventBus {
 
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(NicoNicoHandler.class);
+  private static final HandlerLogger logger = HandlerLogger.create(NicoNicoHandler.class);
 
   /** vertx */
   private final Vertx vertx;
@@ -36,7 +36,7 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>>, IResponseE
     var model = new NicoNicoRequest(message.body());
     var option = new RequestOptions(model.toJson());
 
-    LOGGER.debug(model.sessionId(), model.toJson().encodePrettily());
+    logger.debug(model.sessionId(), model.toJson().encodePrettily());
 
     var client = WebClient.create(vertx);
     var request = client.request(model.method(), option);
@@ -59,7 +59,7 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>>, IResponseE
       String errorMessage,
       Throwable th) {
     var reply = new JsonObject();
-    LOGGER.error(model.sessionId(), errorMessage, th);
+    logger.error(model.sessionId(), errorMessage, th);
     reply.put("status", statusCode);
     reply.put("body", th.getMessage());
     message.reply(reply);
@@ -68,7 +68,7 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>>, IResponseE
   @Override
   public void success(Message<JsonObject> message, IEventBus model, HttpResponse<Buffer> object) {
     var reply = new JsonObject();
-    LOGGER.info(model.sessionId(), object.statusMessage());
+    logger.info(model.sessionId(), object.statusMessage());
     reply.put("status", object.statusCode());
     reply.put("body", object.bodyAsJsonObject());
     message.reply(reply);

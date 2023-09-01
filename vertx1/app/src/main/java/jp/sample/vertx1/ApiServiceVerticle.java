@@ -1,15 +1,17 @@
 package jp.sample.vertx1;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import jp.sample.vertx1.handlers.api.NicoNicoHandleFactory;
-import jp.sample.vertx1.modules.HandlerLogger;
 
 public class ApiServiceVerticle extends AbstractVerticle {
 
   /** logger. */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(ApiServiceVerticle.class);
+  private static final Logger logger = LoggerFactory.getLogger(ApiServiceVerticle.class);
 
   /**
    * vert.x start.
@@ -24,7 +26,7 @@ public class ApiServiceVerticle extends AbstractVerticle {
     nico.completionHandler(
         ar -> {
           if (ar.failed()) {
-            LOGGER.error("common", "consumer", ar.cause());
+            logger.error("Failed api service verticle. ", ar.cause());
             startPromise.fail(ar.cause());
           }
           startPromise.complete();

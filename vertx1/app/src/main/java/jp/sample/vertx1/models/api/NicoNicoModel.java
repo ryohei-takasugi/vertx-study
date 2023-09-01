@@ -1,12 +1,13 @@
 package jp.sample.vertx1.models.api;
 
-import io.vertx.core.json.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 // import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
+
+import io.vertx.core.json.JsonObject;
 
 // https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?q=%E5%88%9D%E9%9F%B3%E3%83%9F%E3%82%AF&targets=title&fields=contentId,title,viewCounter&filters[viewCounter][gte]=10000&_sort=-viewCounter&_offset=0&_limit=3&_context=apiguide
 /**
@@ -106,7 +107,7 @@ import java.util.Map;
 public class NicoNicoModel {
 
   /** Logger */
-  // private static final Logger LOGGER = LoggerFactory.getLogger(NicoNicoModel.class);
+  // private static final Logger logger = LoggerFactory.getLogger(NicoNicoModel.class);
 
   /** リクエストID */
   private final String id;

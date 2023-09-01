@@ -9,7 +9,7 @@ import jp.sample.vertx1.modules.HandlerLogger;
 public class EchoHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
 
   /** Logger */
-  private static final HandlerLogger LOGGER = HandlerLogger.create(EchoHandler.class);
+  private static final HandlerLogger logger = HandlerLogger.create(EchoHandler.class);
 
   /** config */
   private final Config config;
@@ -35,7 +35,7 @@ public class EchoHandler implements Handler<RoutingContext>, IResponseRoutingCon
 
   @Override
   public void success(RoutingContext event, String object) {
-    LOGGER.info(event.session(), object);
+    logger.info(event.session(), object);
     var response = event.response();
     response.setStatusCode(SUCCESS_STATUS_CODE);
     response.end(object);
