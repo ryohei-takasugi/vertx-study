@@ -4,12 +4,12 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import jp.sample.vertx1.handlers.api.NicoNicoHandleFactory;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 
 public class ApiServiceVerticle extends AbstractVerticle {
 
   /** logger. */
-  private static final MyLogger LOGGER = MyLogger.create(ApiServiceVerticle.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(ApiServiceVerticle.class);
 
   /**
    * vert.x start.

@@ -4,12 +4,12 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import jp.sample.vertx1.models.config.Config;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 
 public class FailerHandler implements Handler<RoutingContext> {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(FailerHandler.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(FailerHandler.class);
 
   protected FailerHandler(Config config) {}
 

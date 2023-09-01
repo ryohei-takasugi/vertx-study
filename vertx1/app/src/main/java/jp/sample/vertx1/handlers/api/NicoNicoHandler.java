@@ -11,12 +11,12 @@ import io.vertx.ext.web.client.WebClient;
 import jp.sample.vertx1.models.eventbus.IEventBus;
 import jp.sample.vertx1.models.eventbus.IResponseEventBus;
 import jp.sample.vertx1.models.eventbus.NicoNicoRequest;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 
 public class NicoNicoHandler implements Handler<Message<JsonObject>>, IResponseEventBus {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(NicoNicoHandler.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(NicoNicoHandler.class);
 
   /** vertx */
   private final Vertx vertx;

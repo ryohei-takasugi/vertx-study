@@ -3,12 +3,12 @@ package jp.sample.vertx1.models.eventbus;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Session;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 import jp.sample.vertx1.modules.UriBuilder;
 
 public class NicoNicoRequest implements IEventBus {
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(NicoNicoRequest.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(NicoNicoRequest.class);
 
   private final LocalSession sessionId;
   private final HttpMethod method;

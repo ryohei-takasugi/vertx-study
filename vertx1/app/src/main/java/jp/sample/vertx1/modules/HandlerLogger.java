@@ -1,24 +1,25 @@
 package jp.sample.vertx1.modules;
 
-import io.vertx.ext.web.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MyLogger {
+import io.vertx.ext.web.Session;
+
+public class HandlerLogger {
 
   private final Logger LOGGER;
   private final Boolean DEBUG_ENABLED;
   private final Boolean TRACE_ENABLED;
 
-  private MyLogger(Logger l) {
+  private HandlerLogger(Logger l) {
     LOGGER = l;
     DEBUG_ENABLED = l.isDebugEnabled();
     TRACE_ENABLED = l.isDebugEnabled() || l.isTraceEnabled();
   }
 
-  public static MyLogger create(Class<?> clazz) {
+  public static HandlerLogger create(Class<?> clazz) {
     Logger logger = LoggerFactory.getLogger(clazz);
-    return new MyLogger(logger);
+    return new HandlerLogger(logger);
   }
 
   private String getStringSessionId(Object s) {

@@ -7,7 +7,7 @@ import io.vertx.ext.web.RoutingContext;
 import java.io.ByteArrayInputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
 import jp.sample.vertx1.models.IResponseRoutingContext;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 import jp.sample.vertx1.modules.XmlToJson;
 import org.w3c.dom.Document;
 
@@ -16,7 +16,7 @@ public class ConvertHandler
     implements Handler<RoutingContext>, IResponseRoutingContext<JsonObject> {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(ConvertHandler.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(ConvertHandler.class);
 
   protected ConvertHandler() {}
 

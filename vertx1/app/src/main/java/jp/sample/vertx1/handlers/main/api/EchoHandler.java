@@ -4,12 +4,12 @@ import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import jp.sample.vertx1.models.IResponseRoutingContext;
 import jp.sample.vertx1.models.config.Config;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 
 public class EchoHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(EchoHandler.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(EchoHandler.class);
 
   /** config */
   private final Config config;

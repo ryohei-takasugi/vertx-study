@@ -3,12 +3,12 @@ package jp.sample.vertx1.handlers.main.page;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import jp.sample.vertx1.models.IResponseRoutingContext;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 
 public class HomePageHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(HomePageHandler.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(HomePageHandler.class);
 
   protected HomePageHandler() {}
 

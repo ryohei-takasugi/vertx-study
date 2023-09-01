@@ -11,13 +11,13 @@ import jp.sample.vertx1.handlers.api.NicoNicoHandleFactory;
 import jp.sample.vertx1.models.IResponseRoutingContext;
 import jp.sample.vertx1.models.api.NicoNicoModel;
 import jp.sample.vertx1.models.eventbus.NicoNicoRequest;
-import jp.sample.vertx1.modules.MyLogger;
+import jp.sample.vertx1.modules.HandlerLogger;
 
 public class NicoNicoPageHandler
     implements Handler<RoutingContext>, IResponseRoutingContext<Buffer> {
 
   /** Logger */
-  private static final MyLogger LOGGER = MyLogger.create(NicoNicoPageHandler.class);
+  private static final HandlerLogger LOGGER = HandlerLogger.create(NicoNicoPageHandler.class);
 
   /** config */
   protected final JsonObject config;
