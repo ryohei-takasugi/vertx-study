@@ -10,7 +10,7 @@ public enum ContentType {
     this.header = header;
   }
 
-  public String getString() {
+  public String toString() {
     return this.header;
   }
 }

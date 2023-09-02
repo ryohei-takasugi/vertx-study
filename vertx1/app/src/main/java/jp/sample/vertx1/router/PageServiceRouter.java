@@ -14,15 +14,15 @@ public class PageServiceRouter {
     /** common */
     router
         .route()
-        .produces(ContentType.HTML.getString())
+        .produces(ContentType.HTML.toString())
         .failureHandler(FailerPageHandleFactory.create(vertx));
 
     /** root page */
     router.get("/").handler(HomePageHandleFactory.create());
 
-    /** other web api call page */
+    /** other web api nico page */
     router
-        .get("/call")
+        .get("/nico")
         .handler(NicoNicoPageHandleFactory.create(vertx, config.appOptions().toJson()));
 
     return router;

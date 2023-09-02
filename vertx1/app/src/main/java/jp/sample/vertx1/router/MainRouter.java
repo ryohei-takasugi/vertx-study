@@ -9,6 +9,7 @@ import io.vertx.ext.web.sstore.SessionStore;
 import jp.sample.vertx1.handlers.main.LoggerHandleFactory;
 import jp.sample.vertx1.handlers.main.page.FailerPageHandleFactory;
 import jp.sample.vertx1.models.config.Config;
+import jp.sample.vertx1.models.enumeration.StringEncode;
 
 /** Create Router */
 public class MainRouter {
@@ -32,8 +33,10 @@ public class MainRouter {
 
   private Router createRouter() {
 
-    /** static page */
-    router.route().handler(StaticHandler.create().setDefaultContentEncoding("UTF-8"));
+    /** static page (default DEFAULT_WEB_ROOT = "webroot") */
+    router
+        .route()
+        .handler(StaticHandler.create().setDefaultContentEncoding(StringEncode.UTF8.toString()));
 
     /** Auto Content-TYpe */
     router.route().handler(ResponseContentTypeHandler.create());

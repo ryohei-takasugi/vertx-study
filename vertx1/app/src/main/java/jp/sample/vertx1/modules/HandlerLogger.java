@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.vertx.ext.web.Session;
+import jp.sample.vertx1.models.eventbus.LocalSession;
 
 public class HandlerLogger {
 
@@ -26,6 +27,9 @@ public class HandlerLogger {
     if (s instanceof Session) {
       Session session = (Session) s;
       return session.id();
+    } else if (s instanceof LocalSession) {
+      LocalSession session = (LocalSession) s;
+      return session.id();
     } else if (s instanceof String) {
       return s.toString();
     } else {
@@ -41,9 +45,9 @@ public class HandlerLogger {
   public void info(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
-      logger.info("[Blank] {}", msg);
+      logger.info("[sessionId: Blank] {}", msg);
     } else {
-      logger.info("[{}] {}", strSessionId, msg);
+      logger.info("[sessionId: {}] {}", strSessionId, msg);
     }
   }
 
@@ -55,9 +59,9 @@ public class HandlerLogger {
   public void warn(Object session, String msg) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
-      logger.warn("[Blank] {}", msg);
+      logger.warn("[sessionId: Blank] {}", msg);
     } else {
-      logger.warn("[{}] {}", strSessionId, msg);
+      logger.warn("[sessionId: {}] {}", strSessionId, msg);
     }
   }
 
@@ -69,9 +73,9 @@ public class HandlerLogger {
   public void error(Object session, String msg, Throwable t) {
     final String strSessionId = getStringSessionId(session);
     if (strSessionId.isBlank()) {
-      logger.error("[Blank] {}", msg, t);
+      logger.error("[sessionId: Blank] {}", msg, t);
     } else {
-      logger.error("[{}] {}", strSessionId, msg, t);
+      logger.error("[sessionId: {}] {}", strSessionId, msg, t);
     }
   }
 
@@ -84,9 +88,9 @@ public class HandlerLogger {
     final String strSessionId = getStringSessionId(session);
     if (isDebugEnabled) {
       if (strSessionId.isBlank()) {
-        logger.debug("[Blank] {}", msg);
+        logger.debug("[sessionId: Blank] {}", msg);
       } else {
-        logger.debug("[{}] {}", strSessionId, msg);
+        logger.debug("[sessionId: {}] {}", strSessionId, msg);
       }
     }
   }
@@ -100,9 +104,9 @@ public class HandlerLogger {
     final String strSessionId = getStringSessionId(session);
     if (isTraceEnabled) {
       if (strSessionId.isBlank()) {
-        logger.trace("[Blank] {}", msg);
+        logger.trace("[sessionId: Blank] {}", msg);
       } else {
-        logger.trace("[{}] {}", strSessionId, msg);
+        logger.trace("[sessionId: {}] {}", strSessionId, msg);
       }
     }
   }

@@ -12,6 +12,7 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
+import jp.sample.vertx1.models.enumeration.StringEncode;
 import jp.sample.vertx1.share.AbstractTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -74,7 +75,7 @@ public class HomeHandlerTest extends AbstractTest {
             responce -> {
               ctx.verify(
                   () -> {
-                    String body = responce.body().toString("UTF-8");
+                    String body = responce.body().toString(StringEncode.UTF8.toString());
                     assertThat(body).contains("Hello Vert.x!!");
                   });
               ctx.completeNow();

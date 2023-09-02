@@ -2,19 +2,18 @@ package jp.sample.vertx1.handlers.main.page;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
 import jp.sample.vertx1.handlers.api.NicoNicoHandleFactory;
-import jp.sample.vertx1.models.IResponseRoutingContext;
 import jp.sample.vertx1.models.api.NicoNicoModel;
-import jp.sample.vertx1.models.eventbus.NicoNicoRequest;
+import jp.sample.vertx1.models.enumeration.HttpStatus;
+import jp.sample.vertx1.models.enumeration.StringEncode;
+import jp.sample.vertx1.models.eventbus.RequestModel;
+import jp.sample.vertx1.models.handler.IMainHandlerResponse;
 import jp.sample.vertx1.modules.HandlerLogger;
 
-public class NicoNicoPageHandler
-    implements Handler<RoutingContext>, IResponseRoutingContext<Buffer> {
+public class NicoNicoPageHandler implements Handler<RoutingContext>, IMainHandlerResponse {
 
   /** Logger */
   private static final HandlerLogger logger = HandlerLogger.create(NicoNicoPageHandler.class);
@@ -27,9 +26,6 @@ public class NicoNicoPageHandler
 
   /** index.html file */
   private static final String INDEX = "templates/index.html";
-
-  /** Request Option to send to the event bus */
-  private static final DeliveryOptions OPTIONS = new DeliveryOptions().setSendTimeout(3000);
 
   /**
    * NicoNicoPage Contractor
@@ -45,70 +41,59 @@ public class NicoNicoPageHandler
   /**
    * main method.
    *
-   * @param event vert.x RoutingContext data.
+   * @param ctx vert.x RoutingContext data.
    */
   @Override
-  public void handle(RoutingContext event) {
-    var request = NicoNicoRequest.createRequest(event.session());
-    var eb = event.vertx().eventBus();
-    var fut = eb.request(NicoNicoHandleFactory.GET_ADDRESS, request, OPTIONS);
+  public void handle(RoutingContext ctx) {
+    var request = RequestModel.create().setSessionId(ctx.session()).setSearchWord("初音ミク");
+    // var request = NicoNicoRequest.createRequest(ctx.session());
+    var eb = ctx.vertx().eventBus();
+    var fut =
+        eb.request(
+            NicoNicoHandleFactory.GET_ADDRESS,
+            request.toJsonObject(),
+            NicoNicoHandleFactory.options);
     fut.onSuccess(
-            clientResponse -> {
-              if (clientResponse == null || !(clientResponse.body() instanceof JsonObject)) {
-                var message = "Could not get information from Niconico Douga";
-                failed(event, FAILED_STATUS_CODE, message);
+            res -> {
+              if (res == null || !(res.body() instanceof JsonObject)) {
+                ctx.fail(new IllegalCallerException());
+                return;
+              }
+              var body = (JsonObject) res.body();
+              logger.debug(ctx.session(), "body: " + body.encodePrettily());
+
+              var model = new NicoNicoModel(body);
+              if (model.status() != HttpStatus.OK.code()) {
+                ctx.fail(new IllegalCallerException(""));
                 return;
               }
 
-              var responseBody = (JsonObject) clientResponse.body();
-              logger.debug(event.session(), "responseBody: " + responseBody.encodePrettily());
-
-              var model = new NicoNicoModel(responseBody);
-              if (model.status() != 200) {
-                var message = "Could not get information from Niconico Douga";
-                failed(event, FAILED_STATUS_CODE, message);
-                return;
-              }
               var futEng = engine.render(model.entities(), INDEX);
               futEng
                   .onSuccess(
                       html -> {
-                        success(event, html);
-                        return;
+                        try {
+                          response(ctx, html.toString(StringEncode.UTF8.toString()));
+                        } catch (Throwable th) {
+                          ctx.fail(th);
+                        }
                       })
                   .onFailure(
                       th -> {
-                        var message = "Web client error";
-                        failed(event, FAILED_STATUS_CODE, message, th);
-                        return;
+                        ctx.fail(th);
                       });
             })
         .onFailure(
             th -> {
-              var message = "Web client error";
-              failed(event, FAILED_STATUS_CODE, message, th);
-              return;
+              ctx.fail(th);
             });
   }
 
   @Override
-  public void success(RoutingContext event, Buffer html) {
-    logger.info(event.session(), "response HTML FILE");
-    var response = event.response();
-    response.setStatusCode(SUCCESS_STATUS_CODE);
-    response.end(html);
-  }
-
-  @Override
-  public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
-    logger.error(event.session(), errorMessage, th);
-    var response = event.response();
-    response.setStatusCode(statusCode);
-    response.setStatusMessage(errorMessage);
-    response.end();
-  }
-
-  public void failed(RoutingContext event, int statusCode, String message) {
-    failed(event, statusCode, message, null);
+  public void response(RoutingContext ctx, String body) {
+    logger.info(ctx.session(), "response HTML FILE");
+    var response = ctx.response();
+    response.setStatusCode(HttpStatus.OK.code());
+    response.end(body);
   }
 }

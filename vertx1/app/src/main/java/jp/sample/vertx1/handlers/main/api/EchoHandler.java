@@ -1,12 +1,14 @@
 package jp.sample.vertx1.handlers.main.api;
 
 import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import jp.sample.vertx1.models.IResponseRoutingContext;
 import jp.sample.vertx1.models.config.Config;
+import jp.sample.vertx1.models.enumeration.HttpStatus;
+import jp.sample.vertx1.models.handler.IApiHandlerResponse;
 import jp.sample.vertx1.modules.HandlerLogger;
 
-public class EchoHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
+public class EchoHandler implements Handler<RoutingContext>, IApiHandlerResponse {
 
   /** Logger */
   private static final HandlerLogger logger = HandlerLogger.create(EchoHandler.class);
@@ -26,23 +28,20 @@ public class EchoHandler implements Handler<RoutingContext>, IResponseRoutingCon
   /**
    * main method.
    *
-   * @param event vert.x RoutingContext data.
+   * @param ctx vert.x RoutingContext data.
    */
   @Override
-  public void handle(RoutingContext event) {
-    success(event, config.toJson().encodePrettily());
+  public void handle(RoutingContext ctx) {
+    response(ctx, config.toJson());
   }
 
   @Override
-  public void success(RoutingContext event, String object) {
-    logger.info(event.session(), object);
-    var response = event.response();
-    response.setStatusCode(SUCCESS_STATUS_CODE);
-    response.end(object);
-  }
+  public void response(RoutingContext ctx, JsonObject body) {
+    logger.info(ctx.session(), body.encodePrettily());
 
-  @Override
-  public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
-    // not used
+    var response = ctx.response();
+    response.setStatusCode(HttpStatus.OK.code());
+    response.setStatusMessage(HttpStatus.OK.message());
+    response.end(body.encodePrettily());
   }
 }

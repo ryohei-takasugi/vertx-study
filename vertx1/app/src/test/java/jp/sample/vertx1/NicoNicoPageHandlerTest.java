@@ -14,6 +14,7 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.junit5.Checkpoint;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
+import jp.sample.vertx1.models.enumeration.StringEncode;
 import jp.sample.vertx1.share.AbstractTest;
 import jp.sample.vertx1.share.MockClientServiceVerticle;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class NicoNicoPageHandlerTest extends AbstractTest {
 
   /** テスト対象のURI */
-  private String uri = "/prefix/call";
+  private String uri = "/prefix/nico";
 
   private JsonObject responce = new JsonObject();
 
@@ -94,7 +95,7 @@ public class NicoNicoPageHandlerTest extends AbstractTest {
             responce -> {
               ctx.verify(
                   () -> {
-                    String body = responce.bodyAsString("UTF-8");
+                    String body = responce.bodyAsString(StringEncode.UTF8.toString());
                     JsonObject testJsonData = this.responce;
                     JsonArray array = testJsonData.getJsonArray("data");
                     for (int i = 0; i < array.size(); i++) {

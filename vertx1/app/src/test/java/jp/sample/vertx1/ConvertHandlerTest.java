@@ -20,7 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@DisplayName("NicoNicoPageに対する試験を行います")
+@DisplayName("Convertに対する試験を行います")
 @ExtendWith(VertxExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
 public class ConvertHandlerTest extends AbstractTest {
@@ -49,7 +49,7 @@ public class ConvertHandlerTest extends AbstractTest {
   @Test
   @DisplayName("戻り値のstatus:200であることを確認します")
   void testStatus(Vertx vertx, VertxTestContext ctx) {
-    HttpRequest<Buffer> request = httpClient(vertx, HttpMethod.PUT, uri);
+    HttpRequest<Buffer> request = httpClient(vertx, HttpMethod.POST, uri);
     Future<HttpResponse<Buffer>> fut = request.sendBuffer(testXMLData(vertx, "sampleConvert.xml"));
     fut.onSuccess(
             responce -> {

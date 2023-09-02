@@ -1,12 +1,11 @@
 package jp.sample.vertx1;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import jp.sample.vertx1.handlers.api.NicoNicoHandleFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApiServiceVerticle extends AbstractVerticle {
 

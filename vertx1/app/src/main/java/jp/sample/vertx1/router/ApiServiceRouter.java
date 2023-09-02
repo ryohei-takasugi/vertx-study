@@ -15,7 +15,7 @@ public class ApiServiceRouter {
     /** config page */
     router
         .route()
-        .produces(ContentType.JSON.getString())
+        .produces(ContentType.JSON.toString())
         .failureHandler(FailerHandlerFactory.create(config));
 
     /** config page */

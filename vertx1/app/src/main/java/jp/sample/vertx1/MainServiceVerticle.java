@@ -1,8 +1,5 @@
 package jp.sample.vertx1;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -11,6 +8,8 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.ext.web.Router;
 import jp.sample.vertx1.models.config.Config;
 import jp.sample.vertx1.router.MainRouter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainServiceVerticle extends AbstractVerticle {
 

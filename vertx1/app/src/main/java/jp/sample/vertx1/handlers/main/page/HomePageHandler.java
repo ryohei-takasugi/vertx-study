@@ -2,10 +2,11 @@ package jp.sample.vertx1.handlers.main.page;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
-import jp.sample.vertx1.models.IResponseRoutingContext;
+import jp.sample.vertx1.models.enumeration.HttpStatus;
+import jp.sample.vertx1.models.handler.IMainHandlerResponse;
 import jp.sample.vertx1.modules.HandlerLogger;
 
-public class HomePageHandler implements Handler<RoutingContext>, IResponseRoutingContext<String> {
+public class HomePageHandler implements Handler<RoutingContext>, IMainHandlerResponse {
 
   /** Logger */
   private static final HandlerLogger logger = HandlerLogger.create(HomePageHandler.class);
@@ -15,23 +16,19 @@ public class HomePageHandler implements Handler<RoutingContext>, IResponseRoutin
   /**
    * main method.
    *
-   * @param event vert.x RoutingContext data.
+   * @param ctx vert.x RoutingContext data.
    */
   @Override
-  public void handle(RoutingContext event) {
-    success(event, "Hello Vert.x!!");
+  public void handle(RoutingContext ctx) {
+    response(ctx, "Hello Vert.x!!");
   }
 
   @Override
-  public void success(RoutingContext event, String object) {
-    logger.info(event.session(), object);
-    var response = event.response();
-    response.setStatusCode(SUCCESS_STATUS_CODE);
-    response.end(object);
-  }
-
-  @Override
-  public void failed(RoutingContext event, int statusCode, String errorMessage, Throwable th) {
-    // not used
+  public void response(RoutingContext ctx, String body) {
+    logger.info(ctx.session(), body);
+    var response = ctx.response();
+    response.setStatusCode(HttpStatus.OK.code());
+    response.setStatusMessage(HttpStatus.OK.message());
+    response.end(body);
   }
 }
