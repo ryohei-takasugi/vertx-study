@@ -1,10 +1,9 @@
 package jp.sample.vertx1.modules;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.vertx.ext.web.Session;
 import jp.sample.vertx1.models.eventbus.LocalSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HandlerLogger {
 

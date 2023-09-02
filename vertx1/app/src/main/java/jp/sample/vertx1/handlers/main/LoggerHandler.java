@@ -1,10 +1,5 @@
 package jp.sample.vertx1.handlers.main;
 
-import java.sql.Timestamp;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpMethod;
@@ -12,6 +7,9 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.net.SocketAddress;
 import io.vertx.ext.web.RoutingContext;
+import java.sql.Timestamp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggerHandler implements Handler<RoutingContext> {
 
