@@ -11,7 +11,7 @@ public class NicoNicoHandleFactory {
   /** event bus address */
   public static final String GET_ADDRESS = "/my-service/nico-nico/get";
 
-  public static final DeliveryOptions options =
+  public static final DeliveryOptions DELIVERY_OPTIONS =
       new DeliveryOptions()
           .setSendTimeout(DeliveryOptions.DEFAULT_TIMEOUT)
           .setLocalOnly(true)

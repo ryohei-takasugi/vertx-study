@@ -60,7 +60,6 @@ public class FailerPageHandler implements Handler<RoutingContext> {
    */
   @Override
   public void handle(RoutingContext ctx) {
-    final var fileSystem = ctx.vertx().fileSystem();
     final var response = ctx.response();
     switch (ctx.statusCode()) {
       case 404:

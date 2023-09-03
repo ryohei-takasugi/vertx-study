@@ -62,7 +62,7 @@ public class NicoNicoHandler implements Handler<Message<JsonObject>>, IEventBusR
 
   @Override
   public void response(Message<JsonObject> message, NicoNicoResponse res) {
-    var options = NicoNicoHandleFactory.options;
+    var options = NicoNicoHandleFactory.DELIVERY_OPTIONS;
     message.reply(res.toJsonObject(), options);
   }
 }

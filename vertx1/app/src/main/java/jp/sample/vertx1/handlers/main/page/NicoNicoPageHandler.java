@@ -48,11 +48,9 @@ public class NicoNicoPageHandler implements Handler<RoutingContext>, IMainHandle
     var request = RequestModel.create().setSessionId(ctx.session()).setSearchWord("初音ミク");
     // var request = NicoNicoRequest.createRequest(ctx.session());
     var eb = ctx.vertx().eventBus();
-    var fut =
-        eb.request(
-            NicoNicoHandleFactory.GET_ADDRESS,
-            request.toJsonObject(),
-            NicoNicoHandleFactory.options);
+    var eventBusName = NicoNicoHandleFactory.GET_ADDRESS;
+    var option = NicoNicoHandleFactory.DELIVERY_OPTIONS;
+    var fut = eb.request(eventBusName, request.toJsonObject(), option);
     fut.onSuccess(
             res -> {
               if (res == null || !(res.body() instanceof JsonObject)) {
