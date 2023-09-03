@@ -2,38 +2,45 @@ package jp.sample.vertx1.modules;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import java.io.ByteArrayInputStream;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class XmlToJson {
 
-  private final Document doc;
+  private final Element element;
 
-  public XmlToJson(Document doc) {
-    this.doc = doc;
+  public static XmlToJson create(byte[] requestBody) {
+    return new XmlToJson(requestBody);
+  }
+
+  private XmlToJson(byte[] requestBody) {
+    Document doc = castByteToDocument(requestBody);
+    if (doc == null) {
+      throw new IllegalArgumentException(
+          "Processing will be aborted because the request document is empty.");
+    }
+    this.element = doc.getDocumentElement();
+  }
+
+  private Document castByteToDocument(byte[] requestBody) {
+    try {
+      var factory = DocumentBuilderFactory.newInstance();
+      var builder = factory.newDocumentBuilder();
+      var input = new ByteArrayInputStream(requestBody);
+      var doc = builder.parse(input);
+      input.close();
+      return doc;
+    } catch (Throwable th) {
+      throw new IllegalArgumentException(
+          "Processing will be aborted because the request buffer is empty.");
+    }
   }
 
   public JsonObject toJson() {
-    // var json = new JsonObject();
-    var element = doc.getDocumentElement();
-    // if (element.hasChildNodes()) {
-    //   var array = new JsonArray();
-    //   var childs = element.getChildNodes();
-    //   for (int i = 0; i < childs.getLength(); i++) {
-    //     if (childs.item(i).getNodeType() == Node.ELEMENT_NODE) {
-    //       var name = childs.item(i).getNodeName();
-    //       array.add(cast(childs.item(i)));
-    //     }
-    //   }
-    //   json.put(element.getNodeName(), array);
-    // } else {
-    //   var d = new JsonObject();
-    //   d.put("attributes", attributes(element));
-    //   d.put("content", element.getTextContent());
-    //   json.put(element.getNodeName(), d);
-    // }
-    // return json;
-    return cast(element);
+    return cast(this.element);
   }
 
   private JsonObject cast(Node childs) {
@@ -79,24 +86,4 @@ public class XmlToJson {
     }
     return !array.isEmpty();
   }
-
-  // private JsonArray getChildNodes(Node target) {
-  //   var array = new JsonArray();
-  //   if (target.hasChildNodes()) {
-  //     var childs = target.getChildNodes();
-  //     for (int i = 0; i < childs.getLength(); i++) {
-  //       if (childs.item(i).getNodeType() == Node.ELEMENT_NODE) {
-  //         array.add(childs.item(i));
-  //       }
-  //     }
-  //   }
-  //   var result = new JsonArray();
-  //   array.forEach(
-  //       child -> {
-  //         if (!result.contains(child)) {
-  //           result.add(child);
-  //         }
-  //       });
-  //   return result;
-  // }
 }
