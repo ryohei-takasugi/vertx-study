@@ -14,6 +14,7 @@ RUN microdnf update && microdnf upgrade \
     && microdnf install yum
 RUN yum update && yum upgrade \
     && yum install -y /usr/bin/xargs curl wget vim unzip zip git net-tools lsof procps make npm
+RUN yum clean all && microdnf clean all
 
 # install gradle
 RUN curl -sSOL "https://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip"
