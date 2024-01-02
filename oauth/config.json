@@ -1,0 +1,50 @@
+{
+  "main-verticle": {
+    "http-server-options": {
+      "port": 8080
+    },
+    "app-options": {
+      "sample": "test_github_actions"
+    },
+    "session-options": {
+      "path": "/",
+      "max-age": 60,
+      "timeout": 60
+    },
+    "oauth-options": {
+      "github": {
+        "client-id": "0632b4b9698cefe48798",
+        "client-secret": "89635dbb1e122b7e45e34778cca464b89a574bb5"
+      },
+      "google": {
+        "client-id": "254183073377-9f89pqngj7a56bg9iluuv7p9kufnk6iv.apps.googleusercontent.com",
+        "client-secret": "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"
+      },
+      "keycloak": {
+        "resource": "account",
+        "auth-server-url": "http://192.168.10.105/",
+        "credentials": {
+          "secret": "A7VeqklHQJ5FnLvuzvWOF5o0uGhwdi63"
+        },
+        "realm": "sample"
+      }
+    }
+  },
+  "api-verticle": {
+    "database-api": {
+      "http-options": {
+        "endpoint": "http://localhost:80/api/database"
+      }
+    },
+    "session-api": {
+      "http-options": {
+        "endpoint": "http://localhost:80/api/session"
+      }
+    },
+    "file-api": {
+      "http-options": {
+        "endpoint": "http://localhost:80/api/file"
+      }
+    }
+  }
+}
